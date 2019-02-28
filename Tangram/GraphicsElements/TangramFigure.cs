@@ -11,7 +11,7 @@ namespace Tangram.GraphicsElements
     class TangramFigure : Figure
     {
         //сторона прямоугольника, из которого состоят фигуры танграма
-        protected const float RECT_WIDTH = 300.0F;
+        protected const float RECT_WIDTH = 200.0F;
 
         public enum FigureTypes
         {
@@ -22,7 +22,22 @@ namespace Tangram.GraphicsElements
             PARALLELOGRAM
         }
 
-        public FigureTypes FigureType { get; set; }
+        bool created = false;
+        private FigureTypes figureType;
+        public FigureTypes FigureType {
+            get
+            {
+                return figureType;
+            }
+            set
+            {
+                figureType = value;
+                if (created)
+                {
+                    Reset(this.Location, this.pivot, this.RotationAngle);
+                }
+            }
+        }
 
 
         public TangramFigure(FigureTypes type,Color c,PointF location)
@@ -30,6 +45,7 @@ namespace Tangram.GraphicsElements
             FigureType = type;
             FigureColor = c;
             Reset(location);
+            created = true;
         }
 
         public TangramFigure(FigureTypes type, Color c, PointF location, PointF pivot, float angle)
@@ -37,10 +53,12 @@ namespace Tangram.GraphicsElements
             FigureType = type;
             FigureColor = c;
             Reset(location,pivot,angle);
+            created = true;
         }
 
         protected override void Init(PointF[] boundary, GraphicsPath p)
         {
+            p.Reset();
             float side = 0;
             switch (FigureType)
             {
@@ -63,7 +81,7 @@ namespace Tangram.GraphicsElements
                     break;
                 case FigureTypes.MID_TRIANGLE:
 
-                    side = (float)(1 / 2) * RECT_WIDTH;
+                    side = 0.5F * RECT_WIDTH;
 
                     boundary[0] = new PointF(0, 0);
                     boundary[1] = new PointF(side, 0);
@@ -104,8 +122,24 @@ namespace Tangram.GraphicsElements
                     p.CloseFigure();
 
                     break;
-                    //TODO
                 case FigureTypes.PARALLELOGRAM:
+
+                    side = 0.5F * RECT_WIDTH;
+                    int angle = 45;
+                    float smallSide = (float)((Math.Sqrt(2) / 4) * RECT_WIDTH);
+                    float gap = (float)(Math.Cos(angle) * smallSide);
+
+                    boundary[0] = new PointF(0, 0);
+                    boundary[1] = new PointF(side+gap, 0);
+                    boundary[2] = new PointF(side+gap, gap);
+                    boundary[3] = new PointF(0, gap);
+
+                    p.StartFigure();
+                    p.AddLine(gap, 0, side+gap, 0);
+                    p.AddLine(side + gap, 0, side, gap);
+                    p.AddLine(side + gap, 0, side, gap);
+                    p.AddLine(side, gap, 0, gap);
+                    p.CloseFigure();
                     break;
             }
         }

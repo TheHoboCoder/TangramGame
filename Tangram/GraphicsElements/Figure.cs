@@ -12,6 +12,7 @@ namespace Tangram.GraphicsElements
     {
         protected void  Reset(PointF pos)
         {
+            this.rotationAngle = 0;
             Init(boundaryPoints, path);
             this.Location = pos;
         }
@@ -19,6 +20,7 @@ namespace Tangram.GraphicsElements
         protected void Reset(PointF pos,PointF pivot,float angle)
         {
             Init(boundaryPoints, path);
+            this.rotationAngle = 0;
 
             float deltaX = pivot.X - pos.X;
             float deltaY = pivot.Y - pos.Y;

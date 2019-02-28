@@ -36,7 +36,7 @@ namespace Tangram
             path.AddLine(50, 100, 0, 0);
             path.CloseFigure();
 
-            f = new TangramFigure(TangramFigure.FigureTypes.SMALL_TRIANGLE, Color.DodgerBlue, new PointF(10, 10));
+            f = new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.DodgerBlue, new PointF(10, 10));
 
         }
 
@@ -103,6 +103,64 @@ namespace Tangram
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             moving = false;
+        }
+
+        private void Form2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //if((int)e.KeyChar ==32)
+            //{
+            //    if(f.FigureType == TangramFigure.FigureTypes.PARALLELOGRAM)
+            //    {
+            //        f.FigureType = TangramFigure.FigureTypes.BIG_TRIANGLE;
+            //    }
+            //    else
+            //    {
+            //        f.FigureType = f.FigureType++;
+            //    }
+            //}
+        }
+
+        private void Form2_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.KeyCode == Keys.Space)
+            //{
+            //    if (f.FigureType == TangramFigure.FigureTypes.PARALLELOGRAM)
+            //    {
+            //        f.FigureType = TangramFigure.FigureTypes.BIG_TRIANGLE;
+            //    }
+            //    else
+            //    {
+            //        f.FigureType = f.FigureType++;
+            //    }
+            //}
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (f.FigureType == TangramFigure.FigureTypes.PARALLELOGRAM)
+            {
+                f.FigureType = TangramFigure.FigureTypes.BIG_TRIANGLE;
+                pictureBox1.Invalidate();
+            }
+            else
+            {
+                f.FigureType = ++f.FigureType;
+                pictureBox1.Invalidate();
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //Matrix m = new Matrix();
+            //m.Scale(1F,-2F);
+
+            //f.Path.Transform(m);
+            pictureBox1.Invalidate();
         }
     }
 }
