@@ -56,7 +56,7 @@ namespace Tangram.GraphicsElements
             created = true;
         }
 
-        protected override void Init(PointF[] boundary, GraphicsPath p)
+        protected override void Init(GraphicsPath p)
         {
             p.Reset();
             float side = 0;
@@ -67,15 +67,9 @@ namespace Tangram.GraphicsElements
 
                    side = (float)((1 / Math.Sqrt(2)) * RECT_WIDTH);
 
-                    boundary[0] = new PointF(0, 0);
-                    boundary[1] = new PointF(side, 0);
-                    boundary[2] = new PointF(side, side);
-                    boundary[3] = new PointF(0, side);
-
                     p.StartFigure();
-                    p.AddLine(boundary[0], boundary[2]);
-                    p.AddLine(boundary[2], boundary[3]);
-                    p.AddLine(boundary[3], boundary[0]);
+                    p.AddLine(new PointF(0, 0), new PointF(side, side));
+                    p.AddLine(new PointF(side, side), new PointF(0, side));
                     p.CloseFigure();
 
                     break;
@@ -83,39 +77,24 @@ namespace Tangram.GraphicsElements
 
                     side = 0.5F * RECT_WIDTH;
 
-                    boundary[0] = new PointF(0, 0);
-                    boundary[1] = new PointF(side, 0);
-                    boundary[2] = new PointF(side, side);
-                    boundary[3] = new PointF(0, side);
-
                     p.StartFigure();
-                    p.AddLine(boundary[0], boundary[2]);
-                    p.AddLine(boundary[2], boundary[3]);
-                    p.AddLine(boundary[3], boundary[0]);
+                    p.AddLine(new PointF(0, 0), new PointF(side, side));
+                    p.AddLine(new PointF(side, side), new PointF(0, side));
                     p.CloseFigure();
+
                     break;
                 case FigureTypes.SMALL_TRIANGLE:
                     side = (float)((Math.Sqrt(2) / 4) * RECT_WIDTH);
 
-                    boundary[0] = new PointF(0, 0);
-                    boundary[1] = new PointF(side, 0);
-                    boundary[2] = new PointF(side, side);
-                    boundary[3] = new PointF(0, side);
-
                     p.StartFigure();
-                    p.AddLine(boundary[0], boundary[2]);
-                    p.AddLine(boundary[2], boundary[3]);
-                    p.AddLine(boundary[3], boundary[0]);
+                    p.AddLine(new PointF(0, 0), new PointF(side, side));
+                    p.AddLine(new PointF(side, side), new PointF(0, side));
                     p.CloseFigure();
+
                     break;
                 case FigureTypes.RECT:
 
                     side = (float)((Math.Sqrt(2) / 4) * RECT_WIDTH);
-
-                    boundary[0] = new PointF(0, 0);
-                    boundary[1] = new PointF(side, 0);
-                    boundary[2] = new PointF(side, side);
-                    boundary[3] = new PointF(0, side);
 
                     p.StartFigure();
                     p.AddRectangle(new RectangleF(0, 0, side, side));
@@ -129,19 +108,41 @@ namespace Tangram.GraphicsElements
                     float smallSide = (float)((Math.Sqrt(2) / 4) * RECT_WIDTH);
                     float gap = (float)(Math.Cos(angle) * smallSide);
 
-                    boundary[0] = new PointF(0, 0);
-                    boundary[1] = new PointF(side+gap, 0);
-                    boundary[2] = new PointF(side+gap, gap);
-                    boundary[3] = new PointF(0, gap);
-
                     p.StartFigure();
                     p.AddLine(gap, 0, side+gap, 0);
                     p.AddLine(side + gap, 0, side, gap);
                     p.AddLine(side + gap, 0, side, gap);
                     p.AddLine(side, gap, 0, gap);
+                    p.AddLine(0, gap, gap, 0);
                     p.CloseFigure();
                     break;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != this.GetType())
+                return false;
+
+            TangramFigure figure = (TangramFigure)obj;
+
+            if (figure.Path.PointCount == this.Path.PointCount)
+            {
+                for(int i = 0; i< (figure.Path.PointCount);++i)
+                {
+                    if(figure.Path.PathPoints[i].X != this.Path.PathPoints[i].X ||
+                       figure.Path.PathPoints[i].Y != this.Path.PathPoints[i].Y)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

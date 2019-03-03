@@ -37,7 +37,15 @@ namespace Tangram
             path.CloseFigure();
 
             f = new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.DodgerBlue, new PointF(10, 10));
+            TangramFigure f2 = new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.DodgerBlue, new PointF(10, 10));
+            MessageBox.Show(f.Equals(f2).ToString());
 
+            //float[] r = GeometryTools.GetLineEquation( new Point(1, 1),new Point(5, 1));
+            //float[] r2 = GeometryTools.GetLineEquation(new Point(3, 1), new Point(10, 1));
+            //MessageBox.Show(r[0].ToString()+" "+ r[1].ToString()+" "+ r[2].ToString());
+            //MessageBox.Show(r2[0].ToString() + " " + r2[1].ToString() + " " + r2[2].ToString());
+            //PointF x = GeometryTools.Intersection(r, r2);
+            //MessageBox.Show(GeometryTools.Intersection(r,r2).X.ToString()+" "+GeometryTools.Intersection(r, r2).Y.ToString());
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -46,7 +54,7 @@ namespace Tangram
             Brush k = new SolidBrush(f.FigureColor);
 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.DrawPolygon(pen, f.BoundaryPoints);
+            //e.Graphics.DrawPolygon(pen, f.Path.PathPoints);
             e.Graphics.FillPath(k,f.Path);
 
 
@@ -76,7 +84,13 @@ namespace Tangram
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (f.Path.IsVisible(e.Location))
+            
+            
+          
+            bool t = f.Path.IsVisible(e.Location);
+          
+
+            if (t)
             {
                 position.X = e.Location.X;
                 position.Y = e.Location.Y;
@@ -84,6 +98,7 @@ namespace Tangram
                 trPos.X = f.Location.X;
                 moving = true;
             }
+           
 
         }
 
@@ -92,8 +107,10 @@ namespace Tangram
             if (e.Button == MouseButtons.Left && moving)
             {
                 trPos.X = e.Location.X - position.X;
+               
                 trPos.Y = e.Location.Y - position.Y;
                 f.Translate(trPos.X,trPos.Y);
+                
                 position.X = e.Location.X;
                 position.Y = e.Location.Y;
                 pictureBox1.Invalidate();
@@ -160,6 +177,7 @@ namespace Tangram
             //m.Scale(1F,-2F);
 
             //f.Path.Transform(m);
+            f.Path.Reverse();
             pictureBox1.Invalidate();
         }
     }
