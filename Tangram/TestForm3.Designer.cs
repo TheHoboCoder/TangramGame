@@ -76,11 +76,15 @@
             // 
             // designerCanvas1
             // 
+            this.designerCanvas1.AngleSnapEnabled = false;
             this.designerCanvas1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.designerCanvas1.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.MOVE;
+            this.designerCanvas1.GridEnabled = false;
+            this.designerCanvas1.GridSnapEnabled = false;
             this.designerCanvas1.Location = new System.Drawing.Point(28, 50);
             this.designerCanvas1.Name = "designerCanvas1";
             this.designerCanvas1.Size = new System.Drawing.Size(564, 346);
+            this.designerCanvas1.SnapAngle = 0F;
             this.designerCanvas1.TabIndex = 0;
             this.designerCanvas1.TabStop = false;
             // 
@@ -99,6 +103,9 @@
             this.Text = "TestForm3";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TestForm3_FormClosed);
             this.Load += new System.EventHandler(this.TestForm3_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TestForm3_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TestForm3_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TestForm3_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.designerCanvas1)).EndInit();
             this.ResumeLayout(false);
 

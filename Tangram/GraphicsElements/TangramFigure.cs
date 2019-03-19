@@ -111,7 +111,7 @@ namespace Tangram.GraphicsElements
                     p.StartFigure();
                     p.AddLine(gap, 0, side+gap, 0);
                     p.AddLine(side + gap, 0, side, gap);
-                    p.AddLine(side + gap, 0, side, gap);
+                    //p.AddLine(side + gap, 0, side, gap);
                     p.AddLine(side, gap, 0, gap);
                     p.AddLine(0, gap, gap, 0);
                     p.CloseFigure();

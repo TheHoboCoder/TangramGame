@@ -34,7 +34,9 @@ namespace Tangram
             figureTypeCombo.Items.Add("Квадрат");
             figureTypeCombo.Items.Add("Параллелограмм");
             figureTypeCombo.SelectedIndex = 0;
-
+            designerCanvas1.GridEnabled = true;
+            designerCanvas1.CurrentMode = DesignerCanvas.Mode.ROTATE;
+            KeyPreview = true;
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -65,6 +67,38 @@ namespace Tangram
         private void TestForm3_FormClosed(object sender, FormClosedEventArgs e)
         {
             //designerCanvas1.Dispose();
+        }
+
+        private void TestForm3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //if (e.KeyChar == 88)
+            //{
+            //    designerCanvas1.CurrentMode = designerCanvas1.CurrentMode++;
+            //}
+        }
+
+        private void TestForm3_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void TestForm3_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyData == Keys.X)
+            {
+                switch (designerCanvas1.CurrentMode)
+                {
+                    case DesignerCanvas.Mode.ROTATE:
+                        designerCanvas1.CurrentMode = DesignerCanvas.Mode.MOVE;
+                        break;
+                    case DesignerCanvas.Mode.MOVE:
+                        designerCanvas1.CurrentMode = DesignerCanvas.Mode.ROTATE;
+                        break;
+
+
+
+                }
+            }
         }
     }
 }
