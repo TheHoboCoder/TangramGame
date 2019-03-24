@@ -33,7 +33,9 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.colorPreview = new System.Windows.Forms.Panel();
             this.colorButton = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.designerCanvas1 = new Tangram.GraphicsElements.DesignerCanvas();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.designerCanvas1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,16 +76,24 @@
             this.colorButton.UseVisualStyleBackColor = true;
             this.colorButton.Click += new System.EventHandler(this.colorButton_Click);
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.designerCanvas1);
+            this.panel1.Location = new System.Drawing.Point(12, 50);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(591, 388);
+            this.panel1.TabIndex = 5;
+            // 
             // designerCanvas1
             // 
-            this.designerCanvas1.AngleSnapEnabled = false;
             this.designerCanvas1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.designerCanvas1.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.MOVE;
             this.designerCanvas1.GridEnabled = false;
             this.designerCanvas1.GridSnapEnabled = false;
-            this.designerCanvas1.Location = new System.Drawing.Point(28, 50);
+            this.designerCanvas1.Location = new System.Drawing.Point(3, 20);
             this.designerCanvas1.Name = "designerCanvas1";
-            this.designerCanvas1.Size = new System.Drawing.Size(564, 346);
+            this.designerCanvas1.Size = new System.Drawing.Size(574, 346);
             this.designerCanvas1.SnapAngle = 0F;
             this.designerCanvas1.TabIndex = 0;
             this.designerCanvas1.TabStop = false;
@@ -94,11 +104,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(886, 450);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.colorButton);
             this.Controls.Add(this.colorPreview);
             this.Controls.Add(this.figureTypeCombo);
             this.Controls.Add(this.AddButton);
-            this.Controls.Add(this.designerCanvas1);
             this.Name = "TestForm3";
             this.Text = "TestForm3";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TestForm3_FormClosed);
@@ -106,6 +116,7 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TestForm3_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TestForm3_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TestForm3_KeyUp);
+            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.designerCanvas1)).EndInit();
             this.ResumeLayout(false);
 
@@ -119,5 +130,6 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Panel colorPreview;
         private System.Windows.Forms.Button colorButton;
+        private System.Windows.Forms.Panel panel1;
     }
 }

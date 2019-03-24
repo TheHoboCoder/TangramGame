@@ -56,8 +56,8 @@ namespace Tangram.GraphicsElements
             get
             {
                 //вычисляем центр фигуры
-                float x = (path.GetBounds().X+ path.GetBounds().Width) /2;
-                float y = (path.GetBounds().Y + path.GetBounds().Height) / 2;
+                float x = (path.PathPoints[0].X + path.PathPoints[path.PathPoints.Count() - 2].X) / 2;
+                float y = (path.PathPoints[0].Y + path.PathPoints[path.PathPoints.Count() - 2].Y) / 2;
                 return new PointF(x, y);
             }
         }
@@ -82,6 +82,8 @@ namespace Tangram.GraphicsElements
         {
             transformationMatrix.Reset();
             transformationMatrix.Translate(dx, dy);
+            PointF newPivot = new PointF(pivot.X + dx, pivot.Y + dy);
+            pivot = newPivot;
             ApplyTransform();
         }
 
@@ -119,6 +121,7 @@ namespace Tangram.GraphicsElements
         {
             transformationMatrix.Reset();
             transformationMatrix.RotateAt(angle, pivot);
+            rotationAngle = rotationAngle + angle;
             ApplyTransform();
         }
         /// <summary>

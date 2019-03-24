@@ -40,31 +40,27 @@ namespace Tangram.GraphicsElements
 
         }
 
-        private Bitmap canvas;
-        private Graphics gr;
 
         List<Figure> figures = new List<Figure>();
         List<Figure> selectedFigures = new List<Figure>();
-        Figure previewSelection;
+        Figure previewSelection,currentSelection;
 
 
         private const float rotatePointsHalfSize = 6;
-        private const float rotateWheelBigRadius = 30;
-        private const float rotateWheelSmallRadius = 18;
-        private const float rotateWheelRadius = (rotateWheelBigRadius + rotateWheelSmallRadius) / 2;
+        private const float rotationRadious = 60;
         List<RectangleF> rotatePoints = new List<RectangleF>();
-        private RectangleF currentPoint = new RectangleF();
         private RectangleF previewPoint = new RectangleF();
-        private RectangleF wheelBounds = new RectangleF();
         private PointF currentRotatePoint = new PointF();
+        private double angle = 0;
 
 
-        private bool previewPointSelected = false;
-        private bool onWheel = false;
 
         bool operating = false;
+        bool readyToMove = false;
+        bool readyToRotate = false;
         PointF selectedPoint = new PointF();
 
+        bool rotationBegun = false;
         bool rubberSelectionStarted = false;
         RectangleF rubberBandSelection = new RectangleF();
 
@@ -80,8 +76,20 @@ namespace Tangram.GraphicsElements
 
         public bool GridSnapEnabled { get; set; }
         private const float GridCellSize = 15;
-        public bool AngleSnapEnabled { get; set; }
-        public float SnapAngle { get; set; }
+
+        private float snapAngle = 45;
+        public float SnapAngle
+        {
+            get
+            {
+                return snapAngle;
+            }
+            set
+            {
+                snapAngle = value;
+            }
+        }
+
 
         private Mode _currentMode;
         public Mode CurrentMode
@@ -92,37 +100,7 @@ namespace Tangram.GraphicsElements
             }
             set
             {
-                if (_currentMode != value)
-                {
-                    switch (value)
-                    {
-                        case Mode.MOVE:
-                            rotatePoints.Clear();
-                            break;
-                        case Mode.ROTATE:
-
-                            foreach (Figure f in selectedFigures)
-                            {
-                                foreach (PointF cur in f.Path.PathPoints)
-                                {
-                                    rotatePoints.Add(new RectangleF(cur.X - rotatePointsHalfSize,
-                                                     cur.Y - rotatePointsHalfSize,
-                                                     rotatePointsHalfSize * 2,
-                                                     rotatePointsHalfSize * 2));
-                                }
-                            }
-                            if (selectedFigures.Count() != 0)
-                            {
-                                currentRotatePoint = selectedFigures.First().BoundaryCenter;
-                            }
-                            foreach (Figure f in selectedFigures)
-                            {
-                                f.pivot = currentRotatePoint;
-                            }
-
-                            break;
-                    }
-                }
+                
                 
                 _currentMode = value;
                 
@@ -141,8 +119,8 @@ namespace Tangram.GraphicsElements
         public void AddFigure(Figure f)
         {
             int count = 0;
-            do
-            {
+            //do
+            //{
                 var intersections = figures.Where(fig => fig.Path.GetBounds().IntersectsWith(f.Path.GetBounds()));
                 count = intersections.Count();
                 if (count != 0)
@@ -157,158 +135,173 @@ namespace Tangram.GraphicsElements
                     this.Width +=(int)Math.Round(-delta);
                 }
 
-            }
-            while (count != 0);
+            //}
+            //while (count != 0);
 
             figures.Add(f);
             figures.OrderBy(cur => cur.Path.GetBounds().Y);
             Refresh();
         }
 
-        #region drawing
-        private void Fill(Figure f)
-        {
-            if (f == null) return;
-            using (Brush c = new SolidBrush(f.FigureColor))
-            {
-                gr.SmoothingMode = SmoothingMode.AntiAlias;
-                gr.FillPath(c, f.Path);
-            }      
-        }
-
-        private void DrawRubberBand()
-        {
-            gr.SmoothingMode = SmoothingMode.AntiAlias;
-            gr.CompositingMode = CompositingMode.SourceOver;
-            using (Brush br = new SolidBrush(Color.FromArgb(120, Color.Blue)))
-            {
-                gr.FillRectangle(br, Rectangle.Ceiling(rubberBandSelection));
-            }  
-            using (Pen p =  new Pen(new SolidBrush(Color.FromArgb(200, Color.Blue)), 2))
-            {
-                p.Alignment = PenAlignment.Inset;
-                gr.DrawRectangle(p, Rectangle.Ceiling(rubberBandSelection));
-            }
-            gr.CompositingMode = CompositingMode.SourceCopy;
-        }
-
-        private void Clear(Figure f)
-        {
-            if (f == null) return;
-            using (Brush c = new SolidBrush(Color.Transparent))
-            {
-                gr.SmoothingMode = SmoothingMode.AntiAlias;
-                gr.FillPath(c, f.Path);
-            }
-        }
-
-        private void Draw(Figure f)
-        {
-            if (f == null) return;
-            gr.SmoothingMode = SmoothingMode.AntiAlias;
-            gr.DrawPath(selectionPen, f.Path);
-        }
-
-        private void PreviewSelectionOn(Figure f)
-        {
-            if (f == null) return;
-            gr.SmoothingMode = SmoothingMode.AntiAlias;
-            gr.DrawPath(previewPen, f.Path);
-        }
-
-        private void RepaintAll()
-        {
-            gr.Clear(Color.Transparent);
-            foreach(Figure f in figures)
-            {
-                Draw(f);
-            }
-        }
-        #endregion
+       
 
         private void DesignerCanvas_MouseDown(object sender, MouseEventArgs e)
         {
-
-            if (previewPointSelected)
+            if (readyToMove||readyToRotate)
             {
-                currentRotatePoint = new PointF(previewPoint.X + rotatePointsHalfSize, previewPoint.Y + rotatePointsHalfSize);
-                currentPoint = previewPoint;
-                wheelBounds = new RectangleF(currentRotatePoint.X - rotateWheelRadius,
-                                             currentRotatePoint.Y - rotateWheelRadius,
-                                             rotateWheelRadius * 2,
-                                             rotateWheelRadius * 2);
-                foreach (Figure f in selectedFigures)
+                operating = true;
+                rotationBegun = readyToRotate;
+                if (readyToRotate)
                 {
-                    f.pivot = currentRotatePoint;
+                    rotatePoints.Clear();
+                    foreach (Figure f in selectedFigures)
+                    {
+                        f.pivot = currentRotatePoint;
+                    }
                 }
+                selectedPoint = e.Location;
+                readyToRotate = readyToMove = false;
+                notSelected = figures.Except(selectedFigures);
                 return;
             }
 
-            if (onWheel)
+            if (Control.ModifierKeys != Keys.Control)
             {
+                rotatePoints.Clear();
+                selectedFigures.Clear();
+                
+            }
+
+            if (previewSelection != null)
+            {
+                selectedFigures.Add(previewSelection);
+                initRotatePoints(previewSelection);
                 selectedPoint = e.Location;
                 operating = true;
-                return;
+                previewSelection = null;
             }
 
+            Refresh();
 
-            var selected = selectedFigures.Where(f => f.Path.IsVisible(e.Location));
-            if(selected.Count() == 0)
+          
+        }
+
+        private void UpdateRubberBand()
+        {
+            var selectedItems = figures.Where(f => f.Path.GetBounds().IntersectsWith(rubberBandSelection));
+            selectedFigures = selectedItems.ToList();
+            Refresh();
+        }
+
+        private void CreateRubberBand(PointF mouseLocation)
+        {
+            rubberBandSelection.X = Math.Min(mouseLocation.X, selectedPoint.X);
+            rubberBandSelection.Y = Math.Min(mouseLocation.Y, selectedPoint.Y);
+            rubberBandSelection.Width = Math.Abs(mouseLocation.X - selectedPoint.X);
+            rubberBandSelection.Height = Math.Abs(mouseLocation.Y - selectedPoint.Y);
+        }
+
+        IEnumerable<Figure> notSelected;
+
+        private void MoveFigures(float dx, float dy, IEnumerable<Figure> figures)
+        {
+           
+            foreach (Figure f in figures)
             {
-                if (previewSelection != null)
+                f.Translate(dx, dy);
+                //try
+                //{
+                //    foreach(Figure fig in notSelected)
+                //    {
+                //       GeometryTools.IntersectionResult res=  GeometryTools.CAT_Intersects(fig.Path.PathPoints, f.Path.PathPoints,4);
+                //        if (res.intersects)
+                //        {
+                //            f.Translate(-curX, -curY);
+                //        }
+                //    }
+                   
+                //}
+                //catch(Exception ex)
+                //{
+                //    MessageBox.Show("fuck you " + ex.ToString());
+                //}
+            }
+            for(int i = 0, count = rotatePoints.Count();i<count;i++)
+            {
+                var point = rotatePoints[i];
+                point.X += dx;
+                point.Y += dy;
+                rotatePoints[i] = point;
+            }
+          
+            Refresh();
+        }
+
+
+        private void RotateFigures(PointF mouseLocation)
+        {
+
+            PointF vector = new PointF(mouseLocation.X - currentRotatePoint.X, currentRotatePoint.Y + rotationRadious - mouseLocation.Y);
+            if (Math.Abs(vector.X) > rotationRadious)
+            {
+                vector.X = rotationRadious * Math.Sign(vector.X);
+            }
+            if (Math.Abs(vector.Y) > rotationRadious)
+            {
+                vector.Y = rotationRadious * Math.Sign(vector.Y);
+            }
+            float dotProduct = vector.Y * rotationRadious;
+            float distance = (float)Math.Sqrt(Math.Pow(vector.X, 2) + Math.Pow(vector.Y, 2));
+            double radianAngle = Math.Acos(dotProduct / (distance * rotationRadious));
+            double angle = (180 / Math.PI) * radianAngle;
+
+            if (vector.X < 0)
+            {
+                angle = 360-angle;
+            }
+
+            bool angleSnapOn = (Control.ModifierKeys == Keys.Shift && snapAngle!=0);
+           
+            foreach (Figure f in selectedFigures)
+            {
+                if (angleSnapOn)
                 {
-                    if (Control.ModifierKeys != Keys.Control)
-                    {
-                        if(CurrentMode == Mode.ROTATE)
-                        {
-                            rotatePoints.Clear();
-                        }
-                        selectedFigures.Clear();
-                    }
-
-                    selectedFigures.Add(previewSelection);
-
-                    if (CurrentMode == Mode.ROTATE)
-                    {
-                       foreach(PointF cur in previewSelection.Path.PathPoints)
-                       {
-                            rotatePoints.Add(new RectangleF(cur.X - rotatePointsHalfSize,
-                                             cur.Y - rotatePointsHalfSize,
-                                             rotatePointsHalfSize * 2,
-                                             rotatePointsHalfSize * 2));
-                       }
-                       currentRotatePoint = previewSelection.BoundaryCenter;
-                       currentPoint = new RectangleF(currentRotatePoint.X - rotatePointsHalfSize,
-                                                    currentRotatePoint.Y - rotatePointsHalfSize,
-                                                    rotatePointsHalfSize * 2,
-                                                     rotatePointsHalfSize * 2);
-                        wheelBounds = new RectangleF(currentRotatePoint.X - rotateWheelRadius,
-                                                     currentRotatePoint.Y - rotateWheelRadius,
-                                                     rotateWheelRadius * 2,
-                                                     rotateWheelRadius * 2);
-                        foreach (Figure f in selectedFigures)
-                       {
-                            f.pivot = currentRotatePoint;
-                       }
-                    }
-                    selectedPoint = e.Location;
-                    operating = true;
-                    previewSelection = null;
-                    Invalidate();
+                    float previewAngle = f.RotationAngle + (float)(angle - f.RotationAngle);
+                    f.RotationAngle =(float)(Math.Round( previewAngle / snapAngle) * snapAngle);
                 }
                 else
                 {
-                    selectedFigures.Clear();
+                    f.Rotate((float)(angle - this.angle));
                 }
-                Invalidate();
+               
             }
-            else
-            {
-                selectedPoint = e.Location;
-                operating = true;
-            }
+            this.angle = angle;
+            //selectedPoint.X = mouseLocation.X;
+            //selectedPoint.Y = mouseLocation.Y;
+            Refresh();
+        }
 
-             Refresh();
+        private void initRotatePoints(Figure f)
+        {
+            foreach (PointF cur in f.Path.PathPoints)
+            {
+                rotatePoints.Add(new RectangleF(cur.X - rotatePointsHalfSize,
+                                 cur.Y - rotatePointsHalfSize,
+                                 rotatePointsHalfSize * 2,
+                                 rotatePointsHalfSize * 2));
+            }
+            rotatePoints.Add(new RectangleF(f.BoundaryCenter.X - rotatePointsHalfSize,
+                                 f.BoundaryCenter.Y - rotatePointsHalfSize,
+                                 rotatePointsHalfSize * 2,
+                                 rotatePointsHalfSize * 2));
+        }
+
+        private void initRSelection()
+        {
+            foreach(Figure f in selectedFigures)
+            {
+                initRotatePoints(f);
+            }
         }
 
         private void DesignerCanvas_MouseMove(object sender, MouseEventArgs e)
@@ -320,11 +313,8 @@ namespace Tangram.GraphicsElements
                 {
                     if (rubberSelectionStarted)
                     {
-                        rubberBandSelection.X = Math.Min(e.Location.X, selectedPoint.X);
-                        rubberBandSelection.Y = Math.Min(e.Location.Y, selectedPoint.Y);
-                        rubberBandSelection.Width = Math.Abs(e.Location.X - selectedPoint.X);
-                        rubberBandSelection.Height = Math.Abs(e.Location.Y - selectedPoint.Y);
-                        Refresh();
+                        CreateRubberBand(e.Location);
+                        UpdateRubberBand();
                     }
                     else
                     {
@@ -334,58 +324,65 @@ namespace Tangram.GraphicsElements
                 }
                 else
                 {
-                    PointF cur = new PointF();
-                    switch (CurrentMode)
+                    if (!rotationBegun)
                     {
-                         
-                        case Mode.MOVE:
-                           
-                            cur.X = e.Location.X - selectedPoint.X;
-                            cur.Y = e.Location.Y - selectedPoint.Y;
-                            foreach(Figure f in selectedFigures)
-                            {
-                                f.Translate(cur.X, cur.Y);
-                            }
-                            selectedPoint.X = e.Location.X;
-                            selectedPoint.Y = e.Location.Y;
-                            Refresh();
-                            break;
-                        case Mode.ROTATE:
-
-                            float cathet = Math.Abs(currentRotatePoint.Y - selectedPoint.Y);
-                            float hyp = GeometryTools.GetDistance(currentRotatePoint, selectedPoint);
-                            double angle = Math.Asin(cathet / hyp);
-                            cathet = Math.Abs(currentRotatePoint.Y - e.Location.Y);
-                            hyp = GeometryTools.GetDistance(currentRotatePoint, e.Location);
-                            double angle2 = Math.Asin(cathet / hyp);
-                            foreach (Figure f in selectedFigures)
-                            {
-                                f.Rotate((float)(angle-angle2));
-                            }
-                            //selectedPoint.X = e.Location.X;
-                            //selectedPoint.Y = e.Location.Y;
-                            Refresh();
-                            break;
+                        float curX = e.Location.X - selectedPoint.X;
+                        float curY = e.Location.Y - selectedPoint.Y;
+                        MoveFigures(curX,curY,selectedFigures);
+                        selectedPoint.X = e.Location.X;
+                        selectedPoint.Y = e.Location.Y;
                     }
+                    else
+                    {
+                        RotateFigures(e.Location);
+                    }
+                    //switch (CurrentMode)
+                    //{
+                         
+                    //    case Mode.MOVE:
+                    //        MoveFigures(e.Location);
+                    //        break;
+                    //    case Mode.ROTATE:
+                    //        RotateFigures(e.Location);
+                    //        break;
+                    //}
                 }
             }
             else
             {
-                var selected = figures.Except(selectedFigures).Where(f => f.Path.IsVisible(e.Location));
+                var rotate = rotatePoints.Where(p => p.Contains(e.Location));
 
-                if (selected.Count() != 0)
+                if (rotate.Count() != 0 && rotatePoints.Count()!=0)
                 {
-                    switch (CurrentMode)
-                    {
-                        case Mode.MOVE:
-                           this.Cursor = Cursors.SizeAll;
-                        break;
-                        case Mode.ROTATE:
-                            //this.Cursor = Cursors.
-                            break;
-                    }
-                   
-                    previewSelection = selected.First();
+                    this.Cursor = Cursors.Cross;
+                    readyToRotate = true;
+                    previewPoint = rotate.First();
+                    currentRotatePoint = new PointF(previewPoint.X + rotatePointsHalfSize, previewPoint.Y + rotatePointsHalfSize);
+                    Refresh();
+                    return;
+                }
+                else
+                {
+                    this.Cursor = Cursors.Default;
+                    readyToRotate = false;
+                }
+
+                if (previewSelection!=null && previewSelection.Path.IsVisible(e.Location) ||
+                     currentSelection != null && currentSelection.Path.IsVisible(e.Location))
+                {
+                    return;
+                }
+
+                var preview = figures.Except(selectedFigures).Where(f => f.Path.IsVisible(e.Location));
+                
+                if (preview.Count() != 0)
+                {
+                    Cursor = Cursors.SizeAll;
+                    previewSelection = preview.First();
+
+                    Refresh();
+                    preview = null;
+                    return;
                 }
                 else
                 {
@@ -393,44 +390,77 @@ namespace Tangram.GraphicsElements
                     previewSelection = null;
                 }
 
-                if(CurrentMode == Mode.ROTATE)
+                var selected = selectedFigures.Where(f => f.Path.IsVisible(e.Location));
+
+                
+                if (selected.Count() != 0)
                 {
-                    var previewPoints = rotatePoints.Where(p => p.Contains(e.Location));
-                    if (previewPoints.Count() != 0)
-                    {
-                        previewPoint = previewPoints.First();
-                        previewPointSelected = true;
-                    }
-                    else
-                    {
-                        previewPointSelected = false;
-                    }
-                    float distance = GeometryTools.GetDistance(currentRotatePoint, e.Location);
-                    if(distance>=rotateWheelSmallRadius && distance <= rotateWheelBigRadius)
-                    {
-                        onWheel = true;
-                    }
-                    else
-                    {
-                        onWheel = false;
-                    }
+                    this.Cursor = Cursors.SizeAll;
+                    currentSelection = selected.First();
+                    rotatePoints.Clear();
+                    initRotatePoints(currentSelection);
+                    readyToMove = true;
                 }
+                else
+                {
+                    this.Cursor = Cursors.Default;
+                    currentSelection = null;
+                    readyToMove = false;
+                }
+
                Refresh();
             }
-
-
-            
         }
+
+        
 
         private void DesignerCanvas_MouseUp(object sender, MouseEventArgs e)
         {
-            operating = false;
-            if (rubberSelectionStarted)
+            if (operating || rotationBegun)
             {
-                var selectedItems = figures.Where(f => f.Path.GetBounds().IntersectsWith(rubberBandSelection));
-                selectedFigures = selectedItems.Except(selectedFigures).ToList();
-                rubberSelectionStarted = false;
+                //if (rotationBegun)
+                //{
+                //    initRotatePoints(currentSelection);
+                //}
+                var selectionBox = selectedFigures.OrderBy(f => f.Path.GetBounds().X).ThenBy(f => f.Path.GetBounds().Y);
+                Point topLeft = Point.Ceiling(selectionBox.First().Path.PathPoints.OrderBy(p => p.X).ThenBy(p => p.Y).First());
+
+                Point translateVector = new Point(0, 0);
+
+                if (topLeft.X < 0)
+                {
+                    this.Width -= topLeft.X;
+                    translateVector.X = -topLeft.X;
+                }
+                if (topLeft.Y < 0)
+                {
+                    this.Height -= topLeft.Y;
+                    //this.Top += topLeft.Y;
+                    translateVector.Y = -topLeft.Y;
+                }
+
+                MoveFigures(translateVector.X, translateVector.Y, figures);
+
+                if (selectedFigures.Count >= 2)
+                {
+                    Point rightBottom = Point.Ceiling(selectionBox.Last().Path.PathPoints.OrderByDescending(p => p.X).ThenByDescending(p => p.Y).First());
+                    if (rightBottom.X > this.Width)
+                    {
+                        this.Width = rightBottom.X;
+                    }
+                    if (rightBottom.Y > this.Height)
+                    {
+                        this.Height = rightBottom.Y;
+                    }
+                }
             }
+
+            operating = false;
+
+            readyToMove = readyToRotate = false;
+            rubberSelectionStarted = false;
+            rotationBegun = false;
+            angle = 0;
             Refresh();
         }
 
@@ -439,68 +469,80 @@ namespace Tangram.GraphicsElements
         private void DesignerCanvas_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            SolidBrush k = new SolidBrush(Color.Blue);
-            Pen p = new Pen(k, 1);
+            SolidBrush brush = new SolidBrush(Color.Black);
+            Pen pen = new Pen(brush, 2);
 
+            
+            
+            pen.DashStyle = DashStyle.Solid;
             foreach (Figure figure in figures)
             {
-                k.Color = figure.FigureColor;
-                e.Graphics.FillPath(k, figure.Path);
+                brush.Color = figure.FigureColor;
+                e.Graphics.FillPath(brush, figure.Path);
             }
+            //pen = new Pen(new SolidBrush(Color.Black), 2);
 
-            p = new Pen(new SolidBrush(Color.Black), 2);
+            brush.Color = Color.Black;
+            pen.Brush = brush;
+            pen.Width = 2;
+
             foreach (Figure figure in selectedFigures)
             {
-
-                e.Graphics.DrawPath(p, figure.Path);
+                
+                e.Graphics.DrawPath(pen, figure.Path);
             }
 
             if (previewSelection != null)
             {
-                p.DashStyle = DashStyle.Dash;
-                e.Graphics.DrawPath(p, previewSelection.Path);
+                pen.DashStyle = DashStyle.Dash;
+                e.Graphics.DrawPath(pen, previewSelection.Path);
             }
 
             if (rubberSelectionStarted)
             {
-                p.DashStyle = DashStyle.Solid;
-                e.Graphics.DrawRectangle(p, Rectangle.Ceiling(rubberBandSelection));
+                pen.DashStyle = DashStyle.Solid;
+                e.Graphics.DrawRectangle(pen, Rectangle.Ceiling(rubberBandSelection));
                 
             }
 
-            if(CurrentMode == Mode.ROTATE)
-            {
-                p = new Pen(new SolidBrush(Color.Gray), 3);
-                foreach (RectangleF point in rotatePoints)
-                {
-                    e.Graphics.DrawEllipse(p, point);
-                }
-                p = new Pen(new SolidBrush(Color.OrangeRed), 3);
-                if (previewPointSelected)
-                {
-                    e.Graphics.DrawEllipse(p, previewPoint);
-                }
-                k = new SolidBrush(Color.OrangeRed);
+             brush.Color = Color.Gray;
+             pen.Brush = brush;
+             pen.Width =  3;
 
-                e.Graphics.FillEllipse(k, currentPoint);
-
-                if (onWheel)
+             foreach (RectangleF point in rotatePoints)
+             {
+                e.Graphics.DrawEllipse(pen, point);
+             }
+            brush.Color = Color.OrangeRed;
+             if (readyToRotate||rotationBegun)
+             {
+                 e.Graphics.FillEllipse(brush, new RectangleF(previewPoint.X-2,previewPoint.Y-2,previewPoint.Width+4,previewPoint.Height+4));
+                if (rotationBegun)
                 {
-                    p = new Pen(new SolidBrush(Color.Green), 4);
-                }
-                else
-                {
-                    p = new Pen(new SolidBrush(Color.Green), 2);
-                }
+                    brush.Color = Color.DarkSeaGreen;
+                    pen.Brush = brush;
+                    e.Graphics.DrawPie(pen, currentRotatePoint.X - rotationRadious,
+                                               currentRotatePoint.Y,
+                                               rotationRadious * 2,
+                                               rotationRadious * 2,
+                                               -90,
+                                               (float)angle);
 
-                e.Graphics.DrawEllipse(p, wheelBounds);
-                e.Graphics.DrawEllipse(p, new RectangleF(selectedPoint.X, selectedPoint.Y, 10, 10));
+                    brush.Color = Color.LawnGreen;
+                    //pen.Brush = brush;
+                    //pen.DashStyle = DashStyle.Dash;
+                    //e.Graphics.DrawEllipse(pen, currentRotatePoint.X - rotationRadious,
+                    //                           currentRotatePoint.Y,
+                    //                           rotationRadious * 2,
+                    //                           rotationRadious * 2);
+                   
+                    brush.Color = Color.DarkViolet;
+                    e.Graphics.DrawString(Math.Round(angle,2).ToString()+"", this.Font, brush, currentRotatePoint.X, currentRotatePoint.Y + rotationRadious);
+                }
             }
-            
-
-
-            k.Dispose();
-            p.Dispose();
+              
+            pen.Dispose();
+            brush.Dispose();
         }
 
     }

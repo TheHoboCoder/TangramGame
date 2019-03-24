@@ -35,6 +35,7 @@ namespace Tangram
             figureTypeCombo.Items.Add("Параллелограмм");
             figureTypeCombo.SelectedIndex = 0;
             designerCanvas1.GridEnabled = true;
+            designerCanvas1.SnapAngle = 45;
             designerCanvas1.CurrentMode = DesignerCanvas.Mode.ROTATE;
             KeyPreview = true;
         }
