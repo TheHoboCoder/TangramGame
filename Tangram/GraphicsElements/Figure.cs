@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Serialization;
 
 namespace Tangram.GraphicsElements
 {
+    [Serializable]
     abstract class Figure:IDisposable
     {
         protected void  Reset(PointF pos)
@@ -32,20 +34,7 @@ namespace Tangram.GraphicsElements
 
         protected  abstract void Init(GraphicsPath p);
 
-        private bool flippedVertically = false;
-        private bool flippedHorizontally = false;
-
-        //TODO
-        public void FlipVertically()
-        {
-            flippedVertically = !flippedVertically;
-        }
-
-        public void FlipHorizontally()
-        {
-            flippedHorizontally = !flippedHorizontally;
-        }
-
+        [DataMember]
         public Color FigureColor { get; set; }
         
         /// <summary>
@@ -63,6 +52,8 @@ namespace Tangram.GraphicsElements
         }
         // сама фигура
         private GraphicsPath path = new GraphicsPath();
+
+        [IgnoreDataMember]
         public GraphicsPath Path { get { return path; } }
         // матрица преобразований
         private Matrix transformationMatrix = new Matrix();
@@ -90,6 +81,7 @@ namespace Tangram.GraphicsElements
         /// <summary>
         /// Задает глобальное положение фигуры
         /// </summary>
+        [DataMember]
         public PointF Location
         {
             get
@@ -109,8 +101,10 @@ namespace Tangram.GraphicsElements
         /// <summary>
         /// Задает точку, относительно которой будет выполняться поворот
         /// </summary>
+        [DataMember]
         public PointF pivot { get; set; }
         //текущий угол поворота
+       
         private float rotationAngle = 0;
 
         /// <summary>
@@ -127,6 +121,7 @@ namespace Tangram.GraphicsElements
         /// <summary>
         /// Задает глобальный угол поворота
         /// </summary>
+        [DataMember]
         public float RotationAngle
         {
             get

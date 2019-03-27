@@ -423,10 +423,10 @@ namespace Tangram.GraphicsElements
                 //    initRotatePoints(currentSelection);
                 //}
                 var selectionBox = selectedFigures.OrderBy(f => f.Path.GetBounds().X).ThenBy(f => f.Path.GetBounds().Y);
-                Point topLeft = Point.Ceiling(selectionBox.First().Path.PathPoints.OrderBy(p => p.X).ThenBy(p => p.Y).First());
+                RectangleF bounds = selectedFigures.First().Path.GetBounds();
+                Point topLeft = Point.Ceiling(bounds.Location);
 
                 Point translateVector = new Point(0, 0);
-
                 if (topLeft.X < 0)
                 {
                     this.Width -= topLeft.X;
@@ -441,17 +441,22 @@ namespace Tangram.GraphicsElements
 
                 MoveFigures(translateVector.X, translateVector.Y, figures);
 
+                Point rightBottom = new Point();
+
                 if (selectedFigures.Count >= 2)
                 {
-                    Point rightBottom = Point.Ceiling(selectionBox.Last().Path.PathPoints.OrderByDescending(p => p.X).ThenByDescending(p => p.Y).First());
-                    if (rightBottom.X > this.Width)
-                    {
-                        this.Width = rightBottom.X;
-                    }
-                    if (rightBottom.Y > this.Height)
-                    {
-                        this.Height = rightBottom.Y;
-                    }
+                    bounds = selectedFigures.Last().Path.GetBounds();
+                   
+                }
+                rightBottom = Point.Ceiling(new PointF(bounds.X + bounds.Width, bounds.Y + bounds.Height));
+               
+                if (rightBottom.X > this.Width)
+                {
+                    this.Width = rightBottom.X;
+                }
+                if (rightBottom.Y > this.Height)
+                {
+                    this.Height = rightBottom.Y;
                 }
             }
 

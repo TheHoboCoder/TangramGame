@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Tangram.GraphicsElements
 {
+    [DataContract]
     class TangramFigure : Figure
     {
         //сторона прямоугольника, из которого состоят фигуры танграма
@@ -24,6 +26,7 @@ namespace Tangram.GraphicsElements
 
         bool created = false;
         private FigureTypes figureType;
+        [DataMember]
         public FigureTypes FigureType {
             get
             {
@@ -119,30 +122,7 @@ namespace Tangram.GraphicsElements
             }
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj.GetType() != this.GetType())
-                return false;
-
-            TangramFigure figure = (TangramFigure)obj;
-
-            if (figure.Path.PointCount == this.Path.PointCount)
-            {
-                for(int i = 0; i< (figure.Path.PointCount);++i)
-                {
-                    if(figure.Path.PathPoints[i].X != this.Path.PathPoints[i].X ||
-                       figure.Path.PathPoints[i].Y != this.Path.PathPoints[i].Y)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+       
 
     }
 }

@@ -33,8 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=8.0.13.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Database.cs" />
+    <Compile Include="Data\DataModels\FigureGroup.cs" />
+    <Compile Include="Data\DataModels\User.cs" />
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +63,7 @@
     </Compile>
     <Compile Include="GraphicsElements\Figure.cs" />
     <Compile Include="GraphicsElements\GeometryTools.cs" />
+    <Compile Include="GraphicsElements\TangramElement.cs" />
     <Compile Include="GraphicsElements\TangramFigure.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +72,36 @@
     </Compile>
     <Compile Include="TestForm3.Designer.cs">
       <DependentUpon>TestForm3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\ChildPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\ChildPicker.Designer.cs">
+      <DependentUpon>ChildPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\FigureViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\FigureViewer.Designer.cs">
+      <DependentUpon>FigureViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\UserEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\UserEdit.Designer.cs">
+      <DependentUpon>UserEdit.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
@@ -83,6 +120,21 @@
     </Compile>
     <EmbeddedResource Include="TestForm3.resx">
       <DependentUpon>TestForm3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\ChildPicker.resx">
+      <DependentUpon>ChildPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\FigureViewer.resx">
+      <DependentUpon>FigureViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\UserEdit.resx">
+      <DependentUpon>UserEdit.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
