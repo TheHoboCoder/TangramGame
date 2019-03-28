@@ -42,6 +42,7 @@
             this.RepassTB = new System.Windows.Forms.TextBox();
             this.LoginBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // famLabel
@@ -96,7 +97,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(29, 168);
+            this.label4.Location = new System.Drawing.Point(28, 197);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 16);
@@ -106,7 +107,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(28, 195);
+            this.label5.Location = new System.Drawing.Point(27, 217);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(92, 32);
@@ -139,7 +140,7 @@
             // 
             // PasswordTB
             // 
-            this.PasswordTB.Location = new System.Drawing.Point(123, 166);
+            this.PasswordTB.Location = new System.Drawing.Point(123, 197);
             this.PasswordTB.Margin = new System.Windows.Forms.Padding(2);
             this.PasswordTB.Name = "PasswordTB";
             this.PasswordTB.Size = new System.Drawing.Size(190, 23);
@@ -147,7 +148,7 @@
             // 
             // RepassTB
             // 
-            this.RepassTB.Location = new System.Drawing.Point(123, 195);
+            this.RepassTB.Location = new System.Drawing.Point(123, 226);
             this.RepassTB.Margin = new System.Windows.Forms.Padding(2);
             this.RepassTB.Name = "RepassTB";
             this.RepassTB.Size = new System.Drawing.Size(190, 23);
@@ -155,7 +156,7 @@
             // 
             // LoginBtn
             // 
-            this.LoginBtn.Location = new System.Drawing.Point(12, 243);
+            this.LoginBtn.Location = new System.Drawing.Point(12, 270);
             this.LoginBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LoginBtn.Name = "LoginBtn";
             this.LoginBtn.Size = new System.Drawing.Size(144, 38);
@@ -166,7 +167,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(184, 243);
+            this.button1.Location = new System.Drawing.Point(184, 270);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(144, 38);
@@ -175,11 +176,23 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(29, 160);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(199, 26);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Оставьте поля незаполненными,\r\nесли не хотите менять пароль";
+            // 
             // UserEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(340, 292);
+            this.ClientSize = new System.Drawing.Size(340, 319);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.LoginBtn);
             this.Controls.Add(this.RepassTB);
@@ -201,6 +214,7 @@
             this.MinimizeBox = false;
             this.Name = "UserEdit";
             this.Text = "Редактирование пользователя";
+            this.Load += new System.EventHandler(this.UserEdit_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -222,5 +236,6 @@
         private System.Windows.Forms.TextBox RepassTB;
         private System.Windows.Forms.Button LoginBtn;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label6;
     }
 }

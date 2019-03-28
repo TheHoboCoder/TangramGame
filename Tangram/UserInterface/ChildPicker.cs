@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tangram.Data;
 
 namespace Tangram.UserInterface
 {
@@ -15,6 +16,17 @@ namespace Tangram.UserInterface
         public ChildPicker()
         {
             InitializeComponent();
+        }
+
+        private void ChildPicker_Load(object sender, EventArgs e)
+        {
+            for(int i = 1; i <= Database.subGroupCount; i++)
+            {
+                subGroup.Items.Add(i + " подруппа");
+            }
+            subGroup.SelectedIndex = 0;
+
+
         }
     }
 }

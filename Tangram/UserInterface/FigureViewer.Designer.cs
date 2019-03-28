@@ -28,21 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FigureViewer));
             this.GroupList = new System.Windows.Forms.ListBox();
             this.figureView = new System.Windows.Forms.ListView();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.groupsControl = new System.Windows.Forms.ToolStrip();
+            this.AddGroup = new System.Windows.Forms.ToolStripButton();
+            this.EditGroup = new System.Windows.Forms.ToolStripButton();
+            this.DeleteGroup = new System.Windows.Forms.ToolStripButton();
+            this.figuresControl = new System.Windows.Forms.ToolStrip();
+            this.AddFigure = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip1.SuspendLayout();
+            this.groupsControl.SuspendLayout();
+            this.figuresControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // GroupList
             // 
             this.GroupList.FormattingEnabled = true;
             this.GroupList.ItemHeight = 14;
-            this.GroupList.Location = new System.Drawing.Point(17, 94);
+            this.GroupList.Location = new System.Drawing.Point(17, 76);
             this.GroupList.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.GroupList.Name = "GroupList";
             this.GroupList.Size = new System.Drawing.Size(183, 256);
@@ -50,67 +54,112 @@
             // 
             // figureView
             // 
-            this.figureView.Location = new System.Drawing.Point(208, 114);
+            this.figureView.Location = new System.Drawing.Point(208, 76);
             this.figureView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.figureView.Name = "figureView";
-            this.figureView.Size = new System.Drawing.Size(559, 236);
+            this.figureView.Size = new System.Drawing.Size(559, 256);
             this.figureView.TabIndex = 1;
             this.figureView.UseCompatibleStateImageBehavior = false;
             // 
-            // toolStrip1
+            // groupsControl
             // 
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
+            this.groupsControl.Dock = System.Windows.Forms.DockStyle.None;
+            this.groupsControl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddGroup,
+            this.EditGroup,
+            this.DeleteGroup});
+            this.groupsControl.Location = new System.Drawing.Point(17, 48);
+            this.groupsControl.Name = "groupsControl";
+            this.groupsControl.Size = new System.Drawing.Size(81, 25);
+            this.groupsControl.TabIndex = 18;
+            this.groupsControl.Text = "groupControlPanael";
+            // 
+            // AddGroup
+            // 
+            this.AddGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AddGroup.Image = global::Tangram.Properties.Resources.plus_green;
+            this.AddGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AddGroup.Name = "AddGroup";
+            this.AddGroup.Size = new System.Drawing.Size(23, 22);
+            this.AddGroup.Text = "Добавить";
+            this.AddGroup.ToolTipText = "Добавить группу";
+            // 
+            // EditGroup
+            // 
+            this.EditGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EditGroup.Image = global::Tangram.Properties.Resources.pencil;
+            this.EditGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditGroup.Name = "EditGroup";
+            this.EditGroup.Size = new System.Drawing.Size(23, 22);
+            this.EditGroup.Text = "Редактировать группу";
+            // 
+            // DeleteGroup
+            // 
+            this.DeleteGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.DeleteGroup.Image = global::Tangram.Properties.Resources.delete;
+            this.DeleteGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.DeleteGroup.Name = "DeleteGroup";
+            this.DeleteGroup.Size = new System.Drawing.Size(23, 22);
+            this.DeleteGroup.Text = "Удалить группу";
+            // 
+            // figuresControl
+            // 
+            this.figuresControl.Dock = System.Windows.Forms.DockStyle.None;
+            this.figuresControl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddFigure,
             this.toolStripButton2,
             this.toolStripButton3});
-            this.toolStrip1.Location = new System.Drawing.Point(17, 66);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(81, 25);
-            this.toolStrip1.TabIndex = 18;
-            this.toolStrip1.Text = "groupControlPanael";
+            this.figuresControl.Location = new System.Drawing.Point(208, 48);
+            this.figuresControl.Name = "figuresControl";
+            this.figuresControl.Size = new System.Drawing.Size(81, 25);
+            this.figuresControl.TabIndex = 19;
+            this.figuresControl.Text = "groupControlPanael";
             // 
-            // toolStripButton1
+            // AddFigure
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "AddGroupBtn";
+            this.AddFigure.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AddFigure.Image = global::Tangram.Properties.Resources.plus_green;
+            this.AddFigure.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AddFigure.Name = "AddFigure";
+            this.AddFigure.Size = new System.Drawing.Size(23, 22);
+            this.AddFigure.Text = "Добавить фигуру";
+            this.AddFigure.ToolTipText = "Добавить фигуру";
             // 
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.Image = global::Tangram.Properties.Resources.pencil;
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "ChangeGroup";
+            this.toolStripButton2.Text = "Редактировать фигуру";
             // 
             // toolStripButton3
             // 
             this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+            this.toolStripButton3.Image = global::Tangram.Properties.Resources.delete;
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton3.Text = "deleteGroup";
+            this.toolStripButton3.Text = "Удалить фигуру";
             // 
             // FigureViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(841, 429);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.figuresControl);
+            this.Controls.Add(this.groupsControl);
             this.Controls.Add(this.figureView);
             this.Controls.Add(this.GroupList);
             this.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "FigureViewer";
             this.Text = "FigureViewer";
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.groupsControl.ResumeLayout(false);
+            this.groupsControl.PerformLayout();
+            this.figuresControl.ResumeLayout(false);
+            this.figuresControl.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,8 +169,12 @@
 
         private System.Windows.Forms.ListBox GroupList;
         private System.Windows.Forms.ListView figureView;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStrip groupsControl;
+        private System.Windows.Forms.ToolStripButton AddGroup;
+        private System.Windows.Forms.ToolStripButton EditGroup;
+        private System.Windows.Forms.ToolStripButton DeleteGroup;
+        private System.Windows.Forms.ToolStrip figuresControl;
+        private System.Windows.Forms.ToolStripButton AddFigure;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
     }

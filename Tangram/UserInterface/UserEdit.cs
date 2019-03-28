@@ -79,5 +79,13 @@ namespace Tangram.UserInterface
                 this.Close();
             }
         }
+
+        private void UserEdit_Load(object sender, EventArgs e)
+        {
+            FamTB.Text = Database.currentUser.Fam;
+            NameTB.Text = Database.currentUser.Name;
+            OcthTB.Text = Database.currentUser.Otch;
+            PhoneTB.Text = Database.currentUser.Phone;
+        }
     }
 }
