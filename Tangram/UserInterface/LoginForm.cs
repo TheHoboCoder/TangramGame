@@ -23,14 +23,14 @@ namespace Tangram.UserInterface
         {
             if(LoginBtn.Text=="" || passwordTB.Text == "")
             {
-                MessageBox.Show("Ошибка", "Заполните поля", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show( "Заполните поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                switch (Database.Auth(LoginBtn.Text.Trim(), passwordTB.Text.Trim()))
+                switch (Database.Auth(LoginTB.Text.Trim(), passwordTB.Text.Trim()))
                 {
                     case Database.AuthResult.AUTH_FAIL:
-                        MessageBox.Show("Ошибка", "Заполните поля", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show( "Неверный логин и/или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     case Database.AuthResult.AUTH_PASS:
                         switch (Database.currentUser.UserType)
@@ -55,6 +55,11 @@ namespace Tangram.UserInterface
         private void LoginForm_Load(object sender, EventArgs e)
         {
             Database.Open();
+        }
+
+        private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Database.Close();
         }
     }
 }

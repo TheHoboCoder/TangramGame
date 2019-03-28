@@ -66,6 +66,7 @@
             this.subGroup.Name = "subGroup";
             this.subGroup.Size = new System.Drawing.Size(163, 26);
             this.subGroup.TabIndex = 1;
+            this.subGroup.DropDownClosed += new System.EventHandler(this.subGroup_DropDownClosed);
             // 
             // OKBtn
             // 
@@ -77,6 +78,7 @@
             this.OKBtn.TabIndex = 14;
             this.OKBtn.Text = "Продолжить";
             this.OKBtn.UseVisualStyleBackColor = true;
+            this.OKBtn.Click += new System.EventHandler(this.OKBtn_Click);
             // 
             // cancelBtn
             // 
@@ -88,6 +90,7 @@
             this.cancelBtn.TabIndex = 15;
             this.cancelBtn.Text = "Отмена";
             this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // ChildPicker
             // 
@@ -105,6 +108,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ChildPicker";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Выберите список детей для занятия";
             this.Load += new System.EventHandler(this.ChildPicker_Load);
             this.ResumeLayout(false);

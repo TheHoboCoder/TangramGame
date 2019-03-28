@@ -38,6 +38,8 @@
             this.AddFigure = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupsControl.SuspendLayout();
             this.figuresControl.SuspendLayout();
             this.SuspendLayout();
@@ -46,18 +48,18 @@
             // 
             this.GroupList.FormattingEnabled = true;
             this.GroupList.ItemHeight = 14;
-            this.GroupList.Location = new System.Drawing.Point(17, 76);
+            this.GroupList.Location = new System.Drawing.Point(13, 37);
             this.GroupList.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.GroupList.Name = "GroupList";
-            this.GroupList.Size = new System.Drawing.Size(183, 256);
+            this.GroupList.Size = new System.Drawing.Size(183, 158);
             this.GroupList.TabIndex = 0;
             // 
             // figureView
             // 
-            this.figureView.Location = new System.Drawing.Point(208, 76);
+            this.figureView.Location = new System.Drawing.Point(204, 37);
             this.figureView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.figureView.Name = "figureView";
-            this.figureView.Size = new System.Drawing.Size(559, 256);
+            this.figureView.Size = new System.Drawing.Size(452, 270);
             this.figureView.TabIndex = 1;
             this.figureView.UseCompatibleStateImageBehavior = false;
             // 
@@ -68,7 +70,7 @@
             this.AddGroup,
             this.EditGroup,
             this.DeleteGroup});
-            this.groupsControl.Location = new System.Drawing.Point(17, 48);
+            this.groupsControl.Location = new System.Drawing.Point(17, 9);
             this.groupsControl.Name = "groupsControl";
             this.groupsControl.Size = new System.Drawing.Size(81, 25);
             this.groupsControl.TabIndex = 18;
@@ -109,7 +111,7 @@
             this.AddFigure,
             this.toolStripButton2,
             this.toolStripButton3});
-            this.figuresControl.Location = new System.Drawing.Point(208, 48);
+            this.figuresControl.Location = new System.Drawing.Point(208, 9);
             this.figuresControl.Name = "figuresControl";
             this.figuresControl.Size = new System.Drawing.Size(81, 25);
             this.figuresControl.TabIndex = 19;
@@ -143,11 +145,31 @@
             this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton3.Text = "Удалить фигуру";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(363, 11);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 22);
+            this.comboBox1.TabIndex = 20;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(309, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(48, 14);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "Отбор";
+            // 
             // FigureViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(841, 429);
+            this.ClientSize = new System.Drawing.Size(669, 336);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.figuresControl);
             this.Controls.Add(this.groupsControl);
             this.Controls.Add(this.figureView);
@@ -155,7 +177,8 @@
             this.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "FigureViewer";
-            this.Text = "FigureViewer";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Просмотр фигур";
             this.groupsControl.ResumeLayout(false);
             this.groupsControl.PerformLayout();
             this.figuresControl.ResumeLayout(false);
@@ -177,5 +200,7 @@
         private System.Windows.Forms.ToolStripButton AddFigure;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label1;
     }
 }

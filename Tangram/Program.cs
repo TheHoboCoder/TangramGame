@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tangram.UserInterface;
 
 namespace Tangram
 {
@@ -16,7 +17,7 @@ namespace Tangram
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TestForm3());
+            Application.Run(new LoginForm());
         }
     }
 }

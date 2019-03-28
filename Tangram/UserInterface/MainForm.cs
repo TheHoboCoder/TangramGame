@@ -33,7 +33,11 @@ namespace Tangram.UserInterface
         private void StartGameBtn_Click(object sender, EventArgs e)
         {
             ChildPicker picker = new ChildPicker();
-            picker.ShowDialog();
+            DialogResult res  = picker.ShowDialog();
+            if(res == DialogResult.OK)
+            {
+                this.Close();
+            }
         }
     }
 }

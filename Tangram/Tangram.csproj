@@ -79,6 +79,18 @@
     <Compile Include="UserInterface\ChildPicker.Designer.cs">
       <DependentUpon>ChildPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\ClassControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\ClassControl.Designer.cs">
+      <DependentUpon>ClassControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\FigureGroupsEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\FigureGroupsEdit.Designer.cs">
+      <DependentUpon>FigureGroupsEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\FigureViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +108,12 @@
     </Compile>
     <Compile Include="UserInterface\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Statistics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\Statistics.Designer.cs">
+      <DependentUpon>Statistics.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\UserEdit.cs">
       <SubType>Form</SubType>
@@ -125,6 +143,12 @@
     <EmbeddedResource Include="UserInterface\ChildPicker.resx">
       <DependentUpon>ChildPicker.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\ClassControl.resx">
+      <DependentUpon>ClassControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\FigureGroupsEdit.resx">
+      <DependentUpon>FigureGroupsEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\FigureViewer.resx">
       <DependentUpon>FigureViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -133,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\Statistics.resx">
+      <DependentUpon>Statistics.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\UserEdit.resx">
       <DependentUpon>UserEdit.cs</DependentUpon>

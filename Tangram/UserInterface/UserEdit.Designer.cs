@@ -213,6 +213,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UserEdit";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Редактирование пользователя";
             this.Load += new System.EventHandler(this.UserEdit_Load);
             this.ResumeLayout(false);
