@@ -7,13 +7,13 @@ using Tangram.GraphicsElements;
 
 namespace Tangram.Data.DataModels
 {
-    class FigureGroup
+    class Figure
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Comment { get; set; }
+        public string FigureName { get; set; }
+        public int User_id { get; set; }
+        public int Group_id { get; set; }
 
-        //public List<TangramElement> tangramElements = new List<TangramElement>();
-
+        public TangramElement TangramElement {get; set;}
     }
 }

@@ -136,6 +136,7 @@
             this.Logout.Size = new System.Drawing.Size(44, 31);
             this.Logout.TabIndex = 3;
             this.Logout.UseVisualStyleBackColor = false;
+            this.Logout.Click += new System.EventHandler(this.Logout_Click);
             // 
             // FiguresBtn
             // 
@@ -153,6 +154,7 @@
             this.FiguresBtn.TabIndex = 0;
             this.FiguresBtn.Text = "Фигуры";
             this.FiguresBtn.UseVisualStyleBackColor = false;
+            this.FiguresBtn.Click += new System.EventHandler(this.FiguresBtn_Click);
             // 
             // StatisticsBtn
             // 
@@ -200,7 +202,9 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.MinimumSize = new System.Drawing.Size(655, 384);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Главная";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.RootLayout.ResumeLayout(false);
             this.UserPanel.ResumeLayout(false);

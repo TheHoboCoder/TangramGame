@@ -24,6 +24,7 @@ namespace Tangram.Data.DataModels
         public string Fam { get; private set; }
         public string Otch { get; private set; }
         public string Phone { get; private set; }
+        public string Password { get; private set; }
 
         public static string getHash(string password)
         {
@@ -40,7 +41,7 @@ namespace Tangram.Data.DataModels
             }
         }
 
-        public User(int Id, UserTypes userType, string login, string name, string fam, string otch,string phone)
+        public User(int Id, UserTypes userType, string login, string name, string fam, string otch,string phone, string password)
         {
             this.Id = Id;
             UserType = userType;
@@ -49,6 +50,7 @@ namespace Tangram.Data.DataModels
             Fam = fam;
             Otch = otch;
             Phone = phone;
+            Password = password;
         }
 
     }

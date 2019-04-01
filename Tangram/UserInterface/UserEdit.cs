@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tangram.Data;
+using Tangram.Data.DataModels;
 
 namespace Tangram.UserInterface
 {
@@ -38,11 +39,28 @@ namespace Tangram.UserInterface
                     }
                     else
                     {
-                        if(!Database.ChangeCurrentUser(FamTB.Text.Trim(),
-                                                  NameTB.Text.Trim(),
-                                                  OcthTB.Text.Trim(),
-                                                  PhoneTB.Text.Trim(),
-                                                  PasswordTB.Text.Trim()))
+                        //if(!Database.ChangeCurrentUser(FamTB.Text.Trim(),
+                        //                          NameTB.Text.Trim(),
+                        //                          OcthTB.Text.Trim(),
+                        //                          PhoneTB.Text.Trim(),
+                        //                          PasswordTB.Text.Trim()))
+                        //{
+                        //    MessageBox.Show("Ошибка", "Ошибка базы данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //}
+                        //else
+                        //{
+                        //    this.Close();
+                        //}
+
+                        User current = Database.userRepository.currentUser;
+                        if (!Database.userRepository.Update(new User( current.Id,
+                                                                     current.UserType,
+                                                                    current.Login,
+                                                                    NameTB.Text.Trim(),
+                                                                    FamTB.Text.Trim(),
+                                                                    OcthTB.Text.Trim(),
+                                                                    PhoneTB.Text.Trim(),
+                                                                    User.getHash(PasswordTB.Text.Trim()))))
                         {
                             MessageBox.Show("Ошибка", "Ошибка базы данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
@@ -55,11 +73,27 @@ namespace Tangram.UserInterface
                 }
                 else
                 {
-                    if(!Database.ChangeCurrentUser(FamTB.Text.Trim(),
-                                                  NameTB.Text.Trim(),
-                                                  OcthTB.Text.Trim(),
-                                                  PhoneTB.Text.Trim()
-                                                   ))
+                    //if(!Database.ChangeCurrentUser(FamTB.Text.Trim(),
+                    //                              NameTB.Text.Trim(),
+                    //                              OcthTB.Text.Trim(),
+                    //                              PhoneTB.Text.Trim()
+                    //                               ))
+                    //{
+                    //    MessageBox.Show("Ошибка", "Ошибка базы данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //}
+                    //else
+                    //{
+                    //    this.Close();
+                    //}
+                    User current = Database.userRepository.currentUser;
+                    if (!Database.userRepository.Update(new User(current.Id,
+                                                                 current.UserType,
+                                                                current.Login,
+                                                                NameTB.Text.Trim(),
+                                                                FamTB.Text.Trim(),
+                                                                OcthTB.Text.Trim(),
+                                                                PhoneTB.Text.Trim(),
+                                                                current.Password)))
                     {
                         MessageBox.Show("Ошибка", "Ошибка базы данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -82,10 +116,10 @@ namespace Tangram.UserInterface
 
         private void UserEdit_Load(object sender, EventArgs e)
         {
-            FamTB.Text = Database.currentUser.Fam;
-            NameTB.Text = Database.currentUser.Name;
-            OcthTB.Text = Database.currentUser.Otch;
-            PhoneTB.Text = Database.currentUser.Phone;
+            FamTB.Text = Database.userRepository.currentUser.Fam;
+            NameTB.Text = Database.userRepository.currentUser.Name;
+            OcthTB.Text = Database.userRepository.currentUser.Otch;
+            PhoneTB.Text = Database.userRepository.currentUser.Phone;
         }
     }
 }

@@ -113,7 +113,7 @@
             this.toolStripButton3});
             this.figuresControl.Location = new System.Drawing.Point(208, 9);
             this.figuresControl.Name = "figuresControl";
-            this.figuresControl.Size = new System.Drawing.Size(81, 25);
+            this.figuresControl.Size = new System.Drawing.Size(112, 25);
             this.figuresControl.TabIndex = 19;
             this.figuresControl.Text = "groupControlPanael";
             // 
@@ -126,6 +126,7 @@
             this.AddFigure.Size = new System.Drawing.Size(23, 22);
             this.AddFigure.Text = "Добавить фигуру";
             this.AddFigure.ToolTipText = "Добавить фигуру";
+            this.AddFigure.Click += new System.EventHandler(this.AddFigure_Click);
             // 
             // toolStripButton2
             // 

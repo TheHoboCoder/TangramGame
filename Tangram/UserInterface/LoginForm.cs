@@ -14,37 +14,63 @@ namespace Tangram.UserInterface
 {
     public partial class LoginForm : Form
     {
-        public LoginForm()
+        private bool reLog = false;
+
+        public LoginForm(bool reLog)
         {
             InitializeComponent();
+            this.reLog = reLog;
         }
+
 
         private void LoginBtn_Click(object sender, EventArgs e)
         {
             if(LoginBtn.Text=="" || passwordTB.Text == "")
             {
-                MessageBox.Show( "Заполните поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Заполните поля","Ошибка",  MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                switch (Database.Auth(LoginTB.Text.Trim(), passwordTB.Text.Trim()))
+                switch (Database.userRepository.Auth(LoginTB.Text.Trim(), passwordTB.Text.Trim()))
                 {
-                    case Database.AuthResult.AUTH_FAIL:
+                    case UserRepository.AuthResult.AUTH_FAIL:
                         MessageBox.Show( "Неверный логин и/или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
-                    case Database.AuthResult.AUTH_PASS:
-                        switch (Database.currentUser.UserType)
+                    case UserRepository.AuthResult.AUTH_PASS:
+                        Database.Init(Database.userRepository.currentUser.UserType);
+                        switch (Database.userRepository.currentUser.UserType)
                         {
                             case (User.UserTypes.VOSP):
                                 MainForm form = new MainForm();
                                 form.Show();
-                                this.Hide();
+
+                                if (!reLog)
+                                {
+                                    Hide();
+                                }
+                                else
+                                {
+                                    Close();
+                                }
+                               
                                 break;
                             case (User.UserTypes.MET):
+                                AdministratorPanel panel = new AdministratorPanel();
+                                panel.Show();
+                                if (!reLog)
+                                {
+                                    Hide();
+                                }
+                                else
+                                {
+                                    Close();
+                                }
                                 break;
                         }
+
+                        DialogResult = DialogResult.OK;
                         break;
-                    case Database.AuthResult.EXCEPTION:
+                    case UserRepository.AuthResult.EXCEPTION:
                         MessageBox.Show("Ошибка", "Ошибка базы данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
 
@@ -54,12 +80,20 @@ namespace Tangram.UserInterface
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            Database.Open();
+            if (!reLog)
+            {
+                Database.Open();
+            }
+            
         }
 
         private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Database.Close();
+            if (!reLog)
+            {
+                Database.Close();
+            }
+              
         }
     }
 }

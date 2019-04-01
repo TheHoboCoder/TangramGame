@@ -70,9 +70,9 @@
             this.famLabel.Location = new System.Drawing.Point(23, 22);
             this.famLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.famLabel.Name = "famLabel";
-            this.famLabel.Size = new System.Drawing.Size(125, 16);
+            this.famLabel.Size = new System.Drawing.Size(124, 16);
             this.famLabel.TabIndex = 10;
-            this.famLabel.Text = "Название уровня";
+            this.famLabel.Text = "Название группы";
             // 
             // button1
             // 

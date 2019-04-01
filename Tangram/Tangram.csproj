@@ -49,9 +49,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ChildrenRepository.cs" />
     <Compile Include="Data\Database.cs" />
+    <Compile Include="Data\DatabaseHelper.cs" />
+    <Compile Include="Data\DataModels\Child.cs" />
+    <Compile Include="Data\DataModels\ClassInfo.cs" />
+    <Compile Include="Data\DataModels\Figure.cs" />
     <Compile Include="Data\DataModels\FigureGroup.cs" />
+    <Compile Include="Data\DataModels\Garden_groups.cs" />
+    <Compile Include="Data\DataModels\Group_types.cs" />
+    <Compile Include="Data\DataModels\Result.cs" />
+    <Compile Include="Data\GroupHelper.cs" />
+    <Compile Include="Data\GroupsRepository.cs" />
+    <Compile Include="Data\GroupTypeRepository.cs" />
+    <Compile Include="Data\TableInfoHolder.cs" />
     <Compile Include="Data\DataModels\User.cs" />
+    <Compile Include="Data\Repository.cs" />
+    <Compile Include="Data\TableInfo.cs" />
+    <Compile Include="Data\UserRepository.cs" />
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +87,12 @@
     </Compile>
     <Compile Include="TestForm3.Designer.cs">
       <DependentUpon>TestForm3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\AdministratorPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\AdministratorPanel.Designer.cs">
+      <DependentUpon>AdministratorPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\ChildPicker.cs">
       <SubType>Form</SubType>
@@ -97,6 +118,12 @@
     <Compile Include="UserInterface\FigureViewer.Designer.cs">
       <DependentUpon>FigureViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\GroupChildControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\GroupChildControl.Designer.cs">
+      <DependentUpon>GroupChildControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +148,18 @@
     <Compile Include="UserInterface\UserEdit.Designer.cs">
       <DependentUpon>UserEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\UserTableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\UserTableControl.Designer.cs">
+      <DependentUpon>UserTableControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\UserTypesEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\UserTypesEdit.Designer.cs">
+      <DependentUpon>UserTypesEdit.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +179,9 @@
     <EmbeddedResource Include="TestForm3.resx">
       <DependentUpon>TestForm3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\AdministratorPanel.resx">
+      <DependentUpon>AdministratorPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\ChildPicker.resx">
       <DependentUpon>ChildPicker.cs</DependentUpon>
     </EmbeddedResource>
@@ -152,6 +194,9 @@
     <EmbeddedResource Include="UserInterface\FigureViewer.resx">
       <DependentUpon>FigureViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\GroupChildControl.resx">
+      <DependentUpon>GroupChildControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,6 +208,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\UserEdit.resx">
       <DependentUpon>UserEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\UserTableControl.resx">
+      <DependentUpon>UserTableControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\UserTypesEdit.resx">
+      <DependentUpon>UserTypesEdit.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

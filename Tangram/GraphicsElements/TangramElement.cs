@@ -16,15 +16,32 @@ namespace Tangram.GraphicsElements
         [DataMember]
         public Size FigureSize { get; set; }
 
+        private List<TangramFigure> figures;
         [DataMember]
-        public List<TangramFigure> Figures { get; set; }
+        public List<TangramFigure> Figures
+        {
+            get
+            {
+                return figures;
+            }
+            set
+            {
+                figures = value;
+                image = ToBitmap();
 
-        [IgnoreDataMember]
-        public int Id { get; set; }
-        [IgnoreDataMember]
-        public int Group_id { get; set; }
-        [IgnoreDataMember]
-        public int User_id { get; set; }
+            }
+        }
+
+
+
+        private Bitmap image;
+        public Bitmap figureImage {
+            get
+            {
+                return image;
+            }
+        }
+
 
         public TangramElement(List<TangramFigure> figures,Size size)
         {
@@ -33,9 +50,6 @@ namespace Tangram.GraphicsElements
         }
 
         public TangramElement() { }
-
-
-
 
         public static byte[] Serialize(TangramElement el)
         {
@@ -56,7 +70,7 @@ namespace Tangram.GraphicsElements
             }
         }
 
-        public Bitmap ToBitmap()
+        private Bitmap ToBitmap()
         {
             Bitmap bitmap = new Bitmap(FigureSize.Width, FigureSize.Height);
             using (Graphics gr = Graphics.FromImage(bitmap))

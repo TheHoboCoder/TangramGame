@@ -21,5 +21,11 @@ namespace Tangram.UserInterface
         {
 
         }
+
+        private void AddFigure_Click(object sender, EventArgs e)
+        {
+            TestForm3 form3 = new TestForm3();
+            form3.Show();
+        }
     }
 }
