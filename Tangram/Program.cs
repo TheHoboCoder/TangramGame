@@ -17,7 +17,9 @@ namespace Tangram
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm(false));
+            Application.Run(new FigureDesigner());
+            //Application.Run(new TestForm3());
+            //Application.Run(new LoginForm(false));
         }
     }
 }

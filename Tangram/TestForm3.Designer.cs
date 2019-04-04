@@ -35,8 +35,8 @@
             this.colorButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.designerCanvas1 = new Tangram.GraphicsElements.DesignerCanvas();
+            this.figureToolBox1 = new Tangram.GraphicsElements.FigureToolBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.designerCanvas1)).BeginInit();
             this.SuspendLayout();
             // 
             // AddButton
@@ -96,19 +96,30 @@
             this.designerCanvas1.Size = new System.Drawing.Size(574, 346);
             this.designerCanvas1.SnapAngle = 0F;
             this.designerCanvas1.TabIndex = 0;
-            this.designerCanvas1.TabStop = false;
+            // 
+            // figureToolBox1
+            // 
+            this.figureToolBox1.AutoScroll = true;
+            this.figureToolBox1.BackColor = System.Drawing.Color.Transparent;
+            this.figureToolBox1.Location = new System.Drawing.Point(624, 215);
+            this.figureToolBox1.Name = "figureToolBox1";
+            this.figureToolBox1.Padding = new System.Windows.Forms.Padding(10);
+            this.figureToolBox1.Size = new System.Drawing.Size(309, 223);
+            this.figureToolBox1.TabIndex = 6;
             // 
             // TestForm3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(886, 450);
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ClientSize = new System.Drawing.Size(961, 450);
+            this.Controls.Add(this.figureToolBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.colorButton);
             this.Controls.Add(this.colorPreview);
             this.Controls.Add(this.figureTypeCombo);
             this.Controls.Add(this.AddButton);
+            this.DoubleBuffered = true;
             this.Name = "TestForm3";
             this.Text = "TestForm3";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TestForm3_FormClosed);
@@ -117,7 +128,6 @@
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TestForm3_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TestForm3_KeyUp);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.designerCanvas1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -131,5 +141,6 @@
         private System.Windows.Forms.Panel colorPreview;
         private System.Windows.Forms.Button colorButton;
         private System.Windows.Forms.Panel panel1;
+        private GraphicsElements.FigureToolBox figureToolBox1;
     }
 }

@@ -67,18 +67,18 @@
     <Compile Include="Data\Repository.cs" />
     <Compile Include="Data\TableInfo.cs" />
     <Compile Include="Data\UserRepository.cs" />
-    <Compile Include="Form2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </Compile>
     <Compile Include="GraphicsElements\ColorTools.cs" />
     <Compile Include="GraphicsElements\DesignerCanvas.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GraphicsElements\Figure.cs" />
     <Compile Include="GraphicsElements\GeometryTools.cs" />
+    <Compile Include="GraphicsElements\FigureToolBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GraphicsElements\FigureToolBox.Designer.cs">
+      <DependentUpon>FigureToolBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="GraphicsElements\TangramElement.cs" />
     <Compile Include="GraphicsElements\TangramFigure.cs" />
     <Compile Include="Program.cs" />
@@ -106,6 +106,12 @@
     </Compile>
     <Compile Include="UserInterface\ClassControl.Designer.cs">
       <DependentUpon>ClassControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\FigureDesigner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\FigureDesigner.Designer.cs">
+      <DependentUpon>FigureDesigner.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\FigureGroupsEdit.cs">
       <SubType>Form</SubType>
@@ -161,11 +167,11 @@
     <Compile Include="UserInterface\UserTypesEdit.Designer.cs">
       <DependentUpon>UserTypesEdit.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GraphicsElements\DesignerCanvas.resx">
       <DependentUpon>DesignerCanvas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GraphicsElements\FigureToolBox.resx">
+      <DependentUpon>FigureToolBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -188,6 +194,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\ClassControl.resx">
       <DependentUpon>ClassControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\FigureDesigner.resx">
+      <DependentUpon>FigureDesigner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\FigureGroupsEdit.resx">
       <DependentUpon>FigureGroupsEdit.cs</DependentUpon>

@@ -112,17 +112,20 @@ namespace Tangram.GraphicsElements
                     float gap = (float)(Math.Cos(angle) * smallSide);
 
                     p.StartFigure();
+                    p.AddLine(0, gap, gap, 0);
                     p.AddLine(gap, 0, side+gap, 0);
                     p.AddLine(side + gap, 0, side, gap);
                     //p.AddLine(side + gap, 0, side, gap);
                     p.AddLine(side, gap, 0, gap);
-                    p.AddLine(0, gap, gap, 0);
+                   
                     p.CloseFigure();
                     break;
             }
         }
 
-       
-
+        public override Figure Clone()
+        {
+            return new TangramFigure(this.figureType, this.FigureColor, this.Location, pivot, RotationAngle);
+        }
     }
 }

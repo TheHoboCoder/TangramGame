@@ -28,6 +28,12 @@ namespace Tangram
 
         private void TestForm3_Load(object sender, EventArgs e)
         {
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.BIG_TRIANGLE, Color.Yellow, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.MID_TRIANGLE, Color.Violet, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.SMALL_TRIANGLE, Color.Green, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.RECT, Color.Red, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.Blue, new PointF(0, 0)));
+
             figureTypeCombo.Items.Add("Большой треугольник");
             figureTypeCombo.Items.Add("Средний треугольник");
             figureTypeCombo.Items.Add("Маленький треугольник");

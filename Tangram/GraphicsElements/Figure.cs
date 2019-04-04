@@ -10,8 +10,10 @@ using System.Runtime.Serialization;
 namespace Tangram.GraphicsElements
 {
     [Serializable]
-    abstract class Figure:IDisposable
+    abstract public class Figure:IDisposable
     {
+        private PointF[] location = new PointF[] { new PointF(0, 0) };
+
         protected void  Reset(PointF pos)
         {
             this.rotationAngle = 0;
@@ -32,7 +34,30 @@ namespace Tangram.GraphicsElements
             this.Location = pos;
         }
 
+        public void Scale(int dx,int dy)
+        {
+            transformationMatrix.Reset();
+            PointF currentLocation = Location;
+            transformationMatrix.Scale(dx, dy);
+            ApplyTransform();
+            Location = currentLocation;
+        }
+
         protected  abstract void Init(GraphicsPath p);
+
+        public Bitmap GetImage(Color fillcolor)
+        {
+            RectangleF bounds = Path.GetBounds();
+            Bitmap bitmap = new Bitmap((int)Math.Round(bounds.Width), (int)Math.Round(bounds.Height));
+            using (Graphics gr = Graphics.FromImage(bitmap))
+            {
+                gr.SmoothingMode = SmoothingMode.AntiAlias;
+                gr.FillPath(new SolidBrush(fillcolor), Path);
+            }
+            return bitmap;
+        }
+
+        public abstract Figure Clone();
 
         [DataMember]
         public Color FigureColor { get; set; }
@@ -40,7 +65,7 @@ namespace Tangram.GraphicsElements
         /// <summary>
         /// Возвращает координату центра фигуры
         /// </summary>
-        public PointF BoundaryCenter
+        public virtual PointF BoundaryCenter
         {
             get
             {
@@ -62,6 +87,7 @@ namespace Tangram.GraphicsElements
         private void ApplyTransform()
         {
             path.Transform(transformationMatrix);
+            transformationMatrix.TransformPoints(location);
         }
 
         /// <summary>
@@ -86,14 +112,17 @@ namespace Tangram.GraphicsElements
         {
             get
             {
-                return path.PathPoints[0];
+                //return path.PathPoints[0];
+                //return path.GetBounds().Location;
+                return location[0];
             }
             set
             {
                 //мы хотим задать положение глобально
                 //однако с помощью матрицы преобразований мы можем сдвинуть фигуру относительно текущего положения 
                 //поэтому высчитываем сдвиг
-                Translate(value.X - path.PathPoints[0].X, value.Y - path.PathPoints[0].Y);
+                //Translate(value.X - path.PathPoints[0].X, value.Y - path.PathPoints[0].Y);
+                Translate(value.X - location[0].X, value.Y - location[0].Y);
 
             }
         }
