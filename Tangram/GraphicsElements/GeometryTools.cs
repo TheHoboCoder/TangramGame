@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tangram.GraphicsElements
 {
-    static class GeometryTools
+    public static class GeometryTools
     {
         /// <summary>
         /// Вычисляет расстояние между точками.
@@ -113,14 +113,21 @@ namespace Tangram.GraphicsElements
         {
             LineEquation result = new LineEquation();
             result.Ax = lineEquation.By;
-            result.By = lineEquation.Ax;
-            result.C = result.By * -point.X + result.Ax * -point.Y;
+            result.By = -lineEquation.Ax;
+            result.C = lineEquation.By * -point.X + lineEquation.Ax * point.Y;
             return result;
         }
 
+        public class LinesIsParallelException : ArgumentException
+        {
+            public LinesIsParallelException() : base("Lines are parallel or are same")
+            {
+
+            }
+        }
         /// <summary>
         /// Вычисляет точку пересечения двух прямых по их уравнениям.
-        /// Если прямые параллельны, будет выброшено исключение DividedByZeroException.
+        /// Если прямые параллельны или одинаковы, будет выброшено исключение LinesIsParallelException.
         /// </summary>
         /// <param name="first">Общее уравнение первой прямой.</param>
         /// <param name="second">Общее уравнение второй прямой.</param>
@@ -129,20 +136,52 @@ namespace Tangram.GraphicsElements
         {
             PointF point = new PointF();
 
-            if(first.Ax==second.Ax && 
-                first.By == second.By &&
-                first.C == second.C)
+            double p = first.Ax / second.Ax;
+            if( second.By * p == first.By)
             {
-                throw new ArgumentException("Lines are the same");
+                throw new LinesIsParallelException();
             }
 
-            float del = -second.By * first.Ax - second.Ax;
-            if (del == 0)
+            if (second.By == 0)
             {
-                throw new DivideByZeroException("Lines are parallel");
+                if(first.By == 0)
+                {
+                    throw new LinesIsParallelException();
+                }
+                else
+                {
+                    point.X = -second.C / second.Ax;
+                }
             }
-            point.X = (second.C + second.By * first.C) / del;
-            point.Y = (-first.C - first.Ax * point.X) / first.By;
+            else
+            {
+                double operand2 = first.Ax + (second.Ax * first.By) /  -second.By;
+                if(operand2 == 0)
+                {
+                    throw new LinesIsParallelException();
+                }
+                double operand1 = -first.C - (second.C * first.By) / -second.By;
+                double x = operand1 / operand2;
+                double y = (-first.C - first.Ax * x) / first.By;
+                point.X = (float)x;
+                point.Y = (float)y;
+            }
+
+
+            //if(first.Ax==second.Ax && 
+            //    first.By == second.By &&
+            //    first.C == second.C)
+            //{
+            //    throw new ArgumentException("Lines are the same");
+            //}
+
+            //float del = -second.By * first.Ax - second.Ax;
+            //if (del == 0)
+            //{
+            //    throw new DivideByZeroException("Lines are parallel");
+            //}
+            //point.X = (second.C + second.By * first.C) / del;
+            //point.Y = (-first.C - first.Ax * point.X) / first.By;
             return point;
 
         }
@@ -151,530 +190,816 @@ namespace Tangram.GraphicsElements
         public struct IntersectionResult
         {
             public bool intersects;
-            public PointF snapPoint;
             public bool snapped;
+            public PointF snapPoint;
+            public PointF translateVector;
+            public float distance;
+
         }
 
-        static public IntersectionResult CAT_Intersects(PointF[] polygon, PointF[] move_polygon,float snapValue)
+        static public IntersectionResult SAT_intersects(PointF[] testPolygon, PointF[] staticPolygon,float snapDistance)
         {
-            int pointIndex = 0;
-            int polygonCount = polygon.Count();
-            int movePolygonCount = move_polygon.Count();
-
             IntersectionResult result = new IntersectionResult();
             result.intersects = false;
             result.snapped = false;
             result.snapPoint = new PointF();
-            float lastSnapDistance = 0;
+            result.translateVector = new PointF();
+            result.distance = float.MaxValue;
 
-            bool decending = false;
-            bool vertical = false;
-
-            while (pointIndex+1 < polygonCount)
+            for (int i = 0, count = testPolygon.Count(); i<count-2; i++)
             {
-                decending = false;
-                vertical = false;
+                LineEquation eq = GetLineEquation(testPolygon[i], testPolygon[i + 1]);
+                LineEquation normal = GetNormal(eq, testPolygon[i]);
 
-                LineEquation lineEq = GetLineEquation(polygon[pointIndex], polygon[pointIndex + 1]);
-                LineEquation normal = GetNormal(lineEq, polygon[pointIndex]);
+                PolygonProjection testProjection = GetProjection(testPolygon, normal, i);
+                PolygonProjection staticProjection = GetProjection(staticPolygon, normal);
+
+                IntersectionResult res = new IntersectionResult();
 
                 if (normal.By == 0)
                 {
-                    vertical = true;
-                }
-                else
-                {
-                    decending = -normal.Ax/ normal.By <0;
-                }
-
-                PolygonProjection first = getPolygonProjection(polygon, pointIndex, normal, vertical, decending, polygon[pointIndex]);
-                PolygonProjection second = getPolygonProjection(move_polygon, pointIndex, normal, vertical, decending, polygon[pointIndex]);
-
-                if (vertical||!decending)
-                {
-                    if (first.startPoint.Y > second.startPoint.Y)
+                    if (testProjection.startPoint.Y <= staticProjection.startPoint.Y)
                     {
-                        //intersects tho
-                        if (second.startPoint.Y < first.endPoint.Y)
-                        {
-                            result.intersects = true;
-                        }
-                        else
-                        {
-                            result.intersects = false;
-                            float distance = GetDistance(second.startPoint, first.endPoint);
-                            if (distance <= snapValue)
-                            {
-                                if (second.startPoints.Count == 1 && first.endPoints.Count == 2)
-                                {
-                                        LineEquation eq = GetLineEquation(first.endPoints[0], first.endPoints[1]);
-                                        if (!result.snapped || lastSnapDistance > distance)
-                                        {
-                                            result.snapped = true;
-                                            result.snapPoint = Intersection(eq, GetNormal(eq, second.startPoints[0]));
-                                            lastSnapDistance = distance;
-                                        }
+                        res = PolygonIntersection(staticProjection.startPoint,
+                                                                    testProjection.endPoint,
+                                                                    true,
+                                                                    testProjection.endPoints,
+                                                                    staticProjection.startPoints,
+                                                                    snapDistance);
 
-                                }
-                                else
-                                {
-                                    float minDistance = 1000000;
-                                    PointF choosenPoint = new PointF();
-                                    for (int i = 0; i < second.startPoints.Count(); i++)
-                                    {
-                                        for (int y = 0; y < first.endPoints.Count(); y++)
-                                        {
-                                            float dist = GetDistance(second.startPoints[i], first.endPoints[i]);
-                                            if (dist < minDistance)
-                                            {
-                                                minDistance = dist;
-                                                choosenPoint = first.endPoints[i];
-                                            }
-                                        }
-                                    }
-
-                                    if (minDistance <= snapValue)
-                                    {
-                                        if (!result.snapped|| lastSnapDistance > minDistance)
-                                        {
-                                            result.snapped = true;
-                                            lastSnapDistance = minDistance;
-                                            result.snapPoint = choosenPoint;
-                                        }
-
-                                    }
-                                }
-                            }
-
-                        }
                     }
                     else
                     {
-                        if (first.startPoint.Y < second.endPoint.Y)
-                        {
-                            result.intersects = true;
-                            break;
-                        }
-                        else
-                        {
-                            result.intersects = false;
-                            float distance = GetDistance(first.startPoint, second.endPoint);
-                            if (distance <= snapValue)
-                            {
-                                if (second.endPoints.Count == 1 && first.startPoints.Count == 2)
-                                {
-                                    LineEquation eq = GetLineEquation(first.startPoints[0], first.startPoints[1]);
-                                    if (!result.snapped || lastSnapDistance > distance)
-                                    {
-                                        result.snapped = true;
-                                        result.snapPoint = Intersection(eq, GetNormal(eq, second.endPoints[0]));
-                                        lastSnapDistance = distance;
-                                    }
-
-                                }
-                                else
-                                {
-                                    float minDistance = 1000000;
-                                    PointF choosenPoint = new PointF();
-                                    for (int i = 0; i < second.endPoints.Count(); i++)
-                                    {
-                                        for (int y = 0; y < first.startPoints.Count(); y++)
-                                        {
-                                            float dist = GetDistance(second.endPoints[i], first.startPoints[i]);
-                                            if (dist < minDistance)
-                                            {
-                                                minDistance = dist;
-                                                choosenPoint = first.startPoints[i];
-                                            }
-                                        }
-                                    }
-
-                                    if (minDistance <= snapValue)
-                                    {
-                                        if (!result.snapped || lastSnapDistance > minDistance)
-                                        {
-                                            result.snapped = true;
-                                            lastSnapDistance = minDistance;
-                                            result.snapPoint = choosenPoint;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
+                        res = PolygonIntersection(testProjection.startPoint,
+                                                                 staticProjection.endPoint,
+                                                                 true,
+                                                                 staticProjection.endPoints,
+                                                                 testProjection.startPoints,
+                                                                 snapDistance);
                     }
                 }
                 else
                 {
-                    if (first.startPoint.Y < second.startPoint.Y)
+                    if (testProjection.startPoint.X <= staticProjection.startPoint.X)
                     {
-                        //intersects tho
-                        if (second.startPoint.Y > first.endPoint.Y)
-                        {
-                            result.intersects = true;
-                        }
-                        else
-                        {
-                            result.intersects = false;
-                            float distance = GetDistance(second.startPoint, first.endPoint);
-                            if (distance <= snapValue)
-                            {
-                                if (second.startPoints.Count == 1 && first.endPoints.Count == 2)
-                                {
-                                    LineEquation eq = GetLineEquation(first.endPoints[0], first.endPoints[1]);
-                                    if (!result.snapped || lastSnapDistance > distance)
-                                    {
-                                        result.snapped = true;
-                                        result.snapPoint = Intersection(eq, GetNormal(eq, second.startPoints[0]));
-                                        lastSnapDistance = distance;
-                                    }
+                         res = PolygonIntersection(staticProjection.startPoint,
+                                                                     testProjection.endPoint,
+                                                                     false,
+                                                                     testProjection.endPoints,
+                                                                     staticProjection.startPoints,
+                                                                     snapDistance);
 
-                                }
-                                else
-                                {
-                                    float minDistance = 1000000;
-                                    PointF choosenPoint = new PointF();
-                                    for (int i = 0; i < second.startPoints.Count(); i++)
-                                    {
-                                        for (int y = 0; y < first.endPoints.Count(); y++)
-                                        {
-                                            float dist = GetDistance(second.startPoints[i], first.endPoints[i]);
-                                            if (dist < minDistance)
-                                            {
-                                                minDistance = dist;
-                                                choosenPoint = first.endPoints[i];
-                                            }
-                                        }
-                                    }
-
-                                    if (minDistance <= snapValue)
-                                    {
-                                        if (!result.snapped || lastSnapDistance > minDistance)
-                                        {
-                                            result.snapped = true;
-                                            lastSnapDistance = minDistance;
-                                            result.snapPoint = choosenPoint;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
                     }
                     else
                     {
-                        if (first.startPoint.Y > second.endPoint.Y)
-                        {
-                            result.intersects = true;
-                        }
-                        else
-                        {
-                            result.intersects = false;
-                            float distance = GetDistance(first.startPoint, second.endPoint);
-                            if (distance <= snapValue)
-                            {
-                                if (second.endPoints.Count == 1 && first.startPoints.Count == 2)
-                                {
-                                    LineEquation eq = GetLineEquation(first.startPoints[0], first.startPoints[1]);
-                                    if (!result.snapped || lastSnapDistance > distance)
-                                    {
-                                        result.snapped = true;
-                                        result.snapPoint = Intersection(eq, GetNormal(eq, second.endPoints[0]));
-                                        lastSnapDistance = distance;
-                                    }
-
-                                }
-                                else
-                                {
-                                    float minDistance = 1000000;
-                                    PointF choosenPoint = new PointF();
-                                    for (int i = 0; i < second.endPoints.Count(); i++)
-                                    {
-                                        for (int y = 0; y < first.startPoints.Count(); y++)
-                                        {
-                                            float dist = GetDistance(second.endPoints[i], first.startPoints[i]);
-                                            if (dist < minDistance)
-                                            {
-                                                minDistance = dist;
-                                                choosenPoint = first.startPoints[i];
-                                            }
-                                        }
-                                    }
-
-                                    if (minDistance <= snapValue)
-                                    {
-                                        if (!result.snapped || lastSnapDistance > minDistance)
-                                        {
-                                            result.snapped = true;
-                                            lastSnapDistance = minDistance;
-                                            result.snapPoint = choosenPoint;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
+                         res = PolygonIntersection(testProjection.startPoint,
+                                                                  staticProjection.endPoint,
+                                                                  false,
+                                                                  staticProjection.endPoints,
+                                                                  testProjection.startPoints,
+                                                                  snapDistance);
                     }
                 }
 
-                pointIndex++;  
+                if(!res.intersects && result.intersects)
+                {
+                    result = res;
+                }
+                else
+                {
+                    if(res.snapped && !result.snapped)
+                    {
+                        result = res;
+                    }
+
+                    if(res.snapped && result.snapped && res.distance < result.distance)
+                    {
+                        result = res;
+                    }
+                }
+                
             }
 
-            pointIndex = 0;
-            while (pointIndex + 1 < movePolygonCount)
-            {
-                decending = false;
-                vertical = false;
 
-                LineEquation lineEq = GetLineEquation(move_polygon[pointIndex], move_polygon[pointIndex + 1]);
-                LineEquation normal = GetNormal(lineEq, move_polygon[pointIndex]);
+            for (int i = 0, count = staticPolygon.Count(); i < count - 2; i++)
+            {
+                LineEquation eq = GetLineEquation(staticPolygon[i], staticPolygon[i + 1]);
+                LineEquation normal = GetNormal(eq, staticPolygon[i]);
+
+                PolygonProjection testProjection = GetProjection(testPolygon, normal);
+                PolygonProjection staticProjection = GetProjection(staticPolygon, normal,i);
+
+                IntersectionResult res = new IntersectionResult();
 
                 if (normal.By == 0)
                 {
-                    vertical = true;
-                }
-                else
-                {
-                    decending = -normal.Ax / normal.By < 0;
-                }
-
-                PolygonProjection first = getPolygonProjection(polygon, pointIndex, normal, vertical, decending, polygon[pointIndex]);
-                PolygonProjection second = getPolygonProjection(move_polygon, pointIndex, normal, vertical, decending, polygon[pointIndex]);
-
-                if (vertical || !decending)
-                {
-                    if (first.startPoint.Y > second.startPoint.Y)
+                    if (testProjection.startPoint.Y <= staticProjection.startPoint.Y)
                     {
-                        //intersects tho
-                        if (second.startPoint.Y < first.endPoint.Y)
-                        {
-                            result.intersects = true;
-                        }
-                        else
-                        {
-                            result.intersects = false;
-                            float distance = GetDistance(second.startPoint, first.endPoint);
-                            if (distance <= snapValue)
-                            {
-                                if (second.startPoints.Count == 1 && first.endPoints.Count == 2)
-                                {
-                                    LineEquation eq = GetLineEquation(first.endPoints[0], first.endPoints[1]);
-                                    if (!result.snapped || lastSnapDistance > distance)
-                                    {
-                                        result.snapped = true;
-                                        result.snapPoint = Intersection(eq, GetNormal(eq, second.startPoints[0]));
-                                        lastSnapDistance = distance;
-                                    }
+                        res = PolygonIntersection(staticProjection.startPoint,
+                                                                    testProjection.endPoint,
+                                                                    true,
+                                                                    testProjection.endPoints,
+                                                                    staticProjection.startPoints,
+                                                                    snapDistance);
 
-                                }
-                                else
-                                {
-                                    float minDistance = 1000000;
-                                    PointF choosenPoint = new PointF();
-                                    for (int i = 0; i < second.startPoints.Count(); i++)
-                                    {
-                                        for (int y = 0; y < first.endPoints.Count(); y++)
-                                        {
-                                            float dist = GetDistance(second.startPoints[i], first.endPoints[i]);
-                                            if (dist < minDistance)
-                                            {
-                                                minDistance = dist;
-                                                choosenPoint = first.endPoints[i];
-                                            }
-                                        }
-                                    }
-
-                                    if (minDistance <= snapValue)
-                                    {
-                                        if (!result.snapped || lastSnapDistance > minDistance)
-                                        {
-                                            result.snapped = true;
-                                            lastSnapDistance = minDistance;
-                                            result.snapPoint = choosenPoint;
-                                        }
-
-                                    }
-                                }
-                            }
-
-                        }
                     }
                     else
                     {
-                        if (first.startPoint.Y < second.endPoint.Y)
-                        {
-                            result.intersects = true;
-                        }
-                        else
-                        {
-                            result.intersects = false;
-                            float distance = GetDistance(first.startPoint, second.endPoint);
-                            if (distance <= snapValue)
-                            {
-                                if (second.endPoints.Count == 1 && first.startPoints.Count == 2)
-                                {
-                                    LineEquation eq = GetLineEquation(first.startPoints[0], first.startPoints[1]);
-                                    if (!result.snapped || lastSnapDistance > distance)
-                                    {
-                                        result.snapped = true;
-                                        result.snapPoint = Intersection(eq, GetNormal(eq, second.endPoints[0]));
-                                        lastSnapDistance = distance;
-                                    }
-
-                                }
-                                else
-                                {
-                                    float minDistance = 1000000;
-                                    PointF choosenPoint = new PointF();
-                                    for (int i = 0; i < second.endPoints.Count(); i++)
-                                    {
-                                        for (int y = 0; y < first.startPoints.Count(); y++)
-                                        {
-                                            float dist = GetDistance(second.endPoints[i], first.startPoints[i]);
-                                            if (dist < minDistance)
-                                            {
-                                                minDistance = dist;
-                                                choosenPoint = first.startPoints[i];
-                                            }
-                                        }
-                                    }
-
-                                    if (minDistance <= snapValue)
-                                    {
-                                        if (!result.snapped || lastSnapDistance > minDistance)
-                                        {
-                                            result.snapped = true;
-                                            lastSnapDistance = minDistance;
-                                            result.snapPoint = choosenPoint;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
+                        res = PolygonIntersection(testProjection.startPoint,
+                                                                 staticProjection.endPoint,
+                                                                 true,
+                                                                 staticProjection.endPoints,
+                                                                 testProjection.startPoints,
+                                                                 snapDistance);
                     }
                 }
                 else
                 {
-                    if (first.startPoint.Y < second.startPoint.Y)
+                    if (testProjection.startPoint.X <= staticProjection.startPoint.X)
                     {
-                        //intersects tho
-                        if (second.startPoint.Y > first.endPoint.Y)
-                        {
-                            result.intersects = true;
-                        }
-                        else
-                        {
-                            result.intersects = false;
-                            float distance = GetDistance(second.startPoint, first.endPoint);
-                            if (distance <= snapValue)
-                            {
-                                if (second.startPoints.Count == 1 && first.endPoints.Count == 2)
-                                {
-                                    LineEquation eq = GetLineEquation(first.endPoints[0], first.endPoints[1]);
-                                    if (!result.snapped || lastSnapDistance > distance)
-                                    {
-                                        result.snapped = true;
-                                        result.snapPoint = Intersection(eq, GetNormal(eq, second.startPoints[0]));
-                                        lastSnapDistance = distance;
-                                    }
+                        res = PolygonIntersection(staticProjection.startPoint,
+                                                                    testProjection.endPoint,
+                                                                    false,
+                                                                    testProjection.endPoints,
+                                                                    staticProjection.startPoints,
+                                                                    snapDistance);
 
-                                }
-                                else
-                                {
-                                    float minDistance = 1000000;
-                                    PointF choosenPoint = new PointF();
-                                    for (int i = 0; i < second.startPoints.Count(); i++)
-                                    {
-                                        for (int y = 0; y < first.endPoints.Count(); y++)
-                                        {
-                                            float dist = GetDistance(second.startPoints[i], first.endPoints[i]);
-                                            if (dist < minDistance)
-                                            {
-                                                minDistance = dist;
-                                                choosenPoint = first.endPoints[i];
-                                            }
-                                        }
-                                    }
-
-                                    if (minDistance <= snapValue)
-                                    {
-                                        if (!result.snapped || lastSnapDistance > minDistance)
-                                        {
-                                            result.snapped = true;
-                                            lastSnapDistance = minDistance;
-                                            result.snapPoint = choosenPoint;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
                     }
                     else
                     {
-                        if (first.startPoint.Y > second.endPoint.Y)
-                        {
-                            result.intersects = true;
-                        }
-                        else
-                        {
-                            result.intersects = false;
-                            float distance = GetDistance(first.startPoint, second.endPoint);
-                            if (distance <= snapValue)
-                            {
-                                if (second.endPoints.Count == 1 && first.startPoints.Count == 2)
-                                {
-                                    LineEquation eq = GetLineEquation(first.startPoints[0], first.startPoints[1]);
-                                    if (!result.snapped || lastSnapDistance > distance)
-                                    {
-                                        result.snapped = true;
-                                        result.snapPoint = Intersection(eq, GetNormal(eq, second.endPoints[0]));
-                                        lastSnapDistance = distance;
-                                    }
-
-                                }
-                                else
-                                {
-                                    float minDistance = 1000000;
-                                    PointF choosenPoint = new PointF();
-                                    for (int i = 0; i < second.endPoints.Count(); i++)
-                                    {
-                                        for (int y = 0; y < first.startPoints.Count(); y++)
-                                        {
-                                            float dist = GetDistance(second.endPoints[i], first.startPoints[i]);
-                                            if (dist < minDistance)
-                                            {
-                                                minDistance = dist;
-                                                choosenPoint = first.startPoints[i];
-                                            }
-                                        }
-                                    }
-
-                                    if (minDistance <= snapValue)
-                                    {
-                                        if (!result.snapped || lastSnapDistance > minDistance)
-                                        {
-                                            result.snapped = true;
-                                            lastSnapDistance = minDistance;
-                                            result.snapPoint = choosenPoint;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
+                        res = PolygonIntersection(testProjection.startPoint,
+                                                                 staticProjection.endPoint,
+                                                                 false,
+                                                                 staticProjection.endPoints,
+                                                                 testProjection.startPoints,
+                                                                 snapDistance);
                     }
                 }
 
-                pointIndex++;
+                if (!res.intersects && result.intersects)
+                {
+                    result = res;
+                }
+                else
+                {
+                    if (res.snapped && !result.snapped)
+                    {
+                        result = res;
+                    }
+
+                    if (res.snapped && result.snapped && res.distance < result.distance)
+                    {
+                        result = res;
+                    }
+                }
+
             }
 
 
             return result;
         }
 
-        
+        static private IntersectionResult PolygonIntersection(PointF startPoint, PointF endPoint, bool vertical, List<PointF> testPolygonPoints, List<PointF> staticPolygonPoints, float snapDistance)
+        {
+            IntersectionResult intersection = new IntersectionResult();
+
+            intersection.intersects = false;
+            intersection.snapped = false;
+            intersection.snapPoint = new PointF();
+            intersection.translateVector = new PointF();
+            intersection.distance = float.MaxValue;
+
+
+            intersection.distance = GetDistance(startPoint, endPoint);
+
+            if (vertical)
+            {
+                if (startPoint.Y < endPoint.Y)
+                {
+                    intersection.intersects = true;
+                    intersection.translateVector = new PointF(endPoint.X -startPoint.X, endPoint.Y-startPoint.Y);
+                    return intersection;
+                }
+            }
+            else
+            {
+                if (startPoint.X < endPoint.X)
+                {
+                    intersection.intersects = true;
+                    intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+                    return intersection;
+                }
+            }
+
+            if ( snapDistance>=intersection.distance)
+            {
+                if (staticPolygonPoints.Count() == 1)
+                {
+                    if (testPolygonPoints.Count() == 1)
+                    {
+                        float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[0]);
+                        if (distance <= snapDistance)
+                        {
+                            intersection.snapped = true;
+                            intersection.snapPoint = staticPolygonPoints[0];
+                            intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[0].X,
+                                                                      staticPolygonPoints[0].Y - testPolygonPoints[0].Y);
+                        }
+                    }
+                    else
+                    {
+                        LineEquation eq = GetLineEquation(testPolygonPoints[0], testPolygonPoints[1]);
+                        LineEquation normal = GetNormal(eq, staticPolygonPoints[0]);
+                        PointF point = Intersection(eq, normal);
+
+                        if (point.X >= Math.Min(testPolygonPoints[0].X, testPolygonPoints[1].X) &&
+                           point.X <= Math.Max(testPolygonPoints[0].X, testPolygonPoints[1].X) &&
+                           point.Y >= Math.Min(testPolygonPoints[0].Y, testPolygonPoints[1].Y) &&
+                           point.Y <= Math.Max(testPolygonPoints[0].Y, testPolygonPoints[1].Y))
+                        {
+                            intersection.snapped = true;
+                            intersection.snapPoint = point;
+                            intersection.translateVector = new PointF(staticPolygonPoints[0].X - point.X,
+                                                                      staticPolygonPoints[0].Y - point.Y);
+                        }
+                        else
+                        {
+                            for (int i = 0, count = testPolygonPoints.Count(); i < count; i++)
+                            {
+                                float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[i]);
+                                if (distance <= snapDistance)
+                                {
+                                    intersection.snapped = true;
+                                    intersection.snapPoint = staticPolygonPoints[0];
+                                    intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[i].X,
+                                                                              staticPolygonPoints[0].Y - testPolygonPoints[i].Y);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0, count = testPolygonPoints.Count(); i < count; i++)
+                    {
+                        LineEquation eq = GetLineEquation(staticPolygonPoints[0], staticPolygonPoints[1]);
+                        LineEquation normal = GetNormal(eq, testPolygonPoints[i]);
+                        PointF point = Intersection(eq, normal);
+
+                        if (point.X >= Math.Min(staticPolygonPoints[0].X, staticPolygonPoints[1].X) &&
+                           point.X <= Math.Max(staticPolygonPoints[0].X, staticPolygonPoints[1].X) &&
+                           point.Y >= Math.Min(staticPolygonPoints[0].Y, staticPolygonPoints[1].Y) &&
+                           point.Y <= Math.Max(staticPolygonPoints[0].Y, staticPolygonPoints[1].Y))
+                        {
+                            intersection.snapped = true;
+                            intersection.snapPoint = point;
+                            intersection.translateVector = new PointF( point.X-testPolygonPoints[i].X,
+                                                                      point.Y -staticPolygonPoints[i].Y);
+                        }
+                        else
+                        {
+                            float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[i]);
+                            if (distance <= snapDistance)
+                            {
+                                intersection.snapped = true;
+                                intersection.snapPoint = staticPolygonPoints[0];
+                                intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[i].X,
+                                                                          staticPolygonPoints[0].Y - testPolygonPoints[i].Y);
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            return intersection;
+        }
+
+
+
+        //static public IntersectionResult CAT_Intersects(PointF[] polygon, PointF[] move_polygon,float snapValue)
+        //{
+        //    int pointIndex = 0;
+        //    int polygonCount = polygon.Count();
+        //    int movePolygonCount = move_polygon.Count();
+
+        //    IntersectionResult result = new IntersectionResult();
+        //    result.intersects = false;
+        //    result.snapped = false;
+        //    result.snapPoint = new PointF();
+        //    float lastSnapDistance = 0;
+
+        //    bool decending = false;
+        //    bool vertical = false;
+
+        //    while (pointIndex+1 < polygonCount)
+        //    {
+        //        decending = false;
+        //        vertical = false;
+
+        //        LineEquation lineEq = GetLineEquation(polygon[pointIndex], polygon[pointIndex + 1]);
+        //        LineEquation normal = GetNormal(lineEq, polygon[pointIndex]);
+
+        //        if (normal.By == 0)
+        //        {
+        //            vertical = true;
+        //        }
+        //        else
+        //        {
+        //            decending = -normal.Ax/ normal.By <0;
+        //        }
+
+        //        PolygonProjection first = getPolygonProjection(polygon, pointIndex, normal, vertical, decending, polygon[pointIndex]);
+        //        PolygonProjection second = getPolygonProjection(move_polygon, pointIndex, normal, vertical, decending, polygon[pointIndex]);
+
+        //        if (vertical||!decending)
+        //        {
+        //            if (first.startPoint.Y > second.startPoint.Y)
+        //            {
+        //                //intersects tho
+        //                if (second.startPoint.Y < first.endPoint.Y)
+        //                {
+        //                    result.intersects = true;
+        //                }
+        //                else
+        //                {
+        //                    result.intersects = false;
+        //                    float distance = GetDistance(second.startPoint, first.endPoint);
+        //                    if (distance <= snapValue)
+        //                    {
+        //                        if (second.startPoints.Count == 1 && first.endPoints.Count == 2)
+        //                        {
+        //                                LineEquation eq = GetLineEquation(first.endPoints[0], first.endPoints[1]);
+        //                                if (!result.snapped || lastSnapDistance > distance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    result.snapPoint = Intersection(eq, GetNormal(eq, second.startPoints[0]));
+        //                                    lastSnapDistance = distance;
+        //                                }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            float minDistance = 1000000;
+        //                            PointF choosenPoint = new PointF();
+        //                            for (int i = 0; i < second.startPoints.Count(); i++)
+        //                            {
+        //                                for (int y = 0; y < first.endPoints.Count(); y++)
+        //                                {
+        //                                    float dist = GetDistance(second.startPoints[i], first.endPoints[i]);
+        //                                    if (dist < minDistance)
+        //                                    {
+        //                                        minDistance = dist;
+        //                                        choosenPoint = first.endPoints[i];
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (minDistance <= snapValue)
+        //                            {
+        //                                if (!result.snapped|| lastSnapDistance > minDistance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    lastSnapDistance = minDistance;
+        //                                    result.snapPoint = choosenPoint;
+        //                                }
+
+        //                            }
+        //                        }
+        //                    }
+
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (first.startPoint.Y < second.endPoint.Y)
+        //                {
+        //                    result.intersects = true;
+        //                    break;
+        //                }
+        //                else
+        //                {
+        //                    result.intersects = false;
+        //                    float distance = GetDistance(first.startPoint, second.endPoint);
+        //                    if (distance <= snapValue)
+        //                    {
+        //                        if (second.endPoints.Count == 1 && first.startPoints.Count == 2)
+        //                        {
+        //                            LineEquation eq = GetLineEquation(first.startPoints[0], first.startPoints[1]);
+        //                            if (!result.snapped || lastSnapDistance > distance)
+        //                            {
+        //                                result.snapped = true;
+        //                                result.snapPoint = Intersection(eq, GetNormal(eq, second.endPoints[0]));
+        //                                lastSnapDistance = distance;
+        //                            }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            float minDistance = 1000000;
+        //                            PointF choosenPoint = new PointF();
+        //                            for (int i = 0; i < second.endPoints.Count(); i++)
+        //                            {
+        //                                for (int y = 0; y < first.startPoints.Count(); y++)
+        //                                {
+        //                                    float dist = GetDistance(second.endPoints[i], first.startPoints[i]);
+        //                                    if (dist < minDistance)
+        //                                    {
+        //                                        minDistance = dist;
+        //                                        choosenPoint = first.startPoints[i];
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (minDistance <= snapValue)
+        //                            {
+        //                                if (!result.snapped || lastSnapDistance > minDistance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    lastSnapDistance = minDistance;
+        //                                    result.snapPoint = choosenPoint;
+        //                                }
+
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (first.startPoint.Y < second.startPoint.Y)
+        //            {
+        //                //intersects tho
+        //                if (second.startPoint.Y > first.endPoint.Y)
+        //                {
+        //                    result.intersects = true;
+        //                }
+        //                else
+        //                {
+        //                    result.intersects = false;
+        //                    float distance = GetDistance(second.startPoint, first.endPoint);
+        //                    if (distance <= snapValue)
+        //                    {
+        //                        if (second.startPoints.Count == 1 && first.endPoints.Count == 2)
+        //                        {
+        //                            LineEquation eq = GetLineEquation(first.endPoints[0], first.endPoints[1]);
+        //                            if (!result.snapped || lastSnapDistance > distance)
+        //                            {
+        //                                result.snapped = true;
+        //                                result.snapPoint = Intersection(eq, GetNormal(eq, second.startPoints[0]));
+        //                                lastSnapDistance = distance;
+        //                            }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            float minDistance = 1000000;
+        //                            PointF choosenPoint = new PointF();
+        //                            for (int i = 0; i < second.startPoints.Count(); i++)
+        //                            {
+        //                                for (int y = 0; y < first.endPoints.Count(); y++)
+        //                                {
+        //                                    float dist = GetDistance(second.startPoints[i], first.endPoints[i]);
+        //                                    if (dist < minDistance)
+        //                                    {
+        //                                        minDistance = dist;
+        //                                        choosenPoint = first.endPoints[i];
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (minDistance <= snapValue)
+        //                            {
+        //                                if (!result.snapped || lastSnapDistance > minDistance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    lastSnapDistance = minDistance;
+        //                                    result.snapPoint = choosenPoint;
+        //                                }
+
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (first.startPoint.Y > second.endPoint.Y)
+        //                {
+        //                    result.intersects = true;
+        //                }
+        //                else
+        //                {
+        //                    result.intersects = false;
+        //                    float distance = GetDistance(first.startPoint, second.endPoint);
+        //                    if (distance <= snapValue)
+        //                    {
+        //                        if (second.endPoints.Count == 1 && first.startPoints.Count == 2)
+        //                        {
+        //                            LineEquation eq = GetLineEquation(first.startPoints[0], first.startPoints[1]);
+        //                            if (!result.snapped || lastSnapDistance > distance)
+        //                            {
+        //                                result.snapped = true;
+        //                                result.snapPoint = Intersection(eq, GetNormal(eq, second.endPoints[0]));
+        //                                lastSnapDistance = distance;
+        //                            }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            float minDistance = 1000000;
+        //                            PointF choosenPoint = new PointF();
+        //                            for (int i = 0; i < second.endPoints.Count(); i++)
+        //                            {
+        //                                for (int y = 0; y < first.startPoints.Count(); y++)
+        //                                {
+        //                                    float dist = GetDistance(second.endPoints[i], first.startPoints[i]);
+        //                                    if (dist < minDistance)
+        //                                    {
+        //                                        minDistance = dist;
+        //                                        choosenPoint = first.startPoints[i];
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (minDistance <= snapValue)
+        //                            {
+        //                                if (!result.snapped || lastSnapDistance > minDistance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    lastSnapDistance = minDistance;
+        //                                    result.snapPoint = choosenPoint;
+        //                                }
+
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        pointIndex++;  
+        //    }
+
+        //    pointIndex = 0;
+        //    while (pointIndex + 1 < movePolygonCount)
+        //    {
+        //        decending = false;
+        //        vertical = false;
+
+        //        LineEquation lineEq = GetLineEquation(move_polygon[pointIndex], move_polygon[pointIndex + 1]);
+        //        LineEquation normal = GetNormal(lineEq, move_polygon[pointIndex]);
+
+        //        if (normal.By == 0)
+        //        {
+        //            vertical = true;
+        //        }
+        //        else
+        //        {
+        //            decending = -normal.Ax / normal.By < 0;
+        //        }
+
+        //        PolygonProjection first = getPolygonProjection(polygon, pointIndex, normal, vertical, decending, polygon[pointIndex]);
+        //        PolygonProjection second = getPolygonProjection(move_polygon, pointIndex, normal, vertical, decending, polygon[pointIndex]);
+
+        //        if (vertical || !decending)
+        //        {
+        //            if (first.startPoint.Y > second.startPoint.Y)
+        //            {
+        //                //intersects tho
+        //                if (second.startPoint.Y < first.endPoint.Y)
+        //                {
+        //                    result.intersects = true;
+        //                }
+        //                else
+        //                {
+        //                    result.intersects = false;
+        //                    float distance = GetDistance(second.startPoint, first.endPoint);
+        //                    if (distance <= snapValue)
+        //                    {
+        //                        if (second.startPoints.Count == 1 && first.endPoints.Count == 2)
+        //                        {
+        //                            LineEquation eq = GetLineEquation(first.endPoints[0], first.endPoints[1]);
+        //                            if (!result.snapped || lastSnapDistance > distance)
+        //                            {
+        //                                result.snapped = true;
+        //                                result.snapPoint = Intersection(eq, GetNormal(eq, second.startPoints[0]));
+        //                                lastSnapDistance = distance;
+        //                            }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            float minDistance = 1000000;
+        //                            PointF choosenPoint = new PointF();
+        //                            for (int i = 0; i < second.startPoints.Count(); i++)
+        //                            {
+        //                                for (int y = 0; y < first.endPoints.Count(); y++)
+        //                                {
+        //                                    float dist = GetDistance(second.startPoints[i], first.endPoints[i]);
+        //                                    if (dist < minDistance)
+        //                                    {
+        //                                        minDistance = dist;
+        //                                        choosenPoint = first.endPoints[i];
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (minDistance <= snapValue)
+        //                            {
+        //                                if (!result.snapped || lastSnapDistance > minDistance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    lastSnapDistance = minDistance;
+        //                                    result.snapPoint = choosenPoint;
+        //                                }
+
+        //                            }
+        //                        }
+        //                    }
+
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (first.startPoint.Y < second.endPoint.Y)
+        //                {
+        //                    result.intersects = true;
+        //                }
+        //                else
+        //                {
+        //                    result.intersects = false;
+        //                    float distance = GetDistance(first.startPoint, second.endPoint);
+        //                    if (distance <= snapValue)
+        //                    {
+        //                        if (second.endPoints.Count == 1 && first.startPoints.Count == 2)
+        //                        {
+        //                            LineEquation eq = GetLineEquation(first.startPoints[0], first.startPoints[1]);
+        //                            if (!result.snapped || lastSnapDistance > distance)
+        //                            {
+        //                                result.snapped = true;
+        //                                result.snapPoint = Intersection(eq, GetNormal(eq, second.endPoints[0]));
+        //                                lastSnapDistance = distance;
+        //                            }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            float minDistance = 1000000;
+        //                            PointF choosenPoint = new PointF();
+        //                            for (int i = 0; i < second.endPoints.Count(); i++)
+        //                            {
+        //                                for (int y = 0; y < first.startPoints.Count(); y++)
+        //                                {
+        //                                    float dist = GetDistance(second.endPoints[i], first.startPoints[i]);
+        //                                    if (dist < minDistance)
+        //                                    {
+        //                                        minDistance = dist;
+        //                                        choosenPoint = first.startPoints[i];
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (minDistance <= snapValue)
+        //                            {
+        //                                if (!result.snapped || lastSnapDistance > minDistance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    lastSnapDistance = minDistance;
+        //                                    result.snapPoint = choosenPoint;
+        //                                }
+
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (first.startPoint.Y < second.startPoint.Y)
+        //            {
+        //                //intersects tho
+        //                if (second.startPoint.Y > first.endPoint.Y)
+        //                {
+        //                    result.intersects = true;
+        //                }
+        //                else
+        //                {
+        //                    result.intersects = false;
+        //                    float distance = GetDistance(second.startPoint, first.endPoint);
+        //                    if (distance <= snapValue)
+        //                    {
+        //                        if (second.startPoints.Count == 1 && first.endPoints.Count == 2)
+        //                        {
+        //                            LineEquation eq = GetLineEquation(first.endPoints[0], first.endPoints[1]);
+        //                            if (!result.snapped || lastSnapDistance > distance)
+        //                            {
+        //                                result.snapped = true;
+        //                                result.snapPoint = Intersection(eq, GetNormal(eq, second.startPoints[0]));
+        //                                lastSnapDistance = distance;
+        //                            }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            float minDistance = 1000000;
+        //                            PointF choosenPoint = new PointF();
+        //                            for (int i = 0; i < second.startPoints.Count(); i++)
+        //                            {
+        //                                for (int y = 0; y < first.endPoints.Count(); y++)
+        //                                {
+        //                                    float dist = GetDistance(second.startPoints[i], first.endPoints[i]);
+        //                                    if (dist < minDistance)
+        //                                    {
+        //                                        minDistance = dist;
+        //                                        choosenPoint = first.endPoints[i];
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (minDistance <= snapValue)
+        //                            {
+        //                                if (!result.snapped || lastSnapDistance > minDistance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    lastSnapDistance = minDistance;
+        //                                    result.snapPoint = choosenPoint;
+        //                                }
+
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (first.startPoint.Y > second.endPoint.Y)
+        //                {
+        //                    result.intersects = true;
+        //                }
+        //                else
+        //                {
+        //                    result.intersects = false;
+        //                    float distance = GetDistance(first.startPoint, second.endPoint);
+        //                    if (distance <= snapValue)
+        //                    {
+        //                        if (second.endPoints.Count == 1 && first.startPoints.Count == 2)
+        //                        {
+        //                            LineEquation eq = GetLineEquation(first.startPoints[0], first.startPoints[1]);
+        //                            if (!result.snapped || lastSnapDistance > distance)
+        //                            {
+        //                                result.snapped = true;
+        //                                result.snapPoint = Intersection(eq, GetNormal(eq, second.endPoints[0]));
+        //                                lastSnapDistance = distance;
+        //                            }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            float minDistance = 1000000;
+        //                            PointF choosenPoint = new PointF();
+        //                            for (int i = 0; i < second.endPoints.Count(); i++)
+        //                            {
+        //                                for (int y = 0; y < first.startPoints.Count(); y++)
+        //                                {
+        //                                    float dist = GetDistance(second.endPoints[i], first.startPoints[i]);
+        //                                    if (dist < minDistance)
+        //                                    {
+        //                                        minDistance = dist;
+        //                                        choosenPoint = first.startPoints[i];
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            if (minDistance <= snapValue)
+        //                            {
+        //                                if (!result.snapped || lastSnapDistance > minDistance)
+        //                                {
+        //                                    result.snapped = true;
+        //                                    lastSnapDistance = minDistance;
+        //                                    result.snapPoint = choosenPoint;
+        //                                }
+
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        pointIndex++;
+        //    }
+
+
+        //    return result;
+        //}
+
+        //static IntersectionResult CheckIntersection(PointF[] test_polygon,)
+        //{
+            
+        //};
 
 
         private struct PolygonProjection
@@ -685,91 +1010,171 @@ namespace Tangram.GraphicsElements
             public List<PointF> endPoints;
         }
 
-        static private PolygonProjection getPolygonProjection(PointF[] polygon, int index, LineEquation normal, bool vertical, bool decending,  PointF point)
+        static private PolygonProjection GetProjection(PointF[] polygon, LineEquation axis, int index = -1)
         {
-
-            PointF lastPoint = new PointF();
             PolygonProjection result = new PolygonProjection();
-            result.startPoint = point;
-            result.endPoint = point;
+
+            result.startPoint = new PointF();
+            result.endPoint = new PointF();
+
+            if (index == -1)
+            {
+                result.startPoint.X = 0;
+                result.startPoint.Y = 0;
+                result.endPoint.X = 0;
+                result.endPoint.Y = 0;
+            }
+            else
+            {
+                result.startPoint.X = polygon[index].X;
+                result.startPoint.Y = polygon[index].Y;
+                result.endPoint.X = polygon[index].X;
+                result.endPoint.Y = polygon[index].Y;
+            }
+          
             result.startPoints = new List<PointF>();
             result.endPoints = new List<PointF>();
 
-            for (int i = index + 2, polygonCount = polygon.Count(); i < polygonCount; i++)
+            bool vertical = axis.By == 0;
+
+            for(int i =0, polygonCount = polygon.Count(); i<polygonCount; i++)
             {
-                bool online = false;
-                PointF projection = Intersection(GetNormal(normal, polygon[i]), normal);
+                if (index != -1 && i == index || i == index + 1) continue;
 
-                if (i != index + 2)
+                PointF projection = Intersection(GetNormal(axis, polygon[i]), axis);
+
+                if (result.endPoint.X == projection.X &&
+                    result.endPoint.Y == projection.Y)
                 {
-                    if (lastPoint.X == result.endPoint.X && lastPoint.Y == result.endPoint.Y)
-                    {
-                        result.endPoints.Add(polygon[i]);
-                    }
+                    result.endPoints.Add(polygon[i]);
+                }
 
-                    if (lastPoint.X == result.startPoint.X && lastPoint.Y == result.startPoint.Y)
-                    {
-                        result.startPoints.Add(polygon[i]);
-                    }
+                if (result.startPoint.X == projection.X &&
+                   result.startPoint.Y == projection.Y)
+                {
+                    result.startPoints.Add(polygon[i]);
                 }
 
                 if (vertical)
                 {
-                    if (projection.Y > result.endPoint.Y)
-                    {
-                        result.endPoint.X = projection.X;
-                        result.endPoint.Y = projection.Y;
-                        result.endPoints.Clear();
-                        result.endPoints.Add(polygon[i]);
-                    }
-
                     if (projection.Y < result.startPoint.Y)
                     {
-                        result.startPoint.X = projection.X;
-                        result.startPoint.Y = projection.Y;
+                        result.startPoint = projection;
+                        result.startPoints.Clear();
+                        result.startPoints.Add(polygon[i]);
+                    }
+                    if(projection.Y > result.endPoint.Y)
+                    {
+                        result.endPoint = projection;
+                        result.endPoints.Clear();
+                        result.endPoints.Add(polygon[i]);
                     }
                 }
                 else
                 {
-                    if (decending)
+                    if (projection.X < result.startPoint.X)
                     {
-                        if (projection.Y < result.endPoint.Y)
-                        {
-                            result.endPoint.X = projection.X;
-                            result.endPoint.Y = projection.Y;
-                            result.endPoints.Clear();
-                            result.endPoints.Add(polygon[i]);
-                        }
-
-                        if (projection.Y > result.startPoint.Y)
-                        {
-                            result.startPoint.X = projection.X;
-                            result.startPoint.Y = projection.Y;
-                        }
+                        result.startPoint = projection;
+                        result.startPoints.Clear();
+                        result.startPoints.Add(polygon[i]);
                     }
-                    else
+                    if (projection.X > result.endPoint.X)
                     {
-                        if (projection.Y > result.endPoint.Y)
-                        {
-                            result.endPoint.X = projection.X;
-                            result.endPoint.Y = projection.Y;
-                            result.endPoints.Clear();
-                            result.endPoints.Add(polygon[i]);
-                        }
-
-                        if (projection.Y < result.startPoint.Y)
-                        {
-                            result.startPoint.X = projection.X;
-                            result.startPoint.Y = projection.Y;
-                        }
+                        result.endPoint = projection;
+                        result.endPoints.Clear();
+                        result.endPoints.Add(polygon[i]);
                     }
                 }
-
-                lastPoint = projection;
-               
             }
+
             return result;
         }
+
+        //static private PolygonProjection getPolygonProjection(PointF[] polygon, int index, LineEquation normal, bool vertical, bool decending,  PointF point)
+        //{
+
+        //    PointF lastPoint = new PointF();
+        //    PolygonProjection result = new PolygonProjection();
+        //    result.startPoint = point;
+        //    result.endPoint = point;
+        //    result.startPoints = new List<PointF>();
+        //    result.endPoints = new List<PointF>();
+
+        //    for (int i = index + 2, polygonCount = polygon.Count(); i < polygonCount; i++)
+        //    {
+        //        bool online = false;
+        //        PointF projection = Intersection(GetNormal(normal, polygon[i]), normal);
+
+        //        if (i != index + 2)
+        //        {
+        //            if (lastPoint.X == result.endPoint.X && lastPoint.Y == result.endPoint.Y)
+        //            {
+        //                result.endPoints.Add(polygon[i]);
+        //            }
+
+        //            if (lastPoint.X == result.startPoint.X && lastPoint.Y == result.startPoint.Y)
+        //            {
+        //                result.startPoints.Add(polygon[i]);
+        //            }
+        //        }
+
+        //        if (vertical)
+        //        {
+        //            if (projection.Y > result.endPoint.Y)
+        //            {
+        //                result.endPoint.X = projection.X;
+        //                result.endPoint.Y = projection.Y;
+        //                result.endPoints.Clear();
+        //                result.endPoints.Add(polygon[i]);
+        //            }
+
+        //            if (projection.Y < result.startPoint.Y)
+        //            {
+        //                result.startPoint.X = projection.X;
+        //                result.startPoint.Y = projection.Y;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (decending)
+        //            {
+        //                if (projection.Y < result.endPoint.Y)
+        //                {
+        //                    result.endPoint.X = projection.X;
+        //                    result.endPoint.Y = projection.Y;
+        //                    result.endPoints.Clear();
+        //                    result.endPoints.Add(polygon[i]);
+        //                }
+
+        //                if (projection.Y > result.startPoint.Y)
+        //                {
+        //                    result.startPoint.X = projection.X;
+        //                    result.startPoint.Y = projection.Y;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (projection.Y > result.endPoint.Y)
+        //                {
+        //                    result.endPoint.X = projection.X;
+        //                    result.endPoint.Y = projection.Y;
+        //                    result.endPoints.Clear();
+        //                    result.endPoints.Add(polygon[i]);
+        //                }
+
+        //                if (projection.Y < result.startPoint.Y)
+        //                {
+        //                    result.startPoint.X = projection.X;
+        //                    result.startPoint.Y = projection.Y;
+        //                }
+        //            }
+        //        }
+
+        //        lastPoint = projection;
+               
+        //    }
+        //    return result;
+        //}
         
 
     }

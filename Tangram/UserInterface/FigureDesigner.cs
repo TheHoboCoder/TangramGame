@@ -42,8 +42,8 @@ namespace Tangram.UserInterface
         private void Canvas_DragDrop(object sender, DragEventArgs e)
         {
            
-                    Figure fig = figureToolBox1.SelectedFigure.Clone();
-                    //PointF location = new PointF();
+            Figure fig = figureToolBox1.SelectedFigure.Clone();
+             //PointF location = new PointF();
             //location.X = e.X - canvasPanel.Left - designerCanvas.Left;
             //location.Y= e.Y - canvasPanel.Top- designerCanvas.Top;
             //fig.Location = location;

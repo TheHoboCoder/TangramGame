@@ -20,6 +20,7 @@ namespace Tangram.GraphicsElements
             selectionPen =  new Pen(new SolidBrush(Color.Black), 2);
             previewPen = new Pen(new SolidBrush(Color.Black), 2);
             previewPen.DashStyle = DashStyle.Dash;
+            translateVector = new PointF(0, 0);
             selectionPen.Alignment = previewPen.Alignment = PenAlignment.Inset;
         }
 
@@ -44,7 +45,7 @@ namespace Tangram.GraphicsElements
         List<Figure> figures = new List<Figure>();
         List<Figure> selectedFigures = new List<Figure>();
         Figure previewSelection,currentSelection;
-
+        private bool selected = false;
 
         private const float rotatePointsHalfSize = 6;
         private const float rotationRadious = 60;
@@ -52,8 +53,6 @@ namespace Tangram.GraphicsElements
         private RectangleF previewPoint = new RectangleF();
         private PointF currentRotatePoint = new PointF();
         private double angle = 0;
-
-
 
         bool operating = false;
         bool readyToMove = false;
@@ -76,6 +75,12 @@ namespace Tangram.GraphicsElements
 
         public bool GridSnapEnabled { get; set; }
         private const float GridCellSize = 15;
+
+        public float SnapDistance { get; set; }
+        private PointF snapPoint = new PointF(0, 0);
+        private bool snapped = false;
+        private PointF translateVector = new PointF(0, 0);
+        private float distance = float.MaxValue;
 
         private float snapAngle = 45;
         public float SnapAngle
@@ -147,8 +152,14 @@ namespace Tangram.GraphicsElements
 
         private void DesignerCanvas_MouseDown(object sender, MouseEventArgs e)
         {
+            
             if (readyToMove||readyToRotate)
             {
+                if(e.Button == MouseButtons.Right)
+                {
+                    DeleteSelected();
+                    return;
+                }
                 operating = true;
                 rotationBegun = readyToRotate;
                 if (readyToRotate)
@@ -203,28 +214,51 @@ namespace Tangram.GraphicsElements
 
         IEnumerable<Figure> notSelected;
 
-        private void MoveFigures(float dx, float dy, IEnumerable<Figure> figures)
+        private bool MoveFigures(float dx, float dy, IEnumerable<Figure> figures)
         {
            
             foreach (Figure f in figures)
             {
                 f.Translate(dx, dy);
-                //try
-                //{
-                //    foreach(Figure fig in notSelected)
-                //    {
-                //       GeometryTools.IntersectionResult res=  GeometryTools.CAT_Intersects(fig.Path.PathPoints, f.Path.PathPoints,4);
-                //        if (res.intersects)
-                //        {
-                //            f.Translate(-curX, -curY);
-                //        }
-                //    }
-                   
-                //}
-                //catch(Exception ex)
-                //{
-                //    MessageBox.Show("fuck you " + ex.ToString());
-                //}
+                try
+                {
+                    foreach (Figure fig in notSelected)
+                    {
+                        GeometryTools.IntersectionResult res = GeometryTools.SAT_intersects(fig.Path.PathPoints, f.Path.PathPoints, SnapDistance);
+
+                        if (res.intersects)
+                        {
+                            f.Translate(res.translateVector.X, res.translateVector.Y);
+                            this.translateVector = res.translateVector;
+                            return false;
+                        }
+                        else
+                        {
+                            if (res.snapped)
+                            {
+                                if (!snapped)
+                                {
+                                    snapped = true;
+                                    distance = res.distance;
+                                    snapPoint = res.snapPoint;
+                                    translateVector = res.translateVector;
+                                }
+
+                                if(snapped && res.distance < distance)
+                                {
+                                    distance = res.distance;
+                                    snapPoint = res.snapPoint;
+                                    translateVector = res.translateVector;
+                                }
+                            }
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("fuck you " + ex.ToString());
+                }
             }
             for(int i = 0, count = rotatePoints.Count();i<count;i++)
             {
@@ -235,6 +269,7 @@ namespace Tangram.GraphicsElements
             }
           
             Refresh();
+            return true;
         }
 
 
@@ -253,6 +288,10 @@ namespace Tangram.GraphicsElements
             float dotProduct = vector.Y * rotationRadious;
             float distance = (float)Math.Sqrt(Math.Pow(vector.X, 2) + Math.Pow(vector.Y, 2));
             double radianAngle = Math.Acos(dotProduct / (distance * rotationRadious));
+            if(radianAngle == Double.NaN)
+            {
+                throw new Exception("nan!");
+            }
             double angle = (180 / Math.PI) * radianAngle;
 
             if (vector.X < 0)
@@ -328,7 +367,24 @@ namespace Tangram.GraphicsElements
                     {
                         float curX = e.Location.X - selectedPoint.X;
                         float curY = e.Location.Y - selectedPoint.Y;
-                        MoveFigures(curX,curY,selectedFigures);
+                        if (!MoveFigures(curX, curY, selectedFigures))
+                        {
+                            PointF cursorPosition = new PointF(e.Location.X + translateVector.X,
+                                                               e.Location.Y + translateVector.Y);
+                            Cursor.Position = Point.Ceiling(cursorPosition);
+
+                            snapped = false;
+                            distance = float.MaxValue;
+                            operating = false;
+
+                            readyToMove = readyToRotate = false;
+                            rubberSelectionStarted = false;
+                            rotationBegun = false;
+                            angle = 0;
+                            Refresh();
+                            return;
+
+                        }
                         selectedPoint.X = e.Location.X;
                         selectedPoint.Y = e.Location.Y;
                     }
@@ -368,8 +424,10 @@ namespace Tangram.GraphicsElements
                 }
 
                 if (previewSelection!=null && previewSelection.Path.IsVisible(e.Location) ||
-                     currentSelection != null && currentSelection.Path.IsVisible(e.Location))
+                     this.selected && /*currentSelection != null &&*/ currentSelection.Path.IsVisible(e.Location))
                 {
+                    Cursor = Cursors.SizeAll;
+                    if (this.selected) { readyToMove = true; }
                     return;
                 }
 
@@ -400,11 +458,13 @@ namespace Tangram.GraphicsElements
                     rotatePoints.Clear();
                     initRotatePoints(currentSelection);
                     readyToMove = true;
+                    this.selected = true;
                 }
                 else
                 {
                     this.Cursor = Cursors.Default;
-                    currentSelection = null;
+                    //currentSelection = null;
+                    this.selected = false;
                     readyToMove = false;
                 }
 
@@ -418,10 +478,20 @@ namespace Tangram.GraphicsElements
         {
             if (operating || rotationBegun)
             {
+                if (snapped)
+                {
+                    foreach(Figure f in selectedFigures)
+                    {
+                        f.Translate(this.translateVector.X, this.translateVector.Y);
+                    }
+                    snapped = false;
+                    distance = float.MaxValue;
+                }
                 //if (rotationBegun)
                 //{
                 //    initRotatePoints(currentSelection);
                 //}
+                //TODO
                 var selectionBox = selectedFigures.OrderBy(f => f.Path.GetBounds().X).ThenBy(f => f.Path.GetBounds().Y);
                 RectangleF bounds = selectedFigures.First().Path.GetBounds();
                 Point topLeft = Point.Ceiling(bounds.Location);
@@ -441,14 +511,13 @@ namespace Tangram.GraphicsElements
 
                 MoveFigures(translateVector.X, translateVector.Y, figures);
 
-                Point rightBottom = new Point();
-
                 if (selectedFigures.Count >= 2)
                 {
                     bounds = selectedFigures.Last().Path.GetBounds();
                    
                 }
-                rightBottom = Point.Ceiling(new PointF(bounds.X + bounds.Width, bounds.Y + bounds.Height));
+
+                Point rightBottom = Point.Ceiling(new PointF(bounds.X + bounds.Width, bounds.Y + bounds.Height));
                
                 if (rightBottom.X > this.Width)
                 {
@@ -458,6 +527,11 @@ namespace Tangram.GraphicsElements
                 {
                     this.Height = rightBottom.Y;
                 }
+
+                if (currentSelection != null)
+                {
+                    this.initRotatePoints(currentSelection);
+                }
             }
 
             operating = false;
@@ -465,6 +539,25 @@ namespace Tangram.GraphicsElements
             readyToMove = readyToRotate = false;
             rubberSelectionStarted = false;
             rotationBegun = false;
+            angle = 0;
+            Refresh();
+        }
+
+
+        public void DeleteSelected()
+        {
+           foreach(Figure f in selectedFigures)
+            {
+                figures.Remove(f);
+            }
+            selectedFigures.Clear();
+            rotatePoints.Clear();
+            operating = false;
+
+            readyToMove = readyToRotate = false;
+            rubberSelectionStarted = false;
+            rotationBegun = false;
+            selected = false;
             angle = 0;
             Refresh();
         }
@@ -502,10 +595,9 @@ namespace Tangram.GraphicsElements
                 pen.DashStyle = DashStyle.Dash;
                 e.Graphics.DrawPath(pen, previewSelection.Path);
             }
-
+            pen.DashStyle = DashStyle.Solid;
             if (rubberSelectionStarted)
             {
-                pen.DashStyle = DashStyle.Solid;
                 e.Graphics.DrawRectangle(pen, Rectangle.Ceiling(rubberBandSelection));
                 
             }
@@ -518,7 +610,7 @@ namespace Tangram.GraphicsElements
              {
                 e.Graphics.DrawEllipse(pen, point);
              }
-            brush.Color = Color.OrangeRed;
+             brush.Color = Color.OrangeRed;
              if (readyToRotate||rotationBegun)
              {
                  e.Graphics.FillEllipse(brush, new RectangleF(previewPoint.X-2,previewPoint.Y-2,previewPoint.Width+4,previewPoint.Height+4));
@@ -544,6 +636,15 @@ namespace Tangram.GraphicsElements
                     brush.Color = Color.DarkViolet;
                     e.Graphics.DrawString(Math.Round(angle,2).ToString()+"", this.Font, brush, currentRotatePoint.X, currentRotatePoint.Y + rotationRadious);
                 }
+            }
+            brush.Color = Color.LawnGreen;
+            pen.Brush = brush;
+
+            if (snapped)
+            {
+                e.Graphics.DrawRectangle(pen, this.snapPoint.X - 5,
+                                              this.snapPoint.Y - 5,
+                                              10, 10);
             }
               
             pen.Dispose();
