@@ -22,15 +22,14 @@ namespace Tangram.UserInterface
         {
             difficultyCombo.SelectedIndex = 0;
 
-            //childCombo.DataSource = Database.childrenInClass;
-            //childCombo.DisplayMember = "childName";
-            //childCombo.ValueMember = "id_child";
-            //childCombo.SelectedIndex = 0;
+            childCombo.DataSource = Database.Teacher_Workspace.childrenInGroup;
+            childCombo.DisplayMember = "FullName";
+            childCombo.ValueMember = "Id";
+            childCombo.SelectedIndex = 0;
         }
 
         private void endClass_Click(object sender, EventArgs e)
         {
-            //Database.EndClass();
             MainForm form = new MainForm();
             form.Show();
             this.Close();

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tangram.Data.DataModels
 {
-   public class Group_types:BaseEntity
+    public class BaseEntity
     {
-        public string Group_type_name;
+        public int Id { get; set; }
     }
 }

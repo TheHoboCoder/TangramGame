@@ -37,7 +37,7 @@ namespace Tangram.UserInterface
                         MessageBox.Show( "Неверный логин и/или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     case UserRepository.AuthResult.AUTH_PASS:
-                        Database.Init(Database.userRepository.currentUser.UserType);
+                        //Database.Init(Database.userRepository.currentUser.UserType);
                         switch (Database.userRepository.currentUser.UserType)
                         {
                             case (User.UserTypes.VOSP):

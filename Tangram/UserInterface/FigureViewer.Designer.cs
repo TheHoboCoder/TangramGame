@@ -72,7 +72,7 @@
             this.DeleteGroup});
             this.groupsControl.Location = new System.Drawing.Point(17, 9);
             this.groupsControl.Name = "groupsControl";
-            this.groupsControl.Size = new System.Drawing.Size(81, 25);
+            this.groupsControl.Size = new System.Drawing.Size(112, 25);
             this.groupsControl.TabIndex = 18;
             this.groupsControl.Text = "groupControlPanael";
             // 
@@ -85,6 +85,7 @@
             this.AddGroup.Size = new System.Drawing.Size(23, 22);
             this.AddGroup.Text = "Добавить";
             this.AddGroup.ToolTipText = "Добавить группу";
+            this.AddGroup.Click += new System.EventHandler(this.AddGroup_Click);
             // 
             // EditGroup
             // 
@@ -94,6 +95,7 @@
             this.EditGroup.Name = "EditGroup";
             this.EditGroup.Size = new System.Drawing.Size(23, 22);
             this.EditGroup.Text = "Редактировать группу";
+            this.EditGroup.Click += new System.EventHandler(this.EditGroup_Click);
             // 
             // DeleteGroup
             // 
@@ -103,6 +105,7 @@
             this.DeleteGroup.Name = "DeleteGroup";
             this.DeleteGroup.Size = new System.Drawing.Size(23, 22);
             this.DeleteGroup.Text = "Удалить группу";
+            this.DeleteGroup.Click += new System.EventHandler(this.DeleteGroup_Click);
             // 
             // figuresControl
             // 
@@ -113,7 +116,7 @@
             this.toolStripButton3});
             this.figuresControl.Location = new System.Drawing.Point(208, 9);
             this.figuresControl.Name = "figuresControl";
-            this.figuresControl.Size = new System.Drawing.Size(112, 25);
+            this.figuresControl.Size = new System.Drawing.Size(81, 25);
             this.figuresControl.TabIndex = 19;
             this.figuresControl.Text = "groupControlPanael";
             // 
@@ -180,6 +183,7 @@
             this.Name = "FigureViewer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Просмотр фигур";
+            this.Load += new System.EventHandler(this.FigureViewer_Load);
             this.groupsControl.ResumeLayout(false);
             this.groupsControl.PerformLayout();
             this.figuresControl.ResumeLayout(false);

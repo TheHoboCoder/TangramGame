@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace Tangram.Data.DataModels
 {
-    class Result
+    class Result:BaseEntity
     {
-
-        public int Id { get; set; }
         public int ClassId { get; set; }
         public int ChildId { get; set; }
         public int Score { get; set; }
         public int FigureId { get; set; }
+        public int GroupId { get; set; }
 
         public enum DifficultyTypes
         {

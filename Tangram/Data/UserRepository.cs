@@ -12,11 +12,38 @@ namespace Tangram.Data
     class UserRepository : Repository<User>
     {
 
-       public User currentUser { get; private set; }
+        public User currentUser { get; private set; }
 
-        public UserRepository(MySqlConnection connection) : base(connection, TableInfoHolder.getInfo("users"))
+        private TableInfo usersInfo;
+        protected override TableInfo info => usersInfo;
+
+        public UserRepository(MySqlConnection connection) : base(connection, false)
         {
             RepeatErrorMsg = "Логин не должен повторяться!";
+
+            usersInfo = new TableInfo();
+
+            usersInfo.parameters.Add(new MySqlParameter("id_user", MySqlDbType.Int32));
+            usersInfo.parameters.Add(new MySqlParameter("login", MySqlDbType.VarChar));
+            usersInfo.parameters.Add(new MySqlParameter("password", MySqlDbType.VarChar));
+            usersInfo.parameters.Add(new MySqlParameter("fam", MySqlDbType.VarChar));
+            usersInfo.parameters.Add(new MySqlParameter("name", MySqlDbType.VarChar));
+            usersInfo.parameters.Add(new MySqlParameter("otch", MySqlDbType.VarChar));
+            usersInfo.parameters.Add(new MySqlParameter("phone", MySqlDbType.VarChar));
+            usersInfo.parameters.Add(new MySqlParameter("role_id", MySqlDbType.Int32));
+
+            usersInfo.TableName = "users";
+            usersInfo.IdName = "id_user";
+            usersInfo.SelectStatement = @"select users.id_user, users.login, users.fam,users.password, users.name, users.otch, users.phone,user_roles.role_name, user_roles.role_id,
+                                          concat(users.fam, ' ', ucase(left(users.name, 1)), '.', ucase(left(users.otch, 1))) as 'usersInitials'
+                                          from users
+                                          inner join user_roles on users.role_id = user_roles.role_id";
+            usersInfo.GenerateStatements();
+
+            usersInfo.linkedTables.Add("classes");
+            usersInfo.linkedTables.Add("figures");
+            usersInfo.linkedTables.Add("garden_groups");
+            InitCommandParameters();
 
         }
 
@@ -46,6 +73,7 @@ namespace Tangram.Data
             else
             {
                 currentUser = MapOut(Table.Rows[0]) as User;
+                Database.Init(currentUser);
                 if(currentUser.UserType == User.UserTypes.MET)
                 {
                     Upload(" id_user <> '"+currentUser.Id+"'");
@@ -76,9 +104,9 @@ namespace Tangram.Data
         }
 
 
-        public bool Update(User user)
+        public new bool Update(User user)
         {
-            if(base.Update(user.Id, user))
+            if(base.Update( user))
             {
                 if (user.Id == currentUser.Id)
                 {

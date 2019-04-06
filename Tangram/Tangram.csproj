@@ -51,21 +51,24 @@
   <ItemGroup>
     <Compile Include="Data\ChildrenRepository.cs" />
     <Compile Include="Data\Database.cs" />
-    <Compile Include="Data\DatabaseHelper.cs" />
+    <Compile Include="Data\DataModels\BaseEntity.cs" />
     <Compile Include="Data\DataModels\Child.cs" />
     <Compile Include="Data\DataModels\ClassInfo.cs" />
     <Compile Include="Data\DataModels\Figure.cs" />
     <Compile Include="Data\DataModels\FigureGroup.cs" />
+    <Compile Include="Data\DataModels\GameRepository.cs" />
     <Compile Include="Data\DataModels\Garden_groups.cs" />
     <Compile Include="Data\DataModels\Group_types.cs" />
     <Compile Include="Data\DataModels\Result.cs" />
-    <Compile Include="Data\GroupHelper.cs" />
+    <Compile Include="Data\FigureGroupsRepository.cs" />
+    <Compile Include="Data\FigureRepository.cs" />
     <Compile Include="Data\GroupsRepository.cs" />
     <Compile Include="Data\GroupTypeRepository.cs" />
     <Compile Include="Data\TableInfoHolder.cs" />
     <Compile Include="Data\DataModels\User.cs" />
     <Compile Include="Data\Repository.cs" />
     <Compile Include="Data\TableInfo.cs" />
+    <Compile Include="Data\TeacherWorkspace.cs" />
     <Compile Include="Data\UserRepository.cs" />
     <Compile Include="GraphicsElements\ColorTools.cs" />
     <Compile Include="GraphicsElements\DesignerCanvas.cs">

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tangram.Data.DataModels
 {
-    public class Garden_groups
+    public class Garden_groups:BaseEntity
     {
-        public int Id { get; set; }
         public int GroupTypeId { get; set; }
         public string Group_Name { get; set; }
         public int TeacherId { get; set; }

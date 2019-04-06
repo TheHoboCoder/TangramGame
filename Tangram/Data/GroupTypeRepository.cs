@@ -11,9 +11,24 @@ namespace Tangram.Data
 {
     class GroupTypeRepository : Repository<Group_types>
     {
-        public GroupTypeRepository(MySqlConnection connection) : base(connection, TableInfoHolder.getInfo("group_type"))
+        private TableInfo group_types;
+        protected override TableInfo info => group_types;
+
+        public GroupTypeRepository(MySqlConnection connection) : base(connection, false)
         {
             RepeatErrorMsg = "Тип группы не должен повторяться!";
+
+            group_types = new TableInfo();
+            group_types.parameters.Add(new MySqlParameter("group_type_id", MySqlDbType.Int32));
+            group_types.parameters.Add(new MySqlParameter("group_type_name", MySqlDbType.VarChar));
+            group_types.TableName = "group_type";
+            group_types.IdName = "group_type_id";
+
+            group_types.linkedTables.Add("garden_groups");
+
+            group_types.SelectStatement = "select group_type_id,group_type_name from group_type";
+            group_types.GenerateStatements();
+            InitCommandParameters();
             Upload();
         }
 
@@ -34,9 +49,6 @@ namespace Tangram.Data
             parameters["group_type_id"].Value = c.Id;
         }
 
-        public bool Update(Group_types group_type)
-        {
-            return base.Update(group_type.Id, group_type);
-        }
+      
     }
 }

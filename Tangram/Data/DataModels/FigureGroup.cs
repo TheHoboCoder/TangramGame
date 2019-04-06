@@ -7,9 +7,8 @@ using Tangram.GraphicsElements;
 
 namespace Tangram.Data.DataModels
 {
-    class FigureGroup
+    public class FigureGroup:BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }
 

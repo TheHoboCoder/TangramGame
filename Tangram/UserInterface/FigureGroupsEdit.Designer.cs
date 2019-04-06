@@ -93,6 +93,7 @@
             this.LoginBtn.TabIndex = 15;
             this.LoginBtn.Text = "Сохранить";
             this.LoginBtn.UseVisualStyleBackColor = true;
+            this.LoginBtn.Click += new System.EventHandler(this.LoginBtn_Click);
             // 
             // FigureGroupsEdit
             // 
@@ -109,6 +110,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FigureGroupsEdit";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Редактирование групп фигур";
             this.ResumeLayout(false);
             this.PerformLayout();

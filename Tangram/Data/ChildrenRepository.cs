@@ -13,11 +13,45 @@ namespace Tangram.Data
     {
         public int currentGroupCount { get { return 2; } }
 
+        private TableInfo childInfo;
 
-        public ChildrenRepository(MySqlConnection connection) : base(connection, TableInfoHolder.getInfo("childs"))
+        protected override TableInfo info => childInfo;
+
+        public ChildrenRepository(MySqlConnection connection) : base(connection,false)
         {
+          
+            childInfo = new TableInfo();
+
+            childInfo.parameters.Add(new MySqlParameter("id_child", MySqlDbType.Int32));
+            childInfo.parameters.Add(new MySqlParameter("id_group", MySqlDbType.Int32));
+            childInfo.parameters.Add(new MySqlParameter("fam", MySqlDbType.VarChar));
+            childInfo.parameters.Add(new MySqlParameter("name", MySqlDbType.VarChar));
+            childInfo.parameters.Add(new MySqlParameter("subGroup", MySqlDbType.VarChar));
+            childInfo.parameters.Add(new MySqlParameter("gender", MySqlDbType.Int32));
+
+            childInfo.TableName = "childs";
+            childInfo.IdName = "id_child";
+
+            childInfo.SelectStatement = "SELECT  childs.id_child, childs.id_group, childs.subGroup, childs.name, childs.fam, childs.gender,concat(childs.name, ' ', childs.fam) as 'childName'," +
+                                                 "concat(childs.subGroup, ' подгруппа') as subGroupName, if (gender,'Мужской','Женский') as 'genderText'" +
+                                                "from childs " +
+                                                 "inner join garden_groups on childs.id_group = garden_groups.id_group";
+            childInfo.linkedTables.Add("results");
+            childInfo.GenerateStatements();
+            InitCommandParameters();
             Upload();
         }
+
+        public ChildrenRepository(MySqlConnection connection, int groupId) : base(connection, true)
+        {
+            childInfo = new TableInfo();
+            childInfo.SelectStatement = "SELECT  childs.id_child, childs.id_group, childs.subGroup, childs.name, childs.fam, childs.gender,concat(childs.name, ' ', childs.fam) as 'childName'," +
+                                                "concat(childs.subGroup, ' подгруппа') as subGroupName, if (gender,'Мужской','Женский') as 'genderText'" +
+                                               "from childs " +
+                                                "inner join garden_groups on childs.id_group = garden_groups.id_group";
+            Upload("childs.id_group = '" + groupId + "'");
+        }
+
 
         public void GetChildrenInGroup(int groupId)
         {
@@ -29,10 +63,7 @@ namespace Tangram.Data
             //}
         }
 
-        public bool Update(Child child)
-        {
-            return base.Update(child.Id, child);
-        }
+      
 
         protected override Child MapOut(DataRow row)
         {

@@ -9,13 +9,26 @@ using Tangram.Data.DataModels;
 
 namespace Tangram.Data
 {
-    public abstract class Repository<TEntity>: IDisposable
+    public abstract class Repository<TEntity>: IDisposable where TEntity:BaseEntity 
     {
         private MySqlCommand command = new MySqlCommand();
+        private List<TEntity> entities;
+
+        public IEnumerable<TEntity> Entities
+        {
+            get
+            {
+                return entities;
+            }
+        }
+        
+
+        private bool objectMode = false;
 
         public DataTable Table { get; protected set; }
         public DataView filteredTable { get; private set; }
-        private TableInfo info;
+
+        protected abstract TableInfo  info { get;} 
 
         public string RepeatErrorMsg { get; set; }
         public string UpdateErrorMsg { get; set; }
@@ -41,11 +54,21 @@ namespace Tangram.Data
             }
         }
 
-        public Repository(MySqlConnection connection,TableInfo info)
+        public Repository(MySqlConnection connection, bool objectMode)
         {
             command.Connection = connection;
-            this.info = info;
-            Table = new DataTable();
+            this.objectMode = objectMode;
+            if (!objectMode)
+            {
+                Table = new DataTable();
+                filteredTable = new DataView(Table);
+            }
+            else
+            {
+                entities = new List<TEntity>();
+            }
+
+           
 
             RepeatErrorMsg = "Значение не должно повторяться!";
             DeleteErrorMsg = "Не удалось удалить запись!";
@@ -53,13 +76,15 @@ namespace Tangram.Data
             InsertErrorMsg = "Не удалось добавить запись!";
 
             CheckOnDelete = true;
-            InitCommandParameters();
-            filteredTable = new DataView(Table);
+            //InitCommandParameters();
+            
           
         }
 
         protected bool Upload(string condition = null)
         {
+            if (Table == null) Table = new DataTable();
+
             try
             {
                 command.CommandText = info.SelectStatement;
@@ -71,10 +96,29 @@ namespace Tangram.Data
 
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                 {
-
                     command.ExecuteNonQuery();
                     Table.Clear();
                     adapter.Fill(Table);
+
+                    if (objectMode)
+                    {
+                        foreach(DataRow row in Table.Rows)
+                        {
+                            try
+                            {
+                                TEntity entity = MapOut(row);
+                                if (entity != null)
+                                {
+                                    entities.Add(entity);
+                                }
+                            }
+                            catch(Exception) { }
+                           
+                        }
+                        Table.Clear();
+                        Table.Dispose();
+                        Table = null;
+                    }
                 }
                 return true;
             }
@@ -88,12 +132,16 @@ namespace Tangram.Data
             }
         }
 
-        private void InitCommandParameters()
+        protected void InitCommandParameters()
         {
-            foreach (var  parameter in info.parameters)
+            if (info.parameters != null)
             {
-                command.Parameters.Add(parameter);
+                foreach (var parameter in info.parameters)
+                {
+                    command.Parameters.Add(parameter);
+                }
             }
+           
 
         }
 
@@ -118,12 +166,23 @@ namespace Tangram.Data
         {
             SetCommandParameters(c,command.Parameters);
             command.CommandText = info.InsertStatement;
+
             try
             {
                 command.ExecuteNonQuery();
                 command.CommandText = "select last_insert_id();";
                 int newId =  Convert.ToInt32(command.ExecuteScalar());
-                Table.ImportRow(UploadRow(newId));
+
+                if (!objectMode)
+                {
+                    Table.ImportRow(UploadRow(newId));
+                }
+                else
+                {
+                    c.Id = newId;
+                    entities.Add(c);
+                }
+
                 return newId;
             }
             catch (MySqlException ex)
@@ -175,11 +234,25 @@ namespace Tangram.Data
 
                 command.CommandText = info.DeleteStatement;
                 command.ExecuteNonQuery();
-                DataRow row = GetRowById(deleteId);
-                if (row != null)
+
+                if (!objectMode)
                 {
-                    Table.Rows.Remove(row);
+                    DataRow row = GetRowById(deleteId);
+                    if (row != null)
+                    {
+                        Table.Rows.Remove(row);
+                    }
                 }
+                else
+                {
+                    TEntity entity = GetEntityById(deleteId);
+                    if (entity != null)
+                    {
+                        entities.Remove(entity);
+                    }
+                   
+                }
+               
                 
             }
             catch (MySqlException ex)
@@ -214,7 +287,20 @@ namespace Tangram.Data
             return result[0];
         }
 
-        protected bool Update(int updateId, TEntity c)
+        public TEntity GetEntityById(int id)
+        {
+            if (entities.Count() == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return entities.Where(e => e.Id == id).First();
+            }
+            
+        }
+
+        public bool Update( TEntity c)
         {
             SetCommandParameters(c,command.Parameters);
             command.CommandText = info.UpdateStatement;
@@ -222,17 +308,31 @@ namespace Tangram.Data
             try
             {
                 command.ExecuteNonQuery();
-                DataRow row = GetRowById(updateId);
-                //int index = Table.Rows.IndexOf(row);
 
-                if (row != null)
+                if (!objectMode)
                 {
-                    DataRow newRow = UploadRow(updateId);
-                    for (int i = 0, count = Table.Columns.Count; i<count; i++){
-                        row[i] = newRow[i];
-                    }
+                    DataRow row = GetRowById(c.Id);
+                    //int index = Table.Rows.IndexOf(row);
 
+                    if (row != null)
+                    {
+                        DataRow newRow = UploadRow(c.Id);
+                        for (int i = 0, count = Table.Columns.Count; i < count; i++)
+                        {
+                            row[i] = newRow[i];
+                        }
+
+                    }
                 }
+                else
+                {
+                    TEntity entity = GetEntityById(c.Id);
+                    if (entity != null)
+                    {
+                        entity = c;
+                    }
+                }
+                
 
             }
             catch (MySqlException ex)
@@ -281,10 +381,9 @@ namespace Tangram.Data
                 if (disposing)
                 {
                     //queryBuilder = null;
-                    info = null;
                 }
                 command.Dispose();
-                Table.Dispose();
+                if(Table!=null) Table.Dispose();
                 disposed = true;
             }
         }

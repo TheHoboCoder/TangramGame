@@ -7,9 +7,8 @@ using System.Security.Cryptography;
 
 namespace Tangram.Data.DataModels
 {
-    public class User
+    public class User:BaseEntity
     {
-        public int Id { get; private set; }
 
         public enum UserTypes
         {

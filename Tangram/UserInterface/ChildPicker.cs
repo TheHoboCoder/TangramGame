@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tangram.Data;
+using Tangram.Data.DataModels;
 
 namespace Tangram.UserInterface
 {
@@ -18,18 +19,22 @@ namespace Tangram.UserInterface
             InitializeComponent();
         }
 
+        List<Child> childs;
+
         private void ChildPicker_Load(object sender, EventArgs e)
         {
-            //for(int i = 1; i <= Database.subGroupCount; i++)
-            //{
-            //    subGroup.Items.Add(i + " подруппа");
-            //}
-            //subGroup.SelectedIndex = 0;
+            for (int i = 1; i <= Database.Teacher_Workspace.SubGroupCount; i++)
+            {
+                subGroup.Items.Add(i + " подруппа");
+            }
+            subGroup.SelectedIndex = 0;
 
-            //foreach (DataRow row in Database.children.Rows)
-            //{
-            //    childList.Items.Add(row["childName"], false);
-            //}
+            childs = Database.Teacher_Workspace.children.OrderBy(c => c.Fam).ToList();
+
+            foreach (Child child in childs)
+            {
+                childList.Items.Add(child.FullName, false);
+            }
         }
 
         private void subGroup_DropDownClosed(object sender, EventArgs e)
@@ -37,11 +42,12 @@ namespace Tangram.UserInterface
             if (subGroup.SelectedIndex != 0)
             {
                 int i = 0;
-                //foreach (DataRow row in Database.children.Rows)
-                //{
-                //    childList.SetItemChecked(i, Convert.ToInt32(row["subGroup"]) == subGroup.SelectedIndex);
-                //     ++i;
-                //}
+                foreach(Child child in Database.Teacher_Workspace.children)
+                {
+                    childList.SetItemChecked(i, child.SubGroup == subGroup.SelectedIndex);
+                    i++;
+                }
+                
             }
         }
 
@@ -49,24 +55,19 @@ namespace Tangram.UserInterface
         {
             if (childList.CheckedItems.Count > 0)
             {
-                ////string err =  Database.BeginClass();
-                if (true/*err == ""*/)
+                if (Database.Teacher_Workspace.BeginClass())
                 {
-                    //Database.childrenInClass = Database.children.Clone();
-                    //foreach (int index in childList.CheckedIndices)
-                    //{
-                    //    Database.childrenInClass.ImportRow(Database.children.Rows[index]);
-                    //}
-                    //this.DialogResult = DialogResult.OK;
-                    //ClassControl control = new ClassControl();
-                    //control.Show();
-                    //this.Close();
+                    Database.Teacher_Workspace.childrenInGroup = new List<Child>();
+
+                    foreach (int index in childList.CheckedIndices)
+                    {
+                        Database.Teacher_Workspace.childrenInGroup.Add(childs[index]);
+                    }
+                    this.DialogResult = DialogResult.OK;
+                    ClassControl control = new ClassControl();
+                    control.Show();
+                    this.Close();
                 }
-                else
-                {
-                    //MessageBox.Show(err, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-               
 
             }
             else

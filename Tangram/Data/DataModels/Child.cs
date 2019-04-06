@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tangram.Data.DataModels
 {
-    public class Child
+    public class Child:BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Fam { get; set; }
         public int GroupId { get; set; }
@@ -26,6 +25,14 @@ namespace Tangram.Data.DataModels
                 {
                     return "Женский";
                 }
+            }
+        }
+
+        public string FullName
+        {
+            get
+            {
+                return Name + " " + Fam;
             }
         }
     }

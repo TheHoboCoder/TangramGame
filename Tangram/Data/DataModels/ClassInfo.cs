@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tangram.Data.DataModels
 {
-    class ClassInfo
+    class ClassInfo:BaseEntity
     {
-        public int Id {get; set;}
         public int TeacherId { get; set; }
         public DateTime classDate { get; set; }
     }
