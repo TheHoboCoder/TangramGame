@@ -31,9 +31,15 @@ namespace Tangram.Data
             InitCommandParameters();
             Upload();
 
+            RepeatErrorMsg = "Такая группа уже есть.";
+
         }
 
-        
+
+        protected override string linkedErrorMsg(string table)
+        {
+            return base.linkedErrorMsg(table);
+        }
 
         protected override FigureGroup MapOut(DataRow row)
         {

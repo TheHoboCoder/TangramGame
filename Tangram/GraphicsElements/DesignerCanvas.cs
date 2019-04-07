@@ -121,6 +121,19 @@ namespace Tangram.GraphicsElements
 
         }
 
+        public void Init(List<Figure> f, Size size)
+        {
+            figures?.Clear();
+            selectedFigures?.Clear();
+            previewSelection = currentSelection = null;
+            operating = false;
+            readyToMove = readyToRotate = false;
+            this.Width = size.Width;
+            this.Height = size.Height;
+            figures.AddRange(f);
+            Refresh();
+        }
+
         public void AddFigure(Figure f)
         {
             int count = 0;
@@ -220,45 +233,45 @@ namespace Tangram.GraphicsElements
             foreach (Figure f in figures)
             {
                 f.Translate(dx, dy);
-                try
-                {
-                    foreach (Figure fig in notSelected)
-                    {
-                        GeometryTools.IntersectionResult res = GeometryTools.SAT_intersects(fig.Path.PathPoints, f.Path.PathPoints, SnapDistance);
+                //try
+                //{
+                //    foreach (Figure fig in notSelected)
+                //    {
+                //        GeometryTools.IntersectionResult res = GeometryTools.SAT_intersects(fig.Path.PathPoints, f.Path.PathPoints, SnapDistance);
 
-                        if (res.intersects)
-                        {
-                            f.Translate(res.translateVector.X, res.translateVector.Y);
-                            this.translateVector = res.translateVector;
-                            return false;
-                        }
-                        else
-                        {
-                            if (res.snapped)
-                            {
-                                if (!snapped)
-                                {
-                                    snapped = true;
-                                    distance = res.distance;
-                                    snapPoint = res.snapPoint;
-                                    translateVector = res.translateVector;
-                                }
+                //        if (res.intersects)
+                //        {
+                //            f.Translate(res.translateVector.X, res.translateVector.Y);
+                //            this.translateVector = res.translateVector;
+                //            return false;
+                //        }
+                //        else
+                //        {
+                //            if (res.snapped)
+                //            {
+                //                if (!snapped)
+                //                {
+                //                    snapped = true;
+                //                    distance = res.distance;
+                //                    snapPoint = res.snapPoint;
+                //                    translateVector = res.translateVector;
+                //                }
 
-                                if(snapped && res.distance < distance)
-                                {
-                                    distance = res.distance;
-                                    snapPoint = res.snapPoint;
-                                    translateVector = res.translateVector;
-                                }
-                            }
-                        }
-                    }
+                //                if(snapped && res.distance < distance)
+                //                {
+                //                    distance = res.distance;
+                //                    snapPoint = res.snapPoint;
+                //                    translateVector = res.translateVector;
+                //                }
+                //            }
+                //        }
+                //    }
 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("fuck you " + ex.ToString());
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    MessageBox.Show("fuck you " + ex.ToString());
+                //}
             }
             for(int i = 0, count = rotatePoints.Count();i<count;i++)
             {
@@ -473,6 +486,111 @@ namespace Tangram.GraphicsElements
         }
 
         
+        private RectangleF getBoundingBox(List<Figure> figures)
+        {
+
+            if (figures.Count() == 1)
+            {
+                return figures[0].Path.GetBounds();
+            }
+            else
+            {
+                RectangleF bounds = figures[0].Path.GetBounds();
+                for(int i=1, count = figures.Count(); i<count; i++)
+                {
+                    bounds = RectangleF.Union(bounds, figures[i].Path.GetBounds());
+                }
+                return bounds;
+            }
+            //RectangleF bounds = new RectangleF();
+
+            //var sortedX = figures.OrderBy(f => f.Path.GetBounds().X);
+            //var sortedY= figures.OrderBy(f => f.Path.GetBounds().Y);
+
+            //bounds.X = sortedX.First().Path.GetBounds().X;
+
+            //if (sortedX.Count() >= 2)
+            //{  
+            //    bounds.Width = sortedX.Last().Path.GetBounds().X + sortedX.Last().Path.GetBounds().Width - bounds.X;
+            //}
+            //else
+            //{
+            //    bounds.Width = sortedX.First().Path.GetBounds().Width;
+            //}
+
+            //bounds.Y = sortedY.First().Path.GetBounds().Y;
+
+            //if (sortedY.Count() >= 2)
+            //{
+            //    bounds.Height = sortedY.Last().Path.GetBounds().Y + sortedY.Last().Path.GetBounds().Height - bounds.Y;
+            //}
+            //else
+            //{
+            //    bounds.Height = sortedY.First().Path.GetBounds().Height;
+            //}
+            ////float leftX = f.First().Path.GetBounds().X;
+            ////float leftY = f.First().Path.GetBounds().Y;
+            ////float rightX = f.First().Path.GetBounds().Width + leftX;
+            ////float rightY = f.First().Path.GetBounds().Height + leftY;
+
+            //////bounds.X = f.First().Path.GetBounds().X;
+            //////bounds.Y = f.First().Path.GetBounds().Y;
+            //////bounds.Width = f.First().Path.GetBounds().Width;
+            //////bounds.Height = f.First().Path.GetBounds().Height;
+            ////bool skip = true;
+
+            ////foreach(Figure cur in f)
+            ////{
+            ////    if (skip)
+            ////    {
+            ////        skip = false;
+            ////        continue;
+            ////    }
+
+            ////    RectangleF curBounds = cur.Path.GetBounds();
+
+
+            ////    if (curBounds.X + curBounds.Width > rightX)
+            ////    {
+            ////        rightX = curBounds.X + curBounds.Width;
+            ////    }
+
+            ////    if (curBounds.X < leftX)
+            ////    {
+            ////        leftX = curBounds.X;
+            ////    }
+
+            ////    if (curBounds.Y + curBounds.Height > rightY)
+            ////    {
+            ////        rightY = curBounds.Y + curBounds.Height;
+            ////    }
+            ////    if (curBounds.Y < leftY)
+            ////    {
+            ////        rightY = curBounds.Y;
+            ////    }
+            ////}
+
+            ////bounds.X = leftX;
+            ////bounds.Y````````````` = leftY;
+            ////bounds.Width = rightX - leftX;
+            ////bounds.Height = rightY - leftY;
+
+            //return bounds;
+        }
+
+        public List<Figure> packFigures(out Size size)
+        {
+            List<Figure> packedFigures = new List<Figure>();
+            packedFigures.AddRange(figures);
+
+            RectangleF rectangle = getBoundingBox(packedFigures);
+            foreach(Figure f in packedFigures)
+            {
+                f.Translate(-rectangle.X, -rectangle.Y);
+            }
+            size = Size.Ceiling(rectangle.Size);
+            return packedFigures;
+        }
 
         private void DesignerCanvas_MouseUp(object sender, MouseEventArgs e)
         {
@@ -491,33 +609,46 @@ namespace Tangram.GraphicsElements
                 //{
                 //    initRotatePoints(currentSelection);
                 //}
-                //TODO
-                var selectionBox = selectedFigures.OrderBy(f => f.Path.GetBounds().X).ThenBy(f => f.Path.GetBounds().Y);
-                RectangleF bounds = selectedFigures.First().Path.GetBounds();
-                Point topLeft = Point.Ceiling(bounds.Location);
-
+                RectangleF boundingBox = getBoundingBox(selectedFigures);
+                Rectangle bounds = Rectangle.Ceiling(boundingBox);
+                //var selectionBox = selectedFigures.OrderBy(f => f.Path.GetBounds().X).ThenBy(f => f.Path.GetBounds().Y);
+                //RectangleF bounds = selectedFigures.First().Path.GetBounds();
+                //Point topLeft = Point.Ceiling(bounds.Location);
+                //if (selectionBox.Count()>=2)
+                //{
+                //    RectangleF secondBounds = selectionBox.ElementAt(1).Path.GetBounds();
+                //    if (secondBounds.Y < bounds.Y)
+                //    {
+                //        topLeft.Y = (int)Math.Round(secondBounds.Y);
+                //    }
+                //}
+                   
                 Point translateVector = new Point(0, 0);
-                if (topLeft.X < 0)
+                if (bounds.X < 0)
                 {
-                    this.Width -= topLeft.X;
-                    translateVector.X = -topLeft.X;
+                    this.Width -= bounds.X;
+                    translateVector.X = -bounds.X;
                 }
-                if (topLeft.Y < 0)
+                if (bounds.Y < 0)
                 {
-                    this.Height -= topLeft.Y;
+                    this.Height -= bounds.Y;
                     //this.Top += topLeft.Y;
-                    translateVector.Y = -topLeft.Y;
+                    translateVector.Y = -bounds.Y;
                 }
 
                 MoveFigures(translateVector.X, translateVector.Y, figures);
 
-                if (selectedFigures.Count >= 2)
-                {
-                    bounds = selectedFigures.Last().Path.GetBounds();
-                   
-                }
+                //if (selectionBox.Count() >= 2)
+                //{
+                //    bounds = selectedFigures.Last().Path.GetBounds();
+                //    RectangleF secondBounds = selectionBox.ElementAt(selectionBox.Count() -2).Path.GetBounds();
+                //    if (secondBounds.Y > bounds.Y)
+                //    {
+                //        bounds.Y = (int)Math.Round(secondBounds.Y);
+                //    }
+                //}
 
-                Point rightBottom = Point.Ceiling(new PointF(bounds.X + bounds.Width, bounds.Y + bounds.Height));
+                Point rightBottom = new Point(bounds.X + bounds.Width, bounds.Y + bounds.Height);
                
                 if (rightBottom.X > this.Width)
                 {

@@ -72,7 +72,7 @@
             this.DeleteGroup});
             this.groupsControl.Location = new System.Drawing.Point(17, 9);
             this.groupsControl.Name = "groupsControl";
-            this.groupsControl.Size = new System.Drawing.Size(112, 25);
+            this.groupsControl.Size = new System.Drawing.Size(81, 25);
             this.groupsControl.TabIndex = 18;
             this.groupsControl.Text = "groupControlPanael";
             // 

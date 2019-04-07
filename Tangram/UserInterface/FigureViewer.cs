@@ -14,6 +14,8 @@ namespace Tangram.UserInterface
 {
     public partial class FigureViewer : Form
     {
+        BindingSource source;
+
         public FigureViewer()
         {
             InitializeComponent();
@@ -32,7 +34,9 @@ namespace Tangram.UserInterface
 
         private void FigureViewer_Load(object sender, EventArgs e)
         {
-            GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            source = new BindingSource();
+            source.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            GroupList.DataSource = source;
             GroupList.DisplayMember = "Name";
             GroupList.ValueMember = "Id";
         }
@@ -43,21 +47,27 @@ namespace Tangram.UserInterface
             if (res == DialogResult.Yes) {
                 Database.Teacher_Workspace.figureGroups.Delete(Convert.ToInt32(GroupList.SelectedValue));
             }
-            GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            source.ResetBindings(false);
+            //GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            //GroupList.
         }
 
         private void AddGroup_Click(object sender, EventArgs e)
         {
             FigureGroupsEdit groupsEdit = new FigureGroupsEdit();
             groupsEdit.ShowDialog();
-            GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            source.ResetBindings(false);
+            //GroupList.DataSource = null;
+            //GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
         }
 
         private void EditGroup_Click(object sender, EventArgs e)
         {
             FigureGroupsEdit groupsEdit = new FigureGroupsEdit(GroupList.SelectedItem as FigureGroup);
             groupsEdit.ShowDialog();
-            GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            source.ResetBindings(false);
+            //GroupList.DataSource = null;
+            //GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
         }
     }
 }

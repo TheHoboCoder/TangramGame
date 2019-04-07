@@ -115,7 +115,7 @@ namespace Tangram.Data
                 {
                     children.Clear();
                     children = null;
-                    childrenInGroup.Clear();
+                    //childrenInGroup.Clear();
                     teacher = null;
                 }
 

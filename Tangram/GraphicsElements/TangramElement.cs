@@ -33,6 +33,45 @@ namespace Tangram.GraphicsElements
         }
 
 
+        public Bitmap getIcon(Color background)
+        {
+            if (image == null) image = ToBitmap();
+
+            if (image.Width > image.Height)
+            {
+                double pos = image.Width / 2 + image.Height / 2;
+
+                Bitmap bitmap = new Bitmap(image.Width, image.Width);
+
+                using (Graphics gr = Graphics.FromImage(bitmap))
+                {
+                    gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    //gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                    gr.DrawImage(image, new PointF(0, (float)pos));
+                }
+                return bitmap;
+            }
+            else
+            {
+                if(image.Width < image.Height)
+                {
+                    Bitmap bitmap = new Bitmap(image.Height, image.Height);
+                    double pos = image.Height/ 2 + image.Width / 2;
+                    using (Graphics gr = Graphics.FromImage(bitmap))
+                    {
+                        gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        //gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                        gr.DrawImage(image, new PointF((float)pos, 0));
+                    }
+                    return bitmap;
+                }
+                else
+                {
+                    return image;
+                }
+            }
+        }
+
 
         private Bitmap image;
         public Bitmap figureImage {
@@ -45,8 +84,8 @@ namespace Tangram.GraphicsElements
 
         public TangramElement(List<TangramFigure> figures,Size size)
         {
-            this.Figures = figures;
             FigureSize = size;
+            this.Figures = figures;
         }
 
         public TangramElement() { }

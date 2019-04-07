@@ -18,7 +18,8 @@ namespace Tangram.Data
         public FigureRepository(MySqlConnection connection) : base(connection, true)
         {
             figureInfo = new TableInfo();
-
+            figureInfo.TableName = "figures";
+            figureInfo.IdName = "id_figure";
             figureInfo.parameters.Add(new MySqlParameter("id_figure", MySqlDbType.Int32));
             figureInfo.parameters.Add(new MySqlParameter("figure_name", MySqlDbType.VarChar));
             figureInfo.parameters.Add(new MySqlParameter("figure_data", MySqlDbType.JSON));

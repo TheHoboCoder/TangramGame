@@ -165,8 +165,9 @@ namespace Tangram.GraphicsElements
             }
         }
 
-        
+
         #region IDisposable Support
+        [IgnoreDataMember]
         private bool disposedValue = false; // Для определения избыточных вызовов
 
         protected virtual void Dispose(bool disposing)

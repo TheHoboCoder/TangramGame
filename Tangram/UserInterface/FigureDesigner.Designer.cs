@@ -34,6 +34,10 @@
             this.canvasPanel = new System.Windows.Forms.Panel();
             this.designerCanvas = new Tangram.GraphicsElements.DesignerCanvas();
             this.figureToolBox1 = new Tangram.GraphicsElements.FigureToolBox();
+            this.FigureNameTB = new System.Windows.Forms.TextBox();
+            this.famLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.figureTypeCombo = new System.Windows.Forms.ComboBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -51,10 +55,15 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Сохранить фигуру";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // panel2
             // 
             this.panel2.AutoSize = true;
+            this.panel2.Controls.Add(this.figureTypeCombo);
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.FigureNameTB);
+            this.panel2.Controls.Add(this.famLabel);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
@@ -101,6 +110,7 @@
             this.designerCanvas.Name = "designerCanvas";
             this.designerCanvas.Size = new System.Drawing.Size(548, 438);
             this.designerCanvas.SnapAngle = 45F;
+            this.designerCanvas.SnapDistance = 0F;
             this.designerCanvas.TabIndex = 0;
             this.designerCanvas.TabStop = false;
             // 
@@ -115,6 +125,45 @@
             this.figureToolBox1.Size = new System.Drawing.Size(369, 441);
             this.figureToolBox1.TabIndex = 0;
             // 
+            // FigureNameTB
+            // 
+            this.FigureNameTB.Location = new System.Drawing.Point(326, 19);
+            this.FigureNameTB.Margin = new System.Windows.Forms.Padding(2);
+            this.FigureNameTB.Name = "FigureNameTB";
+            this.FigureNameTB.Size = new System.Drawing.Size(190, 20);
+            this.FigureNameTB.TabIndex = 13;
+            // 
+            // famLabel
+            // 
+            this.famLabel.AutoSize = true;
+            this.famLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.famLabel.Location = new System.Drawing.Point(197, 20);
+            this.famLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.famLabel.Name = "famLabel";
+            this.famLabel.Size = new System.Drawing.Size(127, 16);
+            this.famLabel.TabIndex = 12;
+            this.famLabel.Text = "Название фигуры";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(533, 20);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 16);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Тип фигуры";
+            // 
+            // figureTypeCombo
+            // 
+            this.figureTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.figureTypeCombo.FormattingEnabled = true;
+            this.figureTypeCombo.Location = new System.Drawing.Point(626, 18);
+            this.figureTypeCombo.Name = "figureTypeCombo";
+            this.figureTypeCombo.Size = new System.Drawing.Size(157, 21);
+            this.figureTypeCombo.TabIndex = 21;
+            // 
             // FigureDesigner
             // 
             this.AllowDrop = true;
@@ -125,7 +174,9 @@
             this.Controls.Add(this.panel2);
             this.Name = "FigureDesigner";
             this.Text = "Редактирование фигур";
+            this.Load += new System.EventHandler(this.FigureDesigner_Load);
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -145,5 +196,9 @@
         private GraphicsElements.DesignerCanvas designerCanvas;
         private GraphicsElements.FigureToolBox figureToolBox1;
         private System.Windows.Forms.Panel canvasPanel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox FigureNameTB;
+        private System.Windows.Forms.Label famLabel;
+        private System.Windows.Forms.ComboBox figureTypeCombo;
     }
 }

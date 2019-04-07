@@ -170,8 +170,7 @@ namespace Tangram.Data
             try
             {
                 command.ExecuteNonQuery();
-                command.CommandText = "select last_insert_id();";
-                int newId =  Convert.ToInt32(command.ExecuteScalar());
+                int newId = (int)command.LastInsertedId;
 
                 if (!objectMode)
                 {
