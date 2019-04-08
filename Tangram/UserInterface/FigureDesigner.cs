@@ -15,6 +15,9 @@ namespace Tangram.UserInterface
 {
     public partial class FigureDesigner : Form
     {
+        bool editMode = false;
+        private Tangram.Data.DataModels.Figure currentFigure;
+
         public FigureDesigner()
         {
             InitializeComponent();
@@ -27,9 +30,35 @@ namespace Tangram.UserInterface
             designerCanvas.AllowDrop = true;
             designerCanvas.DragEnter += Canvas_DragEnter;
             designerCanvas.DragDrop += Canvas_DragDrop;
+            figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            figureTypeCombo.DisplayMember = "Name";
+            figureTypeCombo.ValueMember = "Id";
         }
 
-        private void Canvas_DragEnter(object sender, DragEventArgs e)
+        public FigureDesigner(Tangram.Data.DataModels.Figure figure)
+        {
+            InitializeComponent();
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.BIG_TRIANGLE, Color.Yellow, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.MID_TRIANGLE, Color.Violet, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.SMALL_TRIANGLE, Color.Green, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.RECT, Color.Red, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.Blue, new PointF(0, 0)));
+
+            designerCanvas.AllowDrop = true;
+            designerCanvas.DragEnter += Canvas_DragEnter;
+            designerCanvas.DragDrop += Canvas_DragDrop;
+            designerCanvas.Init(figure.TangramElement.Figures.Cast<Figure>().ToList(), figure.TangramElement.FigureSize);
+            FigureNameTB.Text = figure.FigureName;
+            currentFigure = figure;
+            figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            figureTypeCombo.DisplayMember = "Name";
+            figureTypeCombo.ValueMember = "Id";
+            figureTypeCombo.SelectedValue = Database.Teacher_Workspace.figureGroups.Entities.Where(ent => ent.Id == figure.Group_id).First();
+            editMode = true;
+        }
+
+
+            private void Canvas_DragEnter(object sender, DragEventArgs e)
         {
             //if (e.Data.GetType() == typeof(Figure))
             //{
@@ -59,9 +88,8 @@ namespace Tangram.UserInterface
 
         private void FigureDesigner_Load(object sender, EventArgs e)
         {
-            figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
-            figureTypeCombo.DisplayMember = "Name";
-            figureTypeCombo.ValueMember = "Id";
+           
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -82,24 +110,52 @@ namespace Tangram.UserInterface
                 }
                 else
                 {
-                    TangramElement element = new TangramElement(f.Cast<TangramFigure>().ToList(), size);
-                    Tangram.Data.DataModels.Figure fig = new Data.DataModels.Figure();
-                    fig.FigureName = FigureNameTB.Text.Trim();
-                    fig.Group_id = Convert.ToInt32(figureTypeCombo.SelectedValue);
-                    fig.User_id = Database.Teacher_Workspace.teacher.Id;
-                    fig.TangramElement = element;
-                    using (FileStream file = new FileStream("figure.dat",FileMode.OpenOrCreate))
+                    if (editMode)
                     {
-                        byte[] data = TangramElement.Serialize(element);
-                        file.Write(data, 0, data.Count());
+                        currentFigure.TangramElement.Figures = f.Cast<TangramFigure>().ToList();
+                        currentFigure.TangramElement.FigureSize = size;
+                        currentFigure.FigureName = FigureNameTB.Text.Trim();
+                        currentFigure.Group_id = Convert.ToInt32(figureTypeCombo.SelectedValue);
+                        if (Database.Teacher_Workspace.Figures.Update(currentFigure))
+                        {
+                            this.Close();
+                        }
                     }
-                    //Database.Teacher_Workspace.Figures.Add(fig);
+                    else
+                    {
+                        TangramElement element = new TangramElement(f.Cast<TangramFigure>().ToList(), size);
+                        currentFigure = new Data.DataModels.Figure();
+                        currentFigure.FigureName = FigureNameTB.Text.Trim();
+                        currentFigure.Group_id = Convert.ToInt32(figureTypeCombo.SelectedValue);
+                        currentFigure.User_id = Database.Teacher_Workspace.teacher.Id;
+                        currentFigure.TangramElement = element;
+                        if (Database.Teacher_Workspace.Figures.Add(currentFigure)!=-1)
+                        {
+                            this.Close();
+                        }
+                    }
+                   
+                    //using (FileStream file = new FileStream("figure.dat", FileMode.OpenOrCreate))
+                    //{
+                    //    byte[] data = TangramElement.Serialize(element);
+                    //    file.Write(data, 0, data.Count());
+                    //}
+                   
                 }
                
             }
 
 
 
+        }
+
+        private void FigureDesigner_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Закрыть окно? Изменения не будут сохраненны", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (res == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

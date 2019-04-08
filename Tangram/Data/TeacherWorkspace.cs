@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tangram.Data.DataModels;
+using System.Windows.Forms;
 
 namespace Tangram.Data
 {
@@ -32,6 +33,13 @@ namespace Tangram.Data
                     figures = new FigureRepository(connection);
                 return figures;
             }
+        }
+
+        private ListViewAdapter adapter;
+
+        public void InitListView(ListView listView)
+        {
+            adapter = new ListViewAdapter(figureGroups.Entities.ToList(), Figures.Entities.ToList(), listView,teacher.Id);
         }
 
 

@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 namespace Tangram.GraphicsElements
 {
     [DataContract]
-    class TangramElement
+    public class TangramElement
     {
         [DataMember]
-        public Size FigureSize { get; set; }
+        public Size FigureSize { get; set;}
 
         private List<TangramFigure> figures;
         [DataMember]
@@ -27,8 +27,10 @@ namespace Tangram.GraphicsElements
             set
             {
                 figures = value;
-                image = ToBitmap();
-
+                foreach (Figure fig in figures)
+                {
+                    fig.Reset(fig.Location, fig.pivot, fig.RotationAngle);
+                }
             }
         }
 

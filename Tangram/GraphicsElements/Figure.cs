@@ -12,18 +12,37 @@ namespace Tangram.GraphicsElements
     [Serializable]
     abstract public class Figure:IDisposable
     {
+
+        public Figure(Color c, PointF location)
+        {
+            path = new GraphicsPath();
+            transformationMatrix = new Matrix();
+            this.FigureColor = c;
+            Reset(location);
+        }
+
+        public Figure(Color c, PointF location, float angle, PointF pivot)
+        {
+            path = new GraphicsPath();
+            transformationMatrix = new Matrix();
+            this.FigureColor = c;
+            Reset(location, pivot, angle);
+        }
+
         private PointF[] location = new PointF[] { new PointF(0, 0) };
 
-        protected void  Reset(PointF pos)
+        public void  Reset(PointF pos)
         {
+            if (path == null) path = new GraphicsPath();
+            if (transformationMatrix == null) transformationMatrix = new Matrix();
             this.rotationAngle = 0;
-            Init(path);
+            Init(ref path);
             this.Location = pos;
         }
 
-        protected void Reset(PointF pos,PointF pivot,float angle)
+        public void Reset(PointF pos,PointF pivot,float angle)
         {
-            Init(path);
+            Init(ref path);
             this.rotationAngle = 0;
 
             float deltaX = pivot.X - pos.X;
@@ -43,7 +62,7 @@ namespace Tangram.GraphicsElements
             Location = currentLocation;
         }
 
-        protected  abstract void Init(GraphicsPath p);
+        protected  abstract void Init(ref GraphicsPath p);
 
         public Bitmap GetImage(Color fillcolor)
         {
@@ -75,17 +94,23 @@ namespace Tangram.GraphicsElements
                 return new PointF(x, y);
             }
         }
+
         // сама фигура
+        [IgnoreDataMember]
+        [NonSerialized]
         private GraphicsPath path = new GraphicsPath();
 
         [IgnoreDataMember]
         public GraphicsPath Path { get { return path; } }
         // матрица преобразований
+        [IgnoreDataMember]
+        [NonSerialized]
         private Matrix transformationMatrix = new Matrix();
 
         //применяет транформации, указанные в transformationMatrix
         private void ApplyTransform()
         {
+            if (path == null) path = new GraphicsPath();
             path.Transform(transformationMatrix);
             transformationMatrix.TransformPoints(location);
         }
@@ -97,6 +122,7 @@ namespace Tangram.GraphicsElements
         /// <param name="dy">Сдвиг по Y</param>
         public void Translate(float dx, float dy)
         {
+            if (transformationMatrix == null) transformationMatrix = new Matrix();
             transformationMatrix.Reset();
             transformationMatrix.Translate(dx, dy);
             PointF newPivot = new PointF(pivot.X + dx, pivot.Y + dy);
@@ -159,6 +185,7 @@ namespace Tangram.GraphicsElements
             }
             set
             {
+                if (transformationMatrix == null) transformationMatrix = new Matrix();
                 //TODO
                 Rotate(value - rotationAngle);
                 rotationAngle = value;
@@ -167,7 +194,7 @@ namespace Tangram.GraphicsElements
 
 
         #region IDisposable Support
-        [IgnoreDataMember]
+        [NonSerialized]
         private bool disposedValue = false; // Для определения избыточных вызовов
 
         protected virtual void Dispose(bool disposing)

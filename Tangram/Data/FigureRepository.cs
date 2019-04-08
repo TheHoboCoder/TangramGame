@@ -26,7 +26,7 @@ namespace Tangram.Data
             figureInfo.parameters.Add(new MySqlParameter("id_group", MySqlDbType.Int32));
             figureInfo.parameters.Add(new MySqlParameter("id_user", MySqlDbType.Int32));
 
-            figureInfo.SelectStatement = "select id_figure, figure_name, id_group, id_user from figures";
+            figureInfo.SelectStatement = "select id_figure, figure_data, figure_name, id_group, id_user from figures";
             figureInfo.GenerateStatements();
             figureInfo.linkedTables.Add("results");
             InitCommandParameters();
@@ -40,8 +40,11 @@ namespace Tangram.Data
             figure.FigureName = row["figure_name"].ToString();
             figure.Group_id = Convert.ToInt32(row["id_group"]);
             figure.User_id = Convert.ToInt32(row["id_user"]);
-            byte[] figure_data = Encoding.UTF8.GetBytes(row["figure_data"].ToString());
+            byte[] figure_data = null;
+            figure_data =Encoding.UTF8.GetBytes( row["figure_data"].ToString());
+           
             figure.TangramElement = GraphicsElements.TangramElement.Deserialize(figure_data);
+         
             return figure;
         }
 
@@ -51,7 +54,7 @@ namespace Tangram.Data
             parameters["figure_name"].Value = c.FigureName;
             parameters["id_group"].Value = c.Group_id;
             parameters["id_user"].Value = c.User_id;
-            parameters["figure_data"].Value = GraphicsElements.TangramElement.Serialize(c.TangramElement);
+            parameters["figure_data"].Value = Encoding.UTF8.GetString(GraphicsElements.TangramElement.Serialize(c.TangramElement));
         }
     }
 }

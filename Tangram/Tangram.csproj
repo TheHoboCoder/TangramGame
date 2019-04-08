@@ -64,7 +64,7 @@
     <Compile Include="Data\FigureRepository.cs" />
     <Compile Include="Data\GroupsRepository.cs" />
     <Compile Include="Data\GroupTypeRepository.cs" />
-    <Compile Include="Data\TableInfoHolder.cs" />
+    <Compile Include="Data\ListViewAdapter.cs" />
     <Compile Include="Data\DataModels\User.cs" />
     <Compile Include="Data\Repository.cs" />
     <Compile Include="Data\TableInfo.cs" />

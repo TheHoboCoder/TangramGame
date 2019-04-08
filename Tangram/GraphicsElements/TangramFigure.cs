@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Tangram.GraphicsElements
 {
     [DataContract]
-    class TangramFigure : Figure
+    public class TangramFigure : Figure
     {
         //сторона прямоугольника, из которого состоят фигуры танграма
         protected const float RECT_WIDTH = 200.0F;
@@ -43,25 +43,29 @@ namespace Tangram.GraphicsElements
         }
 
 
-        public TangramFigure(FigureTypes type,Color c,PointF location)
+        public TangramFigure(FigureTypes type,Color c,PointF location):base(c,location)
         {
             FigureType = type;
-            FigureColor = c;
-            Reset(location);
             created = true;
         }
 
-        public TangramFigure(FigureTypes type, Color c, PointF location, PointF pivot, float angle)
+        public TangramFigure(FigureTypes type, Color c, PointF location, PointF pivot, float angle) : base(c, location,angle,pivot)
         {
             FigureType = type;
-            FigureColor = c;
-            Reset(location,pivot,angle);
             created = true;
         }
 
-        protected override void Init(GraphicsPath p)
+        protected override void Init(ref GraphicsPath p)
         {
-            p.Reset();
+            if (p != null)
+            {
+                p.Reset();
+            }
+            else
+            {
+                p = new GraphicsPath();
+                
+            }
             float side = 0;
             switch (FigureType)
             {

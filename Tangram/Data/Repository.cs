@@ -104,15 +104,15 @@ namespace Tangram.Data
                     {
                         foreach(DataRow row in Table.Rows)
                         {
-                            try
-                            {
+                            //try
+                            //{
                                 TEntity entity = MapOut(row);
                                 if (entity != null)
                                 {
                                     entities.Add(entity);
                                 }
-                            }
-                            catch(Exception) { }
+                            //}
+                            //catch(Exception) { }
                            
                         }
                         Table.Clear();
@@ -195,7 +195,7 @@ namespace Tangram.Data
                 }
                 else
                 {
-                    System.Windows.Forms.MessageBox.Show(InsertErrorMsg,
+                    System.Windows.Forms.MessageBox.Show(InsertErrorMsg  + ex.ToString(),
                                                            "Ошибка " + ex.Number,
                                                            System.Windows.Forms.MessageBoxButtons.OK,
                                                            System.Windows.Forms.MessageBoxIcon.Error);

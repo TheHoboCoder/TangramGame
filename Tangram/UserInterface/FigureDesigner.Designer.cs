@@ -30,14 +30,14 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.figureTypeCombo = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.FigureNameTB = new System.Windows.Forms.TextBox();
+            this.famLabel = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.canvasPanel = new System.Windows.Forms.Panel();
             this.designerCanvas = new Tangram.GraphicsElements.DesignerCanvas();
             this.figureToolBox1 = new Tangram.GraphicsElements.FigureToolBox();
-            this.FigureNameTB = new System.Windows.Forms.TextBox();
-            this.famLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.figureTypeCombo = new System.Windows.Forms.ComboBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -69,8 +69,47 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(5);
-            this.panel2.Size = new System.Drawing.Size(1060, 56);
+            this.panel2.Size = new System.Drawing.Size(919, 56);
             this.panel2.TabIndex = 2;
+            // 
+            // figureTypeCombo
+            // 
+            this.figureTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.figureTypeCombo.FormattingEnabled = true;
+            this.figureTypeCombo.Location = new System.Drawing.Point(626, 18);
+            this.figureTypeCombo.Name = "figureTypeCombo";
+            this.figureTypeCombo.Size = new System.Drawing.Size(157, 21);
+            this.figureTypeCombo.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(533, 20);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 16);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Тип фигуры";
+            // 
+            // FigureNameTB
+            // 
+            this.FigureNameTB.Location = new System.Drawing.Point(326, 19);
+            this.FigureNameTB.Margin = new System.Windows.Forms.Padding(2);
+            this.FigureNameTB.Name = "FigureNameTB";
+            this.FigureNameTB.Size = new System.Drawing.Size(190, 20);
+            this.FigureNameTB.TabIndex = 13;
+            // 
+            // famLabel
+            // 
+            this.famLabel.AutoSize = true;
+            this.famLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.famLabel.Location = new System.Drawing.Point(197, 20);
+            this.famLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.famLabel.Name = "famLabel";
+            this.famLabel.Size = new System.Drawing.Size(127, 16);
+            this.famLabel.TabIndex = 12;
+            this.famLabel.Text = "Название фигуры";
             // 
             // splitContainer1
             // 
@@ -85,8 +124,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.figureToolBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(1060, 441);
-            this.splitContainer1.SplitterDistance = 687;
+            this.splitContainer1.Size = new System.Drawing.Size(919, 441);
+            this.splitContainer1.SplitterDistance = 595;
             this.splitContainer1.TabIndex = 3;
             // 
             // canvasPanel
@@ -97,7 +136,7 @@
             this.canvasPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.canvasPanel.Location = new System.Drawing.Point(0, 0);
             this.canvasPanel.Name = "canvasPanel";
-            this.canvasPanel.Size = new System.Drawing.Size(687, 441);
+            this.canvasPanel.Size = new System.Drawing.Size(595, 441);
             this.canvasPanel.TabIndex = 1;
             // 
             // designerCanvas
@@ -122,58 +161,20 @@
             this.figureToolBox1.Location = new System.Drawing.Point(0, 0);
             this.figureToolBox1.Name = "figureToolBox1";
             this.figureToolBox1.Padding = new System.Windows.Forms.Padding(10);
-            this.figureToolBox1.Size = new System.Drawing.Size(369, 441);
+            this.figureToolBox1.Size = new System.Drawing.Size(320, 441);
             this.figureToolBox1.TabIndex = 0;
-            // 
-            // FigureNameTB
-            // 
-            this.FigureNameTB.Location = new System.Drawing.Point(326, 19);
-            this.FigureNameTB.Margin = new System.Windows.Forms.Padding(2);
-            this.FigureNameTB.Name = "FigureNameTB";
-            this.FigureNameTB.Size = new System.Drawing.Size(190, 20);
-            this.FigureNameTB.TabIndex = 13;
-            // 
-            // famLabel
-            // 
-            this.famLabel.AutoSize = true;
-            this.famLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.famLabel.Location = new System.Drawing.Point(197, 20);
-            this.famLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.famLabel.Name = "famLabel";
-            this.famLabel.Size = new System.Drawing.Size(127, 16);
-            this.famLabel.TabIndex = 12;
-            this.famLabel.Text = "Название фигуры";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(533, 20);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 16);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Тип фигуры";
-            // 
-            // figureTypeCombo
-            // 
-            this.figureTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.figureTypeCombo.FormattingEnabled = true;
-            this.figureTypeCombo.Location = new System.Drawing.Point(626, 18);
-            this.figureTypeCombo.Name = "figureTypeCombo";
-            this.figureTypeCombo.Size = new System.Drawing.Size(157, 21);
-            this.figureTypeCombo.TabIndex = 21;
             // 
             // FigureDesigner
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1060, 497);
+            this.ClientSize = new System.Drawing.Size(919, 497);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel2);
             this.Name = "FigureDesigner";
             this.Text = "Редактирование фигур";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FigureDesigner_FormClosing);
             this.Load += new System.EventHandler(this.FigureDesigner_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();

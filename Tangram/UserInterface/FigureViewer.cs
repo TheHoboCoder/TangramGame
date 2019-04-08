@@ -39,6 +39,8 @@ namespace Tangram.UserInterface
             GroupList.DataSource = source;
             GroupList.DisplayMember = "Name";
             GroupList.ValueMember = "Id";
+
+            Database.Teacher_Workspace.InitListView(figureView);
         }
 
         private void DeleteGroup_Click(object sender, EventArgs e)
