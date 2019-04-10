@@ -128,6 +128,12 @@
     <Compile Include="UserInterface\FigureViewer.Designer.cs">
       <DependentUpon>FigureViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\GameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\GameForm.Designer.cs">
+      <DependentUpon>GameForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\GroupChildControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -206,6 +212,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\FigureViewer.resx">
       <DependentUpon>FigureViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\GameForm.resx">
+      <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\GroupChildControl.resx">
       <DependentUpon>GroupChildControl.cs</DependentUpon>

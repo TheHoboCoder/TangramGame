@@ -52,7 +52,12 @@ namespace Tangram.Data
             listView.Items.Clear();
             ListViewGroup group  = figureGroups.Find(gr => gr.Name == "group_" + groupId.ToString());
             var filteredItems = items.Where(i => i.Group.Equals(group));
-            listView.Items.AddRange(filteredItems.ToArray());
+            foreach (ListViewItem item in filteredItems)
+            {
+                ListViewItem cloned = item.Clone() as ListViewItem;
+                cloned.Name = item.Name;
+                listView.Items.Add(cloned);
+            }
         }
 
         public void Filter(bool exclude)
@@ -61,12 +66,22 @@ namespace Tangram.Data
             if (exclude)
             {
                 var filteredItems = items.Where(i => Convert.ToInt32(i.Tag) != FilteredUserID);
-                listView.Items.AddRange(filteredItems.ToArray());
+                foreach(ListViewItem item in filteredItems)
+                {
+                    ListViewItem cloned = item.Clone() as ListViewItem;
+                    cloned.Name = item.Name;
+                    listView.Items.Add(cloned);
+                }
             }
             else
             {
                 var filteredItems = items.Where(i => Convert.ToInt32(i.Tag) == FilteredUserID);
-                listView.Items.AddRange(filteredItems.ToArray());
+                foreach (ListViewItem item in filteredItems)
+                {
+                    ListViewItem cloned = item.Clone() as ListViewItem;
+                    cloned.Name = item.Name;
+                    listView.Items.Add(cloned);
+                }
             }
            
         }
@@ -78,19 +93,34 @@ namespace Tangram.Data
             if (exclude)
             {
                 var filteredItems = items.Where(i => Convert.ToInt32(i.Tag) != FilteredUserID && i.Group.Equals(group));
-                listView.Items.AddRange(filteredItems.ToArray());
+                foreach (ListViewItem item in filteredItems)
+                {
+                    ListViewItem cloned = item.Clone() as ListViewItem;
+                    cloned.Name = item.Name;
+                    listView.Items.Add(cloned);
+                }
             }
             else
             {
                 var filteredItems = items.Where(i => Convert.ToInt32(i.Tag) == FilteredUserID && i.Group.Equals(group));
-                listView.Items.AddRange(filteredItems.ToArray());
+                foreach (ListViewItem item in filteredItems)
+                {
+                    ListViewItem cloned = item.Clone() as ListViewItem;
+                    cloned.Name = item.Name;
+                    listView.Items.Add(cloned);
+                }
             }
         }
 
         public void ShowAll()
         {
             listView.Items.Clear();
-            listView.Items.AddRange(items.ToArray());
+            foreach (ListViewItem item in items)
+            {
+                ListViewItem cloned = item.Clone() as ListViewItem;
+                cloned.Name = item.Name;
+                listView.Items.Add(cloned);
+            }
         }
 
         public ListViewGroup GetGroup(int id)
@@ -105,7 +135,7 @@ namespace Tangram.Data
 
         public void RemoveItem(ListViewItem item)
         {
-            items.Remove(item);
+            items.Remove(items.Find(i=>i.Name == item.Name));
             figureImages.Images.RemoveAt(item.ImageIndex);
             try
             {
@@ -126,7 +156,14 @@ namespace Tangram.Data
         {
             ListViewItem item = GetItem(f.Id);
             item.Text = f.FigureName;
-            figureImages.Images[items.IndexOf(item)] = f.TangramElement.getIcon(System.Drawing.Color.White);
+            figureImages.Images[items.IndexOf(item)] = f.TangramElement.getIcon(IMAGE_SIZE,System.Drawing.Color.White);
+
+            ListViewItem[] search = listView.Items.Find(item.Name, false);
+            if (search.Count() != 0)
+            {
+                search[0].Text = f.FigureName;
+            }
+           
         }
 
 
@@ -146,13 +183,15 @@ namespace Tangram.Data
             ListViewItem listViewItem = new ListViewItem();
             listViewItem.Text = f.FigureName;
             listViewItem.Name = "figure_"+f.Id.ToString();
-            figureImages.Images.Add(f.TangramElement.getIcon(System.Drawing.Color.White));
+            figureImages.Images.Add(f.TangramElement.getIcon(IMAGE_SIZE,System.Drawing.Color.White));
             //figureImages.Images.Add(f.TangramElement.figureImage);
             listViewItem.Group = figureGroups.Find(gr=>gr.Name == "group_"+f.Group_id.ToString());
             listViewItem.ImageIndex = figureImages.Images.Count - 1;
             listViewItem.Tag = f.User_id;
             items.Add(listViewItem);
-            listView.Items.Add(listViewItem);
+            ListViewItem cloned = listViewItem.Clone() as ListViewItem;
+            cloned.Name = listViewItem.Name;
+            listView.Items.Add(cloned);
         }
     }
 }

@@ -15,10 +15,18 @@ namespace Tangram.UserInterface
     public partial class FigureViewer : Form
     {
         BindingSource source;
+        bool filteredGroup = false;
+        bool mode;
+        public Figure SelectedFigure { get; private set; }
 
-        public FigureViewer()
+        public FigureViewer(bool selectMode)
         {
             InitializeComponent();
+            mode = selectMode;
+            hint.Visible = selectMode;
+            if(selectMode)
+               this.figureView.DoubleClick += new System.EventHandler(this.figureView_DoubleClick);
+
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -42,16 +50,21 @@ namespace Tangram.UserInterface
             GroupList.DataSource = source;
             GroupList.DisplayMember = "Name";
             GroupList.ValueMember = "Id";
-
+            userFilterCombo.SelectedIndex = 0;
             Database.Teacher_Workspace.InitListView(figureView);
+            this.GroupList.SelectedValueChanged += new System.EventHandler(this.GroupList_SelectedValueChanged);
         }
 
         private void DeleteGroup_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Удалить групу?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (res == DialogResult.Yes) {
-                Database.Teacher_Workspace.figureGroups.Delete(Convert.ToInt32(GroupList.SelectedValue));
-                Database.Teacher_Workspace.ViewAdapter.RemoveGroup(Database.Teacher_Workspace.ViewAdapter.GetGroup(Convert.ToInt32(GroupList.SelectedValue)));
+                int deleteid = Convert.ToInt32(GroupList.SelectedValue);
+                if (Database.Teacher_Workspace.figureGroups.Delete(Convert.ToInt32(GroupList.SelectedValue)))
+                {
+                    Database.Teacher_Workspace.ViewAdapter.RemoveGroup(Database.Teacher_Workspace.ViewAdapter.GetGroup(deleteid));
+                }
+              
             }
             source.ResetBindings(false);
             //GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
@@ -109,7 +122,7 @@ namespace Tangram.UserInterface
                 ListViewItem selectedItem = figureView.SelectedItems[0];
                 if (Convert.ToInt32(selectedItem.Tag) != Database.Teacher_Workspace.teacher.Id)
                 {
-                    MessageBox.Show("Вы не являетесь создателем этой фигуры?", "Невозможно изменить фигуру", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    MessageBox.Show("Вы не являетесь создателем этой фигуры.", "Невозможно изменить фигуру", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -120,6 +133,112 @@ namespace Tangram.UserInterface
                     Database.Teacher_Workspace.ViewAdapter.UpdateFigure(designer.currentFigure);
                     designer.Dispose();
                 }
+            }
+        }
+
+        private void userFilterCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (userFilterCombo.SelectedIndex) {
+                case 0:
+                    if (!filteredGroup)
+                    {
+                        Database.Teacher_Workspace.ViewAdapter?.ShowAll();
+                    }
+                    else
+                    {
+                        Database.Teacher_Workspace.ViewAdapter.Filter(Convert.ToInt32(GroupList.SelectedValue));
+                    }
+                    break;
+                case 1:
+                    if (filteredGroup)
+                    {
+                        Database.Teacher_Workspace.ViewAdapter.Filter(Convert.ToInt32(GroupList.SelectedValue), false);
+                    }
+                    else
+                    {
+                        Database.Teacher_Workspace.ViewAdapter.Filter(false);
+                    }
+                    break;
+                case 2:
+                    if (filteredGroup)
+                    {
+                        Database.Teacher_Workspace.ViewAdapter.Filter(Convert.ToInt32(GroupList.SelectedValue), true);
+                    }
+                    else
+                    {
+                        Database.Teacher_Workspace.ViewAdapter.Filter(true);
+                    }
+                  
+                    break;
+            }
+        }
+
+        private void GroupList_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (GroupList.SelectedValue != null)
+            {
+                filteredGroup = true;
+                switch (userFilterCombo.SelectedIndex)
+                {
+                    case 0:
+                        if (!filteredGroup)
+                        {
+                            Database.Teacher_Workspace.ViewAdapter?.ShowAll();
+                        }
+                        else
+                        {
+                            Database.Teacher_Workspace.ViewAdapter.Filter(Convert.ToInt32(GroupList.SelectedValue));
+                        }
+                        break;
+                    case 1:
+                        if (filteredGroup)
+                        {
+                            Database.Teacher_Workspace.ViewAdapter.Filter(Convert.ToInt32(GroupList.SelectedValue), false);
+                        }
+                        else
+                        {
+                            Database.Teacher_Workspace.ViewAdapter.Filter(false);
+                        }
+                        break;
+                    case 2:
+                        if (filteredGroup)
+                        {
+                            Database.Teacher_Workspace.ViewAdapter.Filter(Convert.ToInt32(GroupList.SelectedValue), true);
+                        }
+                        else
+                        {
+                            Database.Teacher_Workspace.ViewAdapter.Filter(true);
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        private void showAllBtn_Click(object sender, EventArgs e)
+        {
+            filteredGroup = false;
+            userFilterCombo.SelectedIndex = 0;
+            Database.Teacher_Workspace.ViewAdapter.ShowAll();
+        }
+
+        private void figureView_DoubleClick(object sender, EventArgs e)
+        {
+            if (figureView.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = figureView.SelectedItems[0];
+                int index = Convert.ToInt32(selectedItem.Name.Substring(selectedItem.Name.IndexOf('_') + 1));
+                SelectedFigure= Database.Teacher_Workspace.Figures.Entities.Where(ent => ent.Id == index).First();
+                this.Close();
+            }
+        }
+
+        private void FigureViewer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(mode  && SelectedFigure == null)
+            {
+                MessageBox.Show("Выберите фигуру", "Ошибка", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                e.Cancel = true;
             }
         }
     }

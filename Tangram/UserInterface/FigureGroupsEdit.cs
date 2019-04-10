@@ -55,11 +55,12 @@ namespace Tangram.UserInterface
                 }
                 else
                 {
-                    if(Database.Teacher_Workspace.figureGroups.Add(new FigureGroup()
+                    group = new FigureGroup()
                     {
                         Name = LevelTB.Text,
                         Comment = CommentTB.Text
-                    }) != -1)
+                    };
+                    if (Database.Teacher_Workspace.figureGroups.Add(group) != -1)
                     {
                         this.Close();
                     }

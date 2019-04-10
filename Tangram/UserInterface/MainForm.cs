@@ -69,7 +69,7 @@ namespace Tangram.UserInterface
 
         private void FiguresBtn_Click(object sender, EventArgs e)
         {
-            FigureViewer viewer = new FigureViewer();
+            FigureViewer viewer = new FigureViewer(false);
             viewer.Show();
         }
     }

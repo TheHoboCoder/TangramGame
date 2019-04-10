@@ -35,15 +35,18 @@ namespace Tangram.GraphicsElements
         }
 
 
-        public Bitmap getIcon(Color background)
+        public Bitmap getIcon(int size,Color background)
         {
             Bitmap image = GetImage();
 
             if (image.Width > image.Height)
             {
-                double pos = image.Width / 2 - image.Height / 2;
-
-                Bitmap bitmap = new Bitmap(image.Width, image.Width);
+               
+                double scaleFactor = (double)size / image.Width;
+                double side = image.Height * scaleFactor;
+                double pos = size / 2 - side / 2;
+                RectangleF rectangle = new RectangleF(0, (float)pos, size, (float)side);
+                Bitmap bitmap = new Bitmap(size, size);
 
                 using (Graphics gr = Graphics.FromImage(bitmap))
                 {
@@ -51,7 +54,8 @@ namespace Tangram.GraphicsElements
                     gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     gr.Clear(background);
                     //gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-                    gr.DrawImage(image, new PointF(0, (float)pos));
+                    gr.DrawImage(image, rectangle);
+                    //gr.DrawImage(image, new PointF(0, (float)pos));
                 }
                 image.Dispose();
                 return bitmap;
@@ -60,15 +64,22 @@ namespace Tangram.GraphicsElements
             {
                 if(image.Width < image.Height)
                 {
-                    Bitmap bitmap = new Bitmap(image.Height, image.Height);
-                    double pos = image.Height/ 2 - image.Width / 2;
+                    Bitmap bitmap = new Bitmap(size, size);
+
+                   
+                    double scaleFactor = (double)size / image.Height;
+
+                    double side = image.Width * scaleFactor;
+                    double pos = size / 2 - side / 2;
+                    RectangleF rectangle = new RectangleF((float)pos, 0 , (float)side, size);
+
                     using (Graphics gr = Graphics.FromImage(bitmap))
                     {
                      
                         gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                         gr.Clear(background);
                         //gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-                        gr.DrawImage(image, new PointF((float)pos, 0));
+                        gr.DrawImage(image, rectangle);
                     }
                     image.Dispose();
                     return bitmap;

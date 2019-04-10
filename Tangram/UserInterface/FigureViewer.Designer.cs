@@ -28,17 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("еннн", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("почка", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("пам", 0);
             System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("точка", 0);
             System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("роккк");
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FigureViewer));
             this.GroupList = new System.Windows.Forms.ListBox();
             this.figureView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.groupsControl = new System.Windows.Forms.ToolStrip();
             this.AddGroup = new System.Windows.Forms.ToolStripButton();
             this.EditGroup = new System.Windows.Forms.ToolStripButton();
@@ -49,6 +46,8 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.userFilterCombo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.showAllBtn = new System.Windows.Forms.Button();
+            this.hint = new System.Windows.Forms.Label();
             this.groupsControl.SuspendLayout();
             this.figuresControl.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +81,6 @@
             listViewItem1,
             listViewItem2,
             listViewItem3});
-            this.figureView.LargeImageList = this.imageList1;
             this.figureView.Location = new System.Drawing.Point(204, 37);
             this.figureView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.figureView.MultiSelect = false;
@@ -94,12 +92,6 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "бам";
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "plus.png");
             // 
             // groupsControl
             // 
@@ -154,7 +146,7 @@
             this.toolStripButton3});
             this.figuresControl.Location = new System.Drawing.Point(208, 9);
             this.figuresControl.Name = "figuresControl";
-            this.figuresControl.Size = new System.Drawing.Size(112, 25);
+            this.figuresControl.Size = new System.Drawing.Size(81, 25);
             this.figuresControl.TabIndex = 19;
             this.figuresControl.Text = "groupControlPanael";
             // 
@@ -201,6 +193,7 @@
             this.userFilterCombo.Name = "userFilterCombo";
             this.userFilterCombo.Size = new System.Drawing.Size(153, 22);
             this.userFilterCombo.TabIndex = 20;
+            this.userFilterCombo.SelectedIndexChanged += new System.EventHandler(this.userFilterCombo_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -211,11 +204,35 @@
             this.label1.TabIndex = 21;
             this.label1.Text = "Отбор";
             // 
+            // showAllBtn
+            // 
+            this.showAllBtn.Location = new System.Drawing.Point(12, 201);
+            this.showAllBtn.Name = "showAllBtn";
+            this.showAllBtn.Size = new System.Drawing.Size(184, 38);
+            this.showAllBtn.TabIndex = 22;
+            this.showAllBtn.Text = "Показать все";
+            this.showAllBtn.UseVisualStyleBackColor = true;
+            this.showAllBtn.Click += new System.EventHandler(this.showAllBtn_Click);
+            // 
+            // hint
+            // 
+            this.hint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.hint.AutoSize = true;
+            this.hint.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.hint.Location = new System.Drawing.Point(14, 323);
+            this.hint.Name = "hint";
+            this.hint.Size = new System.Drawing.Size(241, 14);
+            this.hint.TabIndex = 23;
+            this.hint.Text = "Выберите фигуру двойным щелчком";
+            this.hint.Visible = false;
+            // 
             // FigureViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(669, 336);
+            this.ClientSize = new System.Drawing.Size(669, 346);
+            this.Controls.Add(this.hint);
+            this.Controls.Add(this.showAllBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.userFilterCombo);
             this.Controls.Add(this.figuresControl);
@@ -227,6 +244,7 @@
             this.Name = "FigureViewer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Просмотр фигур";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FigureViewer_FormClosing);
             this.Load += new System.EventHandler(this.FigureViewer_Load);
             this.groupsControl.ResumeLayout(false);
             this.groupsControl.PerformLayout();
@@ -252,6 +270,7 @@
         private System.Windows.Forms.ComboBox userFilterCombo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.Button showAllBtn;
+        private System.Windows.Forms.Label hint;
     }
 }
