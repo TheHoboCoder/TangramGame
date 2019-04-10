@@ -27,30 +27,33 @@ namespace Tangram.GraphicsElements
             set
             {
                 figures = value;
-                foreach (Figure fig in figures)
-                {
-                    fig.Reset(fig.Location, fig.pivot, fig.RotationAngle);
-                }
+                //foreach (Figure fig in figures)
+                //{
+                //    fig.Reset(fig.Location, fig.pivot, fig.RotationAngle);
+                //}
             }
         }
 
 
         public Bitmap getIcon(Color background)
         {
-            if (image == null) image = ToBitmap();
+            Bitmap image = GetImage();
 
             if (image.Width > image.Height)
             {
-                double pos = image.Width / 2 + image.Height / 2;
+                double pos = image.Width / 2 - image.Height / 2;
 
                 Bitmap bitmap = new Bitmap(image.Width, image.Width);
 
                 using (Graphics gr = Graphics.FromImage(bitmap))
                 {
+
                     gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    gr.Clear(background);
                     //gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
                     gr.DrawImage(image, new PointF(0, (float)pos));
                 }
+                image.Dispose();
                 return bitmap;
             }
             else
@@ -58,13 +61,16 @@ namespace Tangram.GraphicsElements
                 if(image.Width < image.Height)
                 {
                     Bitmap bitmap = new Bitmap(image.Height, image.Height);
-                    double pos = image.Height/ 2 + image.Width / 2;
+                    double pos = image.Height/ 2 - image.Width / 2;
                     using (Graphics gr = Graphics.FromImage(bitmap))
                     {
+                     
                         gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        gr.Clear(background);
                         //gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
                         gr.DrawImage(image, new PointF((float)pos, 0));
                     }
+                    image.Dispose();
                     return bitmap;
                 }
                 else
@@ -75,13 +81,14 @@ namespace Tangram.GraphicsElements
         }
 
 
-        private Bitmap image;
-        public Bitmap figureImage {
-            get
-            {
-                return image;
-            }
-        }
+        //private Bitmap image;
+        //public Bitmap figureImage {
+        //    get
+        //    {
+        //        if (image == null) image = ToBitmap();
+        //        return image;
+        //    }
+        //}
 
 
         public TangramElement(List<TangramFigure> figures,Size size)
@@ -107,11 +114,16 @@ namespace Tangram.GraphicsElements
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TangramElement));
             using (MemoryStream stream = new MemoryStream(data))
             {
-                return (TangramElement)serializer.ReadObject(stream);
+                TangramElement serialized = (TangramElement)serializer.ReadObject(stream);
+                //foreach (Figure fig in serialized.figures)
+                //{
+                //    fig.Reset(fig.Location, fig.pivot, fig.RotationAngle);
+                //}
+                return (TangramElement)serialized;
             }
         }
 
-        private Bitmap ToBitmap()
+        public Bitmap GetImage()
         {
             Bitmap bitmap = new Bitmap(FigureSize.Width, FigureSize.Height);
             using (Graphics gr = Graphics.FromImage(bitmap))

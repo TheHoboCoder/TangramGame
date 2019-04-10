@@ -16,7 +16,7 @@ namespace Tangram.UserInterface
     public partial class FigureDesigner : Form
     {
         bool editMode = false;
-        private Tangram.Data.DataModels.Figure currentFigure;
+        public Tangram.Data.DataModels.Figure currentFigure { get; private set; }
 
         public FigureDesigner()
         {
@@ -53,7 +53,8 @@ namespace Tangram.UserInterface
             figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
             figureTypeCombo.DisplayMember = "Name";
             figureTypeCombo.ValueMember = "Id";
-            figureTypeCombo.SelectedValue = Database.Teacher_Workspace.figureGroups.Entities.Where(ent => ent.Id == figure.Group_id).First();
+            figureTypeCombo.SelectedValue = figure.Group_id;
+            //figureTypeCombo.SelectedValue = Database.Teacher_Workspace.figureGroups.Entities.Where(ent => ent.Id == figure.Group_id).First();
             editMode = true;
         }
 
@@ -94,8 +95,6 @@ namespace Tangram.UserInterface
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Size size;
-            List<Figure> f = designerCanvas.packFigures(out size);
           
 
             if (FigureNameTB.Text == "")
@@ -104,6 +103,8 @@ namespace Tangram.UserInterface
             }
             else
             {
+                Size size = new Size();
+                List<Figure> f = designerCanvas.packFigures(out size);
                 if (f.Count() == 0)
                 {
                     MessageBox.Show("Не было выбрано ни одной фигуры", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -118,6 +119,7 @@ namespace Tangram.UserInterface
                         currentFigure.Group_id = Convert.ToInt32(figureTypeCombo.SelectedValue);
                         if (Database.Teacher_Workspace.Figures.Update(currentFigure))
                         {
+                            this.DialogResult = DialogResult.OK;
                             this.Close();
                         }
                     }
@@ -131,6 +133,7 @@ namespace Tangram.UserInterface
                         currentFigure.TangramElement = element;
                         if (Database.Teacher_Workspace.Figures.Add(currentFigure)!=-1)
                         {
+                            this.DialogResult = DialogResult.OK;
                             this.Close();
                         }
                     }
@@ -151,11 +154,15 @@ namespace Tangram.UserInterface
 
         private void FigureDesigner_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult res = MessageBox.Show("Закрыть окно? Изменения не будут сохраненны", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (res == DialogResult.No)
+            if(this.DialogResult != DialogResult.OK)
             {
-                e.Cancel = true;
+                DialogResult res = MessageBox.Show("Закрыть окно? Изменения не будут сохраненны", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (res == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
             }
+           
         }
     }
 }

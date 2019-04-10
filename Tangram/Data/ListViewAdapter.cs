@@ -12,18 +12,8 @@ namespace Tangram.Data
     {
         private int FilteredUserID = 1;
 
-        public enum UserFilterMode {
-            NONE,
-            EXCEPT,
-            INCLUDE
-        }
 
-        public UserFilterMode FilterMode { get; set; }
-
-        public int FilteredGroup { get; set; }
-
-
-        private const int IMAGE_SIZE = 50;
+        private const int IMAGE_SIZE = 100;
         private ImageList figureImages;
         private List<ListViewGroup> figureGroups;
         private List<ListViewItem> items;
@@ -35,8 +25,6 @@ namespace Tangram.Data
             source.Items.Clear();
             listView = source;
             FilteredUserID = teacherID;
-            FilterMode = UserFilterMode.NONE;
-            FilteredGroup = -1;
 
             figureGroups = new List<ListViewGroup>();
             foreach (FigureGroup group in groups)
@@ -59,24 +47,86 @@ namespace Tangram.Data
         }
 
 
-        public void Filter()
+        public void Filter(int groupId)
         {
-            if(FilteredGroup==-1 && FilterMode == UserFilterMode.NONE)
+            listView.Items.Clear();
+            ListViewGroup group  = figureGroups.Find(gr => gr.Name == "group_" + groupId.ToString());
+            var filteredItems = items.Where(i => i.Group.Equals(group));
+            listView.Items.AddRange(filteredItems.ToArray());
+        }
+
+        public void Filter(bool exclude)
+        {
+            listView.Items.Clear();
+            if (exclude)
             {
-                return;
+                var filteredItems = items.Where(i => Convert.ToInt32(i.Tag) != FilteredUserID);
+                listView.Items.AddRange(filteredItems.ToArray());
             }
-
-
-            if(FilteredGroup != -1)
+            else
             {
-                listView.Items.Clear();
-                listView.Groups.Clear();
-
-                listView.Groups.Add(figureGroups.Find(gr => gr.Name == "group_" + FilteredGroup.ToString()));
-                
-                //var filtredItems= items.Where(i=>i)
+                var filteredItems = items.Where(i => Convert.ToInt32(i.Tag) == FilteredUserID);
+                listView.Items.AddRange(filteredItems.ToArray());
             }
+           
+        }
 
+        public void Filter(int groupId, bool exclude)
+        {
+            listView.Items.Clear();
+            ListViewGroup group = figureGroups.Find(gr => gr.Name == "group_" + groupId.ToString());
+            if (exclude)
+            {
+                var filteredItems = items.Where(i => Convert.ToInt32(i.Tag) != FilteredUserID && i.Group.Equals(group));
+                listView.Items.AddRange(filteredItems.ToArray());
+            }
+            else
+            {
+                var filteredItems = items.Where(i => Convert.ToInt32(i.Tag) == FilteredUserID && i.Group.Equals(group));
+                listView.Items.AddRange(filteredItems.ToArray());
+            }
+        }
+
+        public void ShowAll()
+        {
+            listView.Items.Clear();
+            listView.Items.AddRange(items.ToArray());
+        }
+
+        public ListViewGroup GetGroup(int id)
+        {
+            return figureGroups.Find(gr => gr.Name == "group_" + id.ToString());
+        }
+
+        public ListViewItem GetItem(int id)
+        {
+            return items.Find(gr => gr.Name == "figure_" + id.ToString());
+        }
+
+        public void RemoveItem(ListViewItem item)
+        {
+            items.Remove(item);
+            figureImages.Images.RemoveAt(item.ImageIndex);
+            try
+            {
+                listView.Items.Remove(item);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public void RemoveGroup(ListViewGroup group)
+        {
+            figureGroups.Remove(group);
+            listView.Groups.Remove(group);
+        }
+
+        public void UpdateFigure(Figure f)
+        {
+            ListViewItem item = GetItem(f.Id);
+            item.Text = f.FigureName;
+            figureImages.Images[items.IndexOf(item)] = f.TangramElement.getIcon(System.Drawing.Color.White);
         }
 
 
@@ -95,11 +145,13 @@ namespace Tangram.Data
         {
             ListViewItem listViewItem = new ListViewItem();
             listViewItem.Text = f.FigureName;
-            listViewItem.Name = f.Id.ToString();
+            listViewItem.Name = "figure_"+f.Id.ToString();
             figureImages.Images.Add(f.TangramElement.getIcon(System.Drawing.Color.White));
-            listViewItem.Group = figureGroups.Find(gr=>gr.Name ==f.Group_id.ToString());
+            //figureImages.Images.Add(f.TangramElement.figureImage);
+            listViewItem.Group = figureGroups.Find(gr=>gr.Name == "group_"+f.Group_id.ToString());
             listViewItem.ImageIndex = figureImages.Images.Count - 1;
-            listViewItem.Tag = figureImages.Images.Count - 1;
+            listViewItem.Tag = f.User_id;
+            items.Add(listViewItem);
             listView.Items.Add(listViewItem);
         }
     }

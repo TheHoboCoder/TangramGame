@@ -488,7 +488,8 @@ namespace Tangram.GraphicsElements
         
         private RectangleF getBoundingBox(List<Figure> figures)
         {
-
+            
+            
             if (figures.Count() == 1)
             {
                 return figures[0].Path.GetBounds();
@@ -580,9 +581,17 @@ namespace Tangram.GraphicsElements
 
         public List<Figure> packFigures(out Size size)
         {
-            List<Figure> packedFigures = new List<Figure>();
-            packedFigures.AddRange(figures);
+            if (figures.Count == 0) {
+                size = new Size(0, 0);
+                return new List<Figure>();
+            }
 
+            List<Figure> packedFigures = new List<Figure>();
+            packedFigures.AddRange(figures.ToArray());
+            //foreach(Figure f in figures)
+            //{
+            //    packedFigures.Add(f.Clone());
+            //}
             RectangleF rectangle = getBoundingBox(packedFigures);
             foreach(Figure f in packedFigures)
             {

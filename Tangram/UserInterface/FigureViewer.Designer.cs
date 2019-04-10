@@ -37,18 +37,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FigureViewer));
             this.GroupList = new System.Windows.Forms.ListBox();
             this.figureView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.groupsControl = new System.Windows.Forms.ToolStrip();
             this.AddGroup = new System.Windows.Forms.ToolStripButton();
             this.EditGroup = new System.Windows.Forms.ToolStripButton();
             this.DeleteGroup = new System.Windows.Forms.ToolStripButton();
             this.figuresControl = new System.Windows.Forms.ToolStrip();
             this.AddFigure = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.editFigure = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.userFilterCombo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupsControl.SuspendLayout();
             this.figuresControl.SuspendLayout();
             this.SuspendLayout();
@@ -90,6 +90,16 @@
             this.figureView.Size = new System.Drawing.Size(452, 270);
             this.figureView.TabIndex = 1;
             this.figureView.UseCompatibleStateImageBehavior = false;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "бам";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "plus.png");
             // 
             // groupsControl
             // 
@@ -140,11 +150,11 @@
             this.figuresControl.Dock = System.Windows.Forms.DockStyle.None;
             this.figuresControl.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddFigure,
-            this.toolStripButton2,
+            this.editFigure,
             this.toolStripButton3});
             this.figuresControl.Location = new System.Drawing.Point(208, 9);
             this.figuresControl.Name = "figuresControl";
-            this.figuresControl.Size = new System.Drawing.Size(81, 25);
+            this.figuresControl.Size = new System.Drawing.Size(112, 25);
             this.figuresControl.TabIndex = 19;
             this.figuresControl.Text = "groupControlPanael";
             // 
@@ -159,14 +169,15 @@
             this.AddFigure.ToolTipText = "Добавить фигуру";
             this.AddFigure.Click += new System.EventHandler(this.AddFigure_Click);
             // 
-            // toolStripButton2
+            // editFigure
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::Tangram.Properties.Resources.pencil;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "Редактировать фигуру";
+            this.editFigure.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.editFigure.Image = global::Tangram.Properties.Resources.pencil;
+            this.editFigure.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.editFigure.Name = "editFigure";
+            this.editFigure.Size = new System.Drawing.Size(23, 22);
+            this.editFigure.Text = "Редактировать фигуру";
+            this.editFigure.Click += new System.EventHandler(this.editFigure_Click);
             // 
             // toolStripButton3
             // 
@@ -176,15 +187,20 @@
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton3.Text = "Удалить фигуру";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
-            // comboBox1
+            // userFilterCombo
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(363, 11);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 22);
-            this.comboBox1.TabIndex = 20;
+            this.userFilterCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.userFilterCombo.FormattingEnabled = true;
+            this.userFilterCombo.Items.AddRange(new object[] {
+            "<Не выбрано>",
+            "Мои фигуры",
+            "Не мои фигуры"});
+            this.userFilterCombo.Location = new System.Drawing.Point(363, 11);
+            this.userFilterCombo.Name = "userFilterCombo";
+            this.userFilterCombo.Size = new System.Drawing.Size(153, 22);
+            this.userFilterCombo.TabIndex = 20;
             // 
             // label1
             // 
@@ -195,23 +211,13 @@
             this.label1.TabIndex = 21;
             this.label1.Text = "Отбор";
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "plus.png");
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "бам";
-            // 
             // FigureViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(669, 336);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.userFilterCombo);
             this.Controls.Add(this.figuresControl);
             this.Controls.Add(this.groupsControl);
             this.Controls.Add(this.figureView);
@@ -241,9 +247,9 @@
         private System.Windows.Forms.ToolStripButton DeleteGroup;
         private System.Windows.Forms.ToolStrip figuresControl;
         private System.Windows.Forms.ToolStripButton AddFigure;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton editFigure;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox userFilterCombo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ImageList imageList1;

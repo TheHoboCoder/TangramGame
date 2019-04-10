@@ -15,7 +15,7 @@ namespace Tangram.UserInterface
     public partial class FigureGroupsEdit : Form
     {
         private bool editMode= false;
-        private FigureGroup group;
+        public FigureGroup group { get; private set;  }
 
         public FigureGroupsEdit()
         {

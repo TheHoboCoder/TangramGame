@@ -9,29 +9,20 @@ using System.Runtime.Serialization;
 
 namespace Tangram.GraphicsElements
 {
-    [Serializable]
-    abstract public class Figure:IDisposable
+    [DataContract]
+    abstract public class Figure : IDisposable
     {
-
-        public Figure(Color c, PointF location)
+        public Figure(Color c)
         {
             path = new GraphicsPath();
             transformationMatrix = new Matrix();
             this.FigureColor = c;
-            Reset(location);
-        }
 
-        public Figure(Color c, PointF location, float angle, PointF pivot)
-        {
-            path = new GraphicsPath();
-            transformationMatrix = new Matrix();
-            this.FigureColor = c;
-            Reset(location, pivot, angle);
         }
 
         private PointF[] location = new PointF[] { new PointF(0, 0) };
 
-        public void  Reset(PointF pos)
+        public void Reset(PointF pos)
         {
             if (path == null) path = new GraphicsPath();
             if (transformationMatrix == null) transformationMatrix = new Matrix();
@@ -40,20 +31,33 @@ namespace Tangram.GraphicsElements
             this.Location = pos;
         }
 
-        public void Reset(PointF pos,PointF pivot,float angle)
+
+        public void Reset(PointF pos, PointF pivot, float angle)
         {
+            if (path == null) path = new GraphicsPath();
+            if (transformationMatrix == null) transformationMatrix = new Matrix();
+            //location[0].X = 0;
+            //location[0].Y = 0;
+            transformationMatrix.Reset();
+            transformationMatrix.RotateAt(-angle, pivot);
+            PointF[] recoveredPos = new PointF[] { new PointF(0, 0) };
+            transformationMatrix.TransformPoints(recoveredPos);
+            transformationMatrix.Reset();
             Init(ref path);
+            this.Location = recoveredPos[0];
             this.rotationAngle = 0;
-
-            float deltaX = pivot.X - pos.X;
-            float deltaY = pivot.Y - pos.Y;
-
-            this.pivot = new PointF(pos.X+deltaX,pos.Y+deltaY);
+            this.pivot = pivot;
             this.RotationAngle = angle;
-            this.Location = pos;
+
+            //float deltaX = pivot.X - pos.X;
+            //float deltaY = pivot.Y - pos.Y;
+
+            //this.pivot = new PointF(pos.X+deltaX,pos.Y+deltaY);
+            //this.RotationAngle = angle;
+            //this.Location = pos;
         }
 
-        public void Scale(int dx,int dy)
+        public void Scale(int dx, int dy)
         {
             transformationMatrix.Reset();
             PointF currentLocation = Location;
@@ -62,7 +66,7 @@ namespace Tangram.GraphicsElements
             Location = currentLocation;
         }
 
-        protected  abstract void Init(ref GraphicsPath p);
+        protected abstract void Init(ref GraphicsPath p);
 
         public Bitmap GetImage(Color fillcolor)
         {
@@ -80,7 +84,7 @@ namespace Tangram.GraphicsElements
 
         [DataMember]
         public Color FigureColor { get; set; }
-        
+
         /// <summary>
         /// Возвращает координату центра фигуры
         /// </summary>
@@ -98,10 +102,59 @@ namespace Tangram.GraphicsElements
         // сама фигура
         [IgnoreDataMember]
         [NonSerialized]
+        //[DataMember]
         private GraphicsPath path = new GraphicsPath();
 
+        //public PointF[] PathPoints
+        //{
+        //    get
+        //    {
+        //        return path.PathPoints;
+        //    }
+        //    set
+        //    {
+        //        if (path == null) path = new GraphicsPath();
+        //        path.Reset();
+        //        foreach(PointF cur in value)
+        //        {
+        //            path.A
+        //        }
+        //    }
+        //}
+
+        [DataContract]
+        private class GraphicPathData
+        {
+            [DataMember]
+            public PointF[] pathPoints;
+            [DataMember]
+            public byte[] types;
+        }
+
+
+        [DataMember]
+        private GraphicPathData graphicPath
+        {
+            get
+            {
+                return new GraphicPathData()
+                {
+                    pathPoints = path.PathPoints,
+                    types = path.PathTypes
+                };
+            }
+            set
+            {
+                path = new GraphicsPath(value.pathPoints, value.types);
+                location = new PointF[1];
+                location[0] = path.PathPoints[0];
+            }
+        }
+
         [IgnoreDataMember]
-        public GraphicsPath Path { get { return path; } }
+        public GraphicsPath Path {
+            get { return path; }
+        }
         // матрица преобразований
         [IgnoreDataMember]
         [NonSerialized]
@@ -110,9 +163,9 @@ namespace Tangram.GraphicsElements
         //применяет транформации, указанные в transformationMatrix
         private void ApplyTransform()
         {
-            if (path == null) path = new GraphicsPath();
+            //if (path == null) path = new GraphicsPath();
             path.Transform(transformationMatrix);
-            transformationMatrix.TransformPoints(location);
+            //transformationMatrix.TransformPoints(location);
         }
 
         /// <summary>
@@ -133,7 +186,7 @@ namespace Tangram.GraphicsElements
         /// <summary>
         /// Задает глобальное положение фигуры
         /// </summary>
-        [DataMember]
+        [IgnoreDataMember]
         public PointF Location
         {
             get
@@ -147,6 +200,7 @@ namespace Tangram.GraphicsElements
                 //мы хотим задать положение глобально
                 //однако с помощью матрицы преобразований мы можем сдвинуть фигуру относительно текущего положения 
                 //поэтому высчитываем сдвиг
+                //Translate(value.X - path.GetBounds().Location.X, value.Y - path.GetBounds().Location.Y);
                 //Translate(value.X - path.PathPoints[0].X, value.Y - path.PathPoints[0].Y);
                 Translate(value.X - location[0].X, value.Y - location[0].Y);
 
@@ -159,7 +213,7 @@ namespace Tangram.GraphicsElements
         [DataMember]
         public PointF pivot { get; set; }
         //текущий угол поворота
-       
+        [DataMember]
         private float rotationAngle = 0;
 
         /// <summary>
@@ -176,7 +230,7 @@ namespace Tangram.GraphicsElements
         /// <summary>
         /// Задает глобальный угол поворота
         /// </summary>
-        [DataMember]
+        [IgnoreDataMember]
         public float RotationAngle
         {
             get
@@ -205,8 +259,8 @@ namespace Tangram.GraphicsElements
                 {
                 }
 
-                path.Dispose();
-                transformationMatrix.Dispose();
+                path?.Dispose();
+                transformationMatrix?.Dispose();
                 path = null;
                 transformationMatrix = null;
 

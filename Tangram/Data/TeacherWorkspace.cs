@@ -37,6 +37,8 @@ namespace Tangram.Data
 
         private ListViewAdapter adapter;
 
+        public ListViewAdapter ViewAdapter { get { return adapter;  } }
+
         public void InitListView(ListView listView)
         {
             adapter = new ListViewAdapter(figureGroups.Entities.ToList(), Figures.Entities.ToList(), listView,teacher.Id);

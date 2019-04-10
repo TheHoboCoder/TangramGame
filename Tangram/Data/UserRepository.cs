@@ -145,7 +145,7 @@ namespace Tangram.Data
             parameters["name"].Value = user.Name;
             parameters["otch"].Value = user.Otch;
             parameters["phone"].Value = user.Phone;
-            parameters["password"].Value =user.Password;
+            parameters["password"].Value =User.getHash(user.Password);
 
             if(user.UserType == User.UserTypes.MET)
             {

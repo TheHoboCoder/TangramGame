@@ -42,30 +42,32 @@ namespace Tangram.GraphicsElements
             }
         }
 
-
-        public TangramFigure(FigureTypes type,Color c,PointF location):base(c,location)
+       
+        public TangramFigure(FigureTypes type,Color c,PointF location):base(c)
         {
             FigureType = type;
+            Reset(location);
             created = true;
         }
 
-        public TangramFigure(FigureTypes type, Color c, PointF location, PointF pivot, float angle) : base(c, location,angle,pivot)
+        public TangramFigure(FigureTypes type, Color c, PointF location, PointF pivot, float angle) : base(c)
         {
             FigureType = type;
+            Reset(location, pivot, angle);
             created = true;
         }
 
         protected override void Init(ref GraphicsPath p)
         {
-            if (p != null)
-            {
+            //if (p != null)
+            //{
                 p.Reset();
-            }
-            else
-            {
-                p = new GraphicsPath();
+            //}
+            //else
+            //{
+            //    p = new GraphicsPath();
                 
-            }
+            //}
             float side = 0;
             switch (FigureType)
             {
