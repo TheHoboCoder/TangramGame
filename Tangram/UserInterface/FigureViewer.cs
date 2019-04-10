@@ -38,7 +38,12 @@ namespace Tangram.UserInterface
         {
             FigureDesigner designer= new FigureDesigner();
             designer.ShowDialog();
-            Database.Teacher_Workspace.ViewAdapter.AddFigure(designer.currentFigure);
+
+            if (designer.currentFigure != null)
+            {
+                Database.Teacher_Workspace.ViewAdapter.AddFigure(designer.currentFigure);
+            }
+           
             
             designer.Dispose();
         }
@@ -130,7 +135,11 @@ namespace Tangram.UserInterface
                     Figure f = Database.Teacher_Workspace.Figures.Entities.Where(ent => ent.Id == index).First();
                     FigureDesigner designer = new FigureDesigner(f);
                     designer.ShowDialog();
-                    Database.Teacher_Workspace.ViewAdapter.UpdateFigure(designer.currentFigure);
+                    if (designer.currentFigure != null)
+                    {
+                        Database.Teacher_Workspace.ViewAdapter.UpdateFigure(designer.currentFigure);
+                    }
+                       
                     designer.Dispose();
                 }
             }

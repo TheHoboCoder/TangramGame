@@ -146,7 +146,7 @@
             this.toolStripButton3});
             this.figuresControl.Location = new System.Drawing.Point(208, 9);
             this.figuresControl.Name = "figuresControl";
-            this.figuresControl.Size = new System.Drawing.Size(81, 25);
+            this.figuresControl.Size = new System.Drawing.Size(112, 25);
             this.figuresControl.TabIndex = 19;
             this.figuresControl.Text = "groupControlPanael";
             // 

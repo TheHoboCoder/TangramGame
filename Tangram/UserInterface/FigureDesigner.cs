@@ -75,13 +75,15 @@ namespace Tangram.UserInterface
         {
            
             Figure fig = figureToolBox1.SelectedFigure.Clone();
-             //PointF location = new PointF();
+            //PointF location = new PointF();
             //location.X = e.X - canvasPanel.Left - designerCanvas.Left;
             //location.Y= e.Y - canvasPanel.Top- designerCanvas.Top;
             //fig.Location = location;
             //fig.Location = new PointF(e.X - canvasPanel.Location.X, e.Y - canvasPanel.Location.Y);
-            fig.Location = new PointF(e.X-this.Left-splitContainer1.Left-canvasPanel.Left-designerCanvas.Left, 
-                                      e.Y- this.Top- splitContainer1.Top -canvasPanel.Top-designerCanvas.Top);
+            //fig.Location = new PointF(e.X-this.Left-splitContainer1.Left-canvasPanel.Left-designerCanvas.Left, 
+            //                          e.Y- this.Top- splitContainer1.Top -canvasPanel.Top-designerCanvas.Top);
+            Point point =  designerCanvas.PointToClient(new Point(e.X, e.Y));
+            fig.Location = point;
             designerCanvas.AddFigure(fig);
 
                     
