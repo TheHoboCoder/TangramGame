@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tangram.Data.DataModels
 {
-    class Result:BaseEntity
+    public class Result:BaseEntity
     {
         public int ClassId { get; set; }
         public int ChildId { get; set; }

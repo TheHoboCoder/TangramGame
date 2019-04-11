@@ -48,7 +48,11 @@ namespace Tangram.UserInterface
             }
             else
             {
-
+                Result.DifficultyTypes difficulty = (Result.DifficultyTypes)difficultyCombo.SelectedIndex;
+                GameForm form = new GameForm(current, (Child)childCombo.SelectedItem, difficulty, Database.Teacher_Workspace.CurrentClassId);
+                this.Hide();
+                form.ShowDialog();
+                this.Show();
             }
         }
 

@@ -75,6 +75,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GraphicsElements\Figure.cs" />
+    <Compile Include="GraphicsElements\GameCanvas.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GraphicsElements\GameCanvas.Designer.cs">
+      <DependentUpon>GameCanvas.cs</DependentUpon>
+    </Compile>
     <Compile Include="GraphicsElements\GeometryTools.cs" />
     <Compile Include="GraphicsElements\FigureToolBox.cs">
       <SubType>Component</SubType>
@@ -181,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GraphicsElements\FigureToolBox.resx">
       <DependentUpon>FigureToolBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GraphicsElements\GameCanvas.resx">
+      <DependentUpon>GameCanvas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

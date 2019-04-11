@@ -13,6 +13,8 @@ namespace Tangram.GraphicsElements
 {
     public partial class FigureToolBox : FlowLayoutPanel
     {
+
+        public int FigureCount { get { return figures.Count(); } }
         private List<Figure> figures = new List<Figure>();
 
         private List<Bitmap> normalBitmap = new List<Bitmap>();
@@ -29,14 +31,24 @@ namespace Tangram.GraphicsElements
 
         private const int BRIGHTNES_SHIFT = 2;
 
-
+        public void Remove(Figure figure)
+        {
+            int pos = figures.IndexOf(figure);
+            Controls.RemoveAt(pos);
+            normalBitmap[pos].Dispose();
+            normalBitmap.RemoveAt(pos);
+            hoverBitmap[pos].Dispose();
+            hoverBitmap.RemoveAt(pos);
+        }
 
         public void Add(Figure figure)
         {
+            figure.Location = new PointF(0, 0);
             figures.Add(figure);
 
-            normalBitmap.Add(figure.GetImage(figure.FigureColor));
-
+            Bitmap image = figure.GetImage(figure.FigureColor);
+            normalBitmap.Add(image);
+            //image.Save("figure_"+ normalBitmap.Count()+".jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
             float hue = figure.FigureColor.GetHue();
             float saturation = figure.FigureColor.GetSaturation() ;
             float brightness = figure.FigureColor.GetBrightness() + BRIGHTNES_SHIFT;

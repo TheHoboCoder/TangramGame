@@ -36,25 +36,35 @@ namespace Tangram.GraphicsElements
         {
             if (path == null) path = new GraphicsPath();
             if (transformationMatrix == null) transformationMatrix = new Matrix();
-            //location[0].X = 0;
-            //location[0].Y = 0;
-            transformationMatrix.Reset();
-            transformationMatrix.RotateAt(-angle, pivot);
-            PointF[] recoveredPos = new PointF[] { new PointF(0, 0) };
-            transformationMatrix.TransformPoints(recoveredPos);
-            transformationMatrix.Reset();
+            location[0].X = 0;
+            location[0].Y = 0;
+            //transformationMatrix.Reset();
+            //transformationMatrix.RotateAt(-angle, pivot);
+            //PointF[] recoveredPos = new PointF[] { new PointF(0, 0) };
+            //transformationMatrix.TransformPoints(recoveredPos);
+            //transformationMatrix.Reset();
             Init(ref path);
-            this.Location = recoveredPos[0];
+            //this.Location = recoveredPos[0];
             this.rotationAngle = 0;
-            this.pivot = pivot;
-            this.RotationAngle = angle;
-
-            //float deltaX = pivot.X - pos.X;
-            //float deltaY = pivot.Y - pos.Y;
-
-            //this.pivot = new PointF(pos.X+deltaX,pos.Y+deltaY);
+            //this.pivot = pivot;
             //this.RotationAngle = angle;
-            //this.Location = pos;
+
+            float deltaX = pivot.X - pos.X;
+            float deltaY = pivot.Y - pos.Y;
+
+            this.pivot = new PointF(pos.X + deltaX, pos.Y + deltaY);
+            this.RotationAngle = angle;
+            this.Location = pos;
+        }
+
+
+        public void Reset(GraphicPathData data, PointF pos, PointF pivot, float angle)
+        {
+            this.graphicPath = data;
+            location[0].X = pos.X;
+            location[0].Y = pos.Y;
+            this.pivot = pivot;
+            this.rotationAngle = angle;
         }
 
         public void Scale(int dx, int dy)
@@ -123,7 +133,7 @@ namespace Tangram.GraphicsElements
         //}
 
         [DataContract]
-        private class GraphicPathData
+        public class GraphicPathData
         {
             [DataMember]
             public PointF[] pathPoints;
@@ -133,7 +143,7 @@ namespace Tangram.GraphicsElements
 
 
         [DataMember]
-        private GraphicPathData graphicPath
+        public GraphicPathData graphicPath
         {
             get
             {
@@ -143,11 +153,16 @@ namespace Tangram.GraphicsElements
                     types = path.PathTypes
                 };
             }
-            set
+            private set
             {
                 path = new GraphicsPath(value.pathPoints, value.types);
-                location = new PointF[1];
-                location[0] = path.PathPoints[0];
+                //TODO:сделать сериализацию положения
+                if (location == null)
+                {
+                    location = new PointF[1];
+                    location[0] = path.PathPoints[0];
+                }
+               
             }
         }
 

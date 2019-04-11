@@ -17,7 +17,8 @@ namespace Tangram.Data.DataModels
         {
 
             resultInfo = new TableInfo();
-
+            resultInfo.TableName = "results";
+            resultInfo.TableName = "id_result";
             resultInfo.parameters.Add(new MySqlParameter("id_result", MySqlDbType.Int32));
             resultInfo.parameters.Add(new MySqlParameter("id_child", MySqlDbType.Int32));
             resultInfo.parameters.Add(new MySqlParameter("score", MySqlDbType.Int32));

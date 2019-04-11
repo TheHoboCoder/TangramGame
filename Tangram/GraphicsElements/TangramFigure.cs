@@ -50,6 +50,13 @@ namespace Tangram.GraphicsElements
             created = true;
         }
 
+        public TangramFigure(Figure.GraphicPathData pathData, FigureTypes type, Color c, PointF location, PointF pivot, float angle):base(c)
+        {
+            FigureType = type;
+            Reset(pathData, location, pivot, angle);
+            created = true;
+        }
+
         public TangramFigure(FigureTypes type, Color c, PointF location, PointF pivot, float angle) : base(c)
         {
             FigureType = type;
@@ -157,7 +164,7 @@ namespace Tangram.GraphicsElements
         //}
         public override Figure Clone()
         {
-            return new TangramFigure(this.figureType, this.FigureColor, this.Location, pivot, RotationAngle);
+            return new TangramFigure(this.graphicPath,this.figureType, this.FigureColor, this.Location, pivot, RotationAngle);
         }
     }
 }

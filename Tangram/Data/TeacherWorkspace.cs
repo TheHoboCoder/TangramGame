@@ -35,6 +35,9 @@ namespace Tangram.Data
             }
         }
 
+        public GameRepository gameRepository { get; private set;  }
+        
+
         private ListViewAdapter adapter;
 
         public ListViewAdapter ViewAdapter { get { return adapter;  } }
@@ -112,6 +115,8 @@ namespace Tangram.Data
             }
 
             figureGroups = new FigureGroupsRepository(connection);
+
+            gameRepository = new GameRepository(connection);
         }
 
         #region IDisposable Support
