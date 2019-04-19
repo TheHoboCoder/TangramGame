@@ -51,6 +51,7 @@ namespace Tangram.UserInterface
             gameCanvas.AllowDrop = true;
             gameCanvas.DragDrop += Drag_drop;
             gameCanvas.DragEnter += Canvas_DragEnter;
+            this.DoubleBuffered = true;
         }
 
         private void Drag_drop(object sender, DragEventArgs e)
@@ -58,6 +59,7 @@ namespace Tangram.UserInterface
             GraphicsElements.Figure fig = figureToolBox1.SelectedFigure;
             GraphicsElements.Figure fig2 = fig.Clone();
             Point point = gameCanvas.PointToClient(new Point(e.X, e.Y));
+            //RectangleF bounds = fig2.Path.GetBounds();
             fig2.Location = point;
             if (gameCanvas.PlaceFigure((GraphicsElements.TangramFigure)fig2))
             {

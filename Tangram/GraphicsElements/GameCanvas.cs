@@ -14,7 +14,7 @@ namespace Tangram.GraphicsElements
     public partial class GameCanvas : UserControl
     {
 
-        private const float SNAP_DISTANCE = 5;
+        private const float SNAP_DISTANCE = 10;
 
         private Result.DifficultyTypes difficulty;
 
@@ -41,9 +41,13 @@ namespace Tangram.GraphicsElements
             TangramFigure found = null;
             foreach (TangramFigure figure in groundFigures)
             {
+                if (!figure.FigureType.Equals(placedFigure.FigureType)) continue;
+
+                int i = 0;
+
                 foreach (PointF point in placedFigure.Path.PathPoints)
                 {
-                    int i = 0;
+                  
                     foreach (PointF p in figure.Path.PathPoints)
                     {
                         if (GeometryTools.GetDistance(point, p) <= SNAP_DISTANCE)
@@ -51,18 +55,18 @@ namespace Tangram.GraphicsElements
                             i++;
                         }
                     }
+                }
 
-                    if(i >= placedFigure.Path.PathPoints.Count())
-                    {
-                        found = figure;
-                    }
-
+                if (i >= placedFigure.Path.PathPoints.Count())
+                {
+                    found = figure;
                 }
             }
 
             if(found == null)
             {
-
+                placedFigures.Add(placedFigure);
+                Refresh();
                 return false;
             }
             else

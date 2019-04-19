@@ -42,13 +42,14 @@ namespace Tangram.GraphicsElements
         }
 
         public void Add(Figure figure)
-        {
-            figure.Location = new PointF(0, 0);
+       {
+            RectangleF rectangle = figure.Path.GetBounds();
+            figure.Translate(-rectangle.X, -rectangle.Y);
             figures.Add(figure);
 
             Bitmap image = figure.GetImage(figure.FigureColor);
             normalBitmap.Add(image);
-            //image.Save("figure_"+ normalBitmap.Count()+".jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+            //image.Save("figure_" + normalBitmap.Count() + ".jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
             float hue = figure.FigureColor.GetHue();
             float saturation = figure.FigureColor.GetSaturation() ;
             float brightness = figure.FigureColor.GetBrightness() + BRIGHTNES_SHIFT;

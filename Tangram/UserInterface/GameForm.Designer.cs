@@ -81,7 +81,6 @@
             this.ClientSize = new System.Drawing.Size(1023, 590);
             this.Controls.Add(this.splitContainer1);
             this.Name = "GameForm";
-            this.Text = "GameForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameForm_FormClosing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

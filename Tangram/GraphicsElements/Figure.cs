@@ -20,6 +20,7 @@ namespace Tangram.GraphicsElements
 
         }
 
+        [DataMember]
         private PointF[] location = new PointF[] { new PointF(0, 0) };
 
         public void Reset(PointF pos)
@@ -156,12 +157,12 @@ namespace Tangram.GraphicsElements
             private set
             {
                 path = new GraphicsPath(value.pathPoints, value.types);
-                //TODO:сделать сериализацию положения
-                if (location == null)
-                {
-                    location = new PointF[1];
-                    location[0] = path.PathPoints[0];
-                }
+                ////TODO:сделать сериализацию положения
+                //if (location == null)
+                //{
+                //    location = new PointF[1];
+                //    location[0] = path.PathPoints[0];
+                //}
                
             }
         }
@@ -180,7 +181,7 @@ namespace Tangram.GraphicsElements
         {
             //if (path == null) path = new GraphicsPath();
             path.Transform(transformationMatrix);
-            //transformationMatrix.TransformPoints(location);
+            transformationMatrix.TransformPoints(location);
         }
 
         /// <summary>
@@ -217,8 +218,11 @@ namespace Tangram.GraphicsElements
                 //поэтому высчитываем сдвиг
                 //Translate(value.X - path.GetBounds().Location.X, value.Y - path.GetBounds().Location.Y);
                 //Translate(value.X - path.PathPoints[0].X, value.Y - path.PathPoints[0].Y);
-                Translate(value.X - location[0].X, value.Y - location[0].Y);
+              
 
+                Translate(value.X - location[0].X, value.Y - location[0].Y);
+                location[0].X = value.X;
+                location[0].Y = value.Y;
             }
         }
 
