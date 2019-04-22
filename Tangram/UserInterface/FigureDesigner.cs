@@ -166,5 +166,11 @@ namespace Tangram.UserInterface
             }
            
         }
+
+        private void AddFigureGroup_Click(object sender, EventArgs e)
+        {
+            FigureGroupsEdit groupsEdit = new FigureGroupsEdit();
+            groupsEdit.ShowDialog();
+        }
     }
 }

@@ -38,6 +38,9 @@
             this.canvasPanel = new System.Windows.Forms.Panel();
             this.designerCanvas = new Tangram.GraphicsElements.DesignerCanvas();
             this.figureToolBox1 = new Tangram.GraphicsElements.FigureToolBox();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.EditFigureGroup = new System.Windows.Forms.ToolStripButton();
+            this.AddFigureGroup = new System.Windows.Forms.ToolStripButton();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -45,6 +48,7 @@
             this.splitContainer1.SuspendLayout();
             this.canvasPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).BeginInit();
+            this.toolStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -60,12 +64,14 @@
             // panel2
             // 
             this.panel2.AutoSize = true;
+            this.panel2.Controls.Add(this.toolStrip2);
             this.panel2.Controls.Add(this.figureTypeCombo);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.FigureNameTB);
             this.panel2.Controls.Add(this.famLabel);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(5);
@@ -76,38 +82,38 @@
             // 
             this.figureTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.figureTypeCombo.FormattingEnabled = true;
-            this.figureTypeCombo.Location = new System.Drawing.Point(626, 18);
+            this.figureTypeCombo.Location = new System.Drawing.Point(645, 16);
             this.figureTypeCombo.Name = "figureTypeCombo";
-            this.figureTypeCombo.Size = new System.Drawing.Size(157, 21);
+            this.figureTypeCombo.Size = new System.Drawing.Size(157, 26);
             this.figureTypeCombo.TabIndex = 21;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(533, 20);
+            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(549, 20);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 16);
+            this.label1.Size = new System.Drawing.Size(91, 18);
             this.label1.TabIndex = 14;
             this.label1.Text = "Тип фигуры";
             // 
             // FigureNameTB
             // 
-            this.FigureNameTB.Location = new System.Drawing.Point(326, 19);
+            this.FigureNameTB.Location = new System.Drawing.Point(338, 17);
             this.FigureNameTB.Margin = new System.Windows.Forms.Padding(2);
             this.FigureNameTB.Name = "FigureNameTB";
-            this.FigureNameTB.Size = new System.Drawing.Size(190, 20);
+            this.FigureNameTB.Size = new System.Drawing.Size(190, 26);
             this.FigureNameTB.TabIndex = 13;
             // 
             // famLabel
             // 
             this.famLabel.AutoSize = true;
-            this.famLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.famLabel.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.famLabel.Location = new System.Drawing.Point(197, 20);
             this.famLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.famLabel.Name = "famLabel";
-            this.famLabel.Size = new System.Drawing.Size(127, 16);
+            this.famLabel.Size = new System.Drawing.Size(137, 18);
             this.famLabel.TabIndex = 12;
             this.famLabel.Text = "Название фигуры";
             // 
@@ -164,6 +170,37 @@
             this.figureToolBox1.Size = new System.Drawing.Size(320, 441);
             this.figureToolBox1.TabIndex = 0;
             // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddFigureGroup,
+            this.EditFigureGroup});
+            this.toolStrip2.Location = new System.Drawing.Point(805, 17);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(89, 25);
+            this.toolStrip2.TabIndex = 27;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // EditFigureGroup
+            // 
+            this.EditFigureGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EditFigureGroup.Image = global::Tangram.Properties.Resources.pencil;
+            this.EditFigureGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditFigureGroup.Name = "EditFigureGroup";
+            this.EditFigureGroup.Size = new System.Drawing.Size(23, 22);
+            this.EditFigureGroup.Text = "Редактирование подгрупп";
+            // 
+            // AddFigureGroup
+            // 
+            this.AddFigureGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AddFigureGroup.Image = global::Tangram.Properties.Resources.plus_green;
+            this.AddFigureGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AddFigureGroup.Name = "AddFigureGroup";
+            this.AddFigureGroup.Size = new System.Drawing.Size(23, 22);
+            this.AddFigureGroup.Text = "toolStripButton1";
+            this.AddFigureGroup.Click += new System.EventHandler(this.AddFigureGroup_Click);
+            // 
             // FigureDesigner
             // 
             this.AllowDrop = true;
@@ -173,6 +210,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel2);
             this.Name = "FigureDesigner";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Редактирование фигур";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FigureDesigner_FormClosing);
             this.Load += new System.EventHandler(this.FigureDesigner_Load);
@@ -184,6 +222,8 @@
             this.splitContainer1.ResumeLayout(false);
             this.canvasPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).EndInit();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,5 +241,8 @@
         private System.Windows.Forms.TextBox FigureNameTB;
         private System.Windows.Forms.Label famLabel;
         private System.Windows.Forms.ComboBox figureTypeCombo;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStripButton AddFigureGroup;
+        private System.Windows.Forms.ToolStripButton EditFigureGroup;
     }
 }

@@ -38,48 +38,44 @@
             // 
             // CommentTB
             // 
-            this.CommentTB.Location = new System.Drawing.Point(152, 48);
-            this.CommentTB.Margin = new System.Windows.Forms.Padding(2);
+            this.CommentTB.Location = new System.Drawing.Point(165, 59);
             this.CommentTB.Multiline = true;
             this.CommentTB.Name = "CommentTB";
-            this.CommentTB.Size = new System.Drawing.Size(190, 38);
+            this.CommentTB.Size = new System.Drawing.Size(283, 51);
             this.CommentTB.TabIndex = 14;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 51);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(20, 62);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 26);
+            this.label1.Size = new System.Drawing.Size(127, 36);
             this.label1.TabIndex = 12;
             this.label1.Text = "Комментарий \r\n(необязательно)\r\n";
             // 
             // LevelTB
             // 
-            this.LevelTB.Location = new System.Drawing.Point(152, 21);
-            this.LevelTB.Margin = new System.Windows.Forms.Padding(2);
+            this.LevelTB.Location = new System.Drawing.Point(165, 14);
             this.LevelTB.Name = "LevelTB";
-            this.LevelTB.Size = new System.Drawing.Size(190, 20);
+            this.LevelTB.Size = new System.Drawing.Size(283, 26);
             this.LevelTB.TabIndex = 11;
             // 
             // famLabel
             // 
             this.famLabel.AutoSize = true;
-            this.famLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.famLabel.Location = new System.Drawing.Point(23, 22);
-            this.famLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.famLabel.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.famLabel.Location = new System.Drawing.Point(20, 17);
             this.famLabel.Name = "famLabel";
-            this.famLabel.Size = new System.Drawing.Size(124, 16);
+            this.famLabel.Size = new System.Drawing.Size(132, 18);
             this.famLabel.TabIndex = 10;
             this.famLabel.Text = "Название группы";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(198, 99);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button1.Location = new System.Drawing.Point(237, 135);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(144, 38);
+            this.button1.Size = new System.Drawing.Size(216, 52);
             this.button1.TabIndex = 16;
             this.button1.Text = "Отмена";
             this.button1.UseVisualStyleBackColor = true;
@@ -87,10 +83,10 @@
             // 
             // LoginBtn
             // 
-            this.LoginBtn.Location = new System.Drawing.Point(12, 99);
-            this.LoginBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LoginBtn.Location = new System.Drawing.Point(13, 135);
+            this.LoginBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.LoginBtn.Name = "LoginBtn";
-            this.LoginBtn.Size = new System.Drawing.Size(144, 38);
+            this.LoginBtn.Size = new System.Drawing.Size(216, 52);
             this.LoginBtn.TabIndex = 15;
             this.LoginBtn.Text = "Сохранить";
             this.LoginBtn.UseVisualStyleBackColor = true;
@@ -98,16 +94,18 @@
             // 
             // FigureGroupsEdit
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(366, 147);
+            this.ClientSize = new System.Drawing.Size(470, 197);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.LoginBtn);
             this.Controls.Add(this.CommentTB);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.LevelTB);
             this.Controls.Add(this.famLabel);
+            this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FigureGroupsEdit";

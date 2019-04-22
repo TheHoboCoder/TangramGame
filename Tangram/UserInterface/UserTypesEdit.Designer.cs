@@ -51,12 +51,13 @@
             this.GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Group_type,
             this.Id_group_type});
-            this.GridView.Location = new System.Drawing.Point(12, 12);
+            this.GridView.Location = new System.Drawing.Point(13, 13);
+            this.GridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GridView.MultiSelect = false;
             this.GridView.Name = "GridView";
             this.GridView.ReadOnly = true;
             this.GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.GridView.Size = new System.Drawing.Size(170, 171);
+            this.GridView.Size = new System.Drawing.Size(240, 276);
             this.GridView.TabIndex = 1;
             // 
             // Group_type
@@ -77,26 +78,28 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 9);
+            this.label4.Location = new System.Drawing.Point(6, 12);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(99, 13);
+            this.label4.Size = new System.Drawing.Size(136, 18);
             this.label4.TabIndex = 9;
             this.label4.Text = "Название группы:";
             // 
             // GroupNameTB
             // 
-            this.GroupNameTB.Location = new System.Drawing.Point(6, 25);
+            this.GroupNameTB.Location = new System.Drawing.Point(9, 34);
+            this.GroupNameTB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GroupNameTB.Name = "GroupNameTB";
-            this.GroupNameTB.Size = new System.Drawing.Size(136, 20);
+            this.GroupNameTB.Size = new System.Drawing.Size(202, 26);
             this.GroupNameTB.TabIndex = 10;
             this.GroupNameTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GroupNameTB_KeyPress);
             // 
             // AddBtn
             // 
-            this.AddBtn.Location = new System.Drawing.Point(12, 190);
-            this.AddBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.AddBtn.Location = new System.Drawing.Point(13, 303);
+            this.AddBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.AddBtn.Name = "AddBtn";
-            this.AddBtn.Size = new System.Drawing.Size(120, 37);
+            this.AddBtn.Size = new System.Drawing.Size(226, 51);
             this.AddBtn.TabIndex = 23;
             this.AddBtn.Text = "Добавить";
             this.AddBtn.UseVisualStyleBackColor = true;
@@ -104,10 +107,10 @@
             // 
             // UpdateBtn
             // 
-            this.UpdateBtn.Location = new System.Drawing.Point(138, 190);
-            this.UpdateBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.UpdateBtn.Location = new System.Drawing.Point(246, 303);
+            this.UpdateBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.UpdateBtn.Name = "UpdateBtn";
-            this.UpdateBtn.Size = new System.Drawing.Size(118, 37);
+            this.UpdateBtn.Size = new System.Drawing.Size(226, 51);
             this.UpdateBtn.TabIndex = 24;
             this.UpdateBtn.Text = "Редактировать";
             this.UpdateBtn.UseVisualStyleBackColor = true;
@@ -115,10 +118,10 @@
             // 
             // DeleteBtn
             // 
-            this.DeleteBtn.Location = new System.Drawing.Point(262, 190);
-            this.DeleteBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.DeleteBtn.Location = new System.Drawing.Point(480, 303);
+            this.DeleteBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.DeleteBtn.Name = "DeleteBtn";
-            this.DeleteBtn.Size = new System.Drawing.Size(132, 37);
+            this.DeleteBtn.Size = new System.Drawing.Size(226, 51);
             this.DeleteBtn.TabIndex = 25;
             this.DeleteBtn.Text = "Удалить";
             this.DeleteBtn.UseVisualStyleBackColor = true;
@@ -126,10 +129,10 @@
             // 
             // SaveBtn
             // 
-            this.SaveBtn.Location = new System.Drawing.Point(6, 59);
-            this.SaveBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SaveBtn.Location = new System.Drawing.Point(9, 67);
+            this.SaveBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(157, 31);
+            this.SaveBtn.Size = new System.Drawing.Size(133, 43);
             this.SaveBtn.TabIndex = 26;
             this.SaveBtn.Text = "Сохранить";
             this.SaveBtn.UseVisualStyleBackColor = true;
@@ -137,10 +140,10 @@
             // 
             // CancelBtn
             // 
-            this.CancelBtn.Location = new System.Drawing.Point(6, 94);
-            this.CancelBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CancelBtn.Location = new System.Drawing.Point(150, 67);
+            this.CancelBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CancelBtn.Name = "CancelBtn";
-            this.CancelBtn.Size = new System.Drawing.Size(157, 32);
+            this.CancelBtn.Size = new System.Drawing.Size(133, 45);
             this.CancelBtn.TabIndex = 27;
             this.CancelBtn.Text = "Отмена";
             this.CancelBtn.UseVisualStyleBackColor = true;
@@ -148,27 +151,31 @@
             // 
             // ControlPanel
             // 
+            this.ControlPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ControlPanel.Controls.Add(this.label4);
             this.ControlPanel.Controls.Add(this.CancelBtn);
             this.ControlPanel.Controls.Add(this.GroupNameTB);
             this.ControlPanel.Controls.Add(this.SaveBtn);
-            this.ControlPanel.Location = new System.Drawing.Point(188, 22);
+            this.ControlPanel.Location = new System.Drawing.Point(261, 13);
+            this.ControlPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ControlPanel.Name = "ControlPanel";
-            this.ControlPanel.Size = new System.Drawing.Size(200, 141);
+            this.ControlPanel.Size = new System.Drawing.Size(305, 126);
             this.ControlPanel.TabIndex = 28;
             this.ControlPanel.Visible = false;
             // 
             // UserTypesEdit
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(407, 236);
+            this.ClientSize = new System.Drawing.Size(714, 363);
             this.Controls.Add(this.ControlPanel);
             this.Controls.Add(this.DeleteBtn);
             this.Controls.Add(this.UpdateBtn);
             this.Controls.Add(this.AddBtn);
             this.Controls.Add(this.GridView);
+            this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UserTypesEdit";

@@ -205,5 +205,10 @@ namespace Tangram.UserInterface
                 Database.userRepository.Delete(Convert.ToInt32(GridView.SelectedRows[0].Cells["id_user"].Value));
             }
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

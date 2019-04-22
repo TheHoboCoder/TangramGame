@@ -55,11 +55,11 @@
             // GroupList
             // 
             this.GroupList.FormattingEnabled = true;
-            this.GroupList.ItemHeight = 14;
-            this.GroupList.Location = new System.Drawing.Point(13, 37);
-            this.GroupList.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.GroupList.ItemHeight = 18;
+            this.GroupList.Location = new System.Drawing.Point(15, 48);
+            this.GroupList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GroupList.Name = "GroupList";
-            this.GroupList.Size = new System.Drawing.Size(183, 158);
+            this.GroupList.Size = new System.Drawing.Size(205, 202);
             this.GroupList.TabIndex = 0;
             // 
             // figureView
@@ -81,11 +81,11 @@
             listViewItem1,
             listViewItem2,
             listViewItem3});
-            this.figureView.Location = new System.Drawing.Point(204, 37);
-            this.figureView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.figureView.Location = new System.Drawing.Point(230, 48);
+            this.figureView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.figureView.MultiSelect = false;
             this.figureView.Name = "figureView";
-            this.figureView.Size = new System.Drawing.Size(452, 270);
+            this.figureView.Size = new System.Drawing.Size(551, 331);
             this.figureView.TabIndex = 1;
             this.figureView.UseCompatibleStateImageBehavior = false;
             // 
@@ -100,7 +100,7 @@
             this.AddGroup,
             this.EditGroup,
             this.DeleteGroup});
-            this.groupsControl.Location = new System.Drawing.Point(17, 9);
+            this.groupsControl.Location = new System.Drawing.Point(19, 12);
             this.groupsControl.Name = "groupsControl";
             this.groupsControl.Size = new System.Drawing.Size(81, 25);
             this.groupsControl.TabIndex = 18;
@@ -144,9 +144,9 @@
             this.AddFigure,
             this.editFigure,
             this.toolStripButton3});
-            this.figuresControl.Location = new System.Drawing.Point(208, 9);
+            this.figuresControl.Location = new System.Drawing.Point(234, 12);
             this.figuresControl.Name = "figuresControl";
-            this.figuresControl.Size = new System.Drawing.Size(112, 25);
+            this.figuresControl.Size = new System.Drawing.Size(81, 25);
             this.figuresControl.TabIndex = 19;
             this.figuresControl.Text = "groupControlPanael";
             // 
@@ -189,26 +189,28 @@
             "<Не выбрано>",
             "Мои фигуры",
             "Не мои фигуры"});
-            this.userFilterCombo.Location = new System.Drawing.Point(363, 11);
+            this.userFilterCombo.Location = new System.Drawing.Point(408, 14);
+            this.userFilterCombo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.userFilterCombo.Name = "userFilterCombo";
-            this.userFilterCombo.Size = new System.Drawing.Size(153, 22);
+            this.userFilterCombo.Size = new System.Drawing.Size(172, 26);
             this.userFilterCombo.TabIndex = 20;
             this.userFilterCombo.SelectedIndexChanged += new System.EventHandler(this.userFilterCombo_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(309, 14);
+            this.label1.Location = new System.Drawing.Point(348, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 14);
+            this.label1.Size = new System.Drawing.Size(54, 18);
             this.label1.TabIndex = 21;
             this.label1.Text = "Отбор";
             // 
             // showAllBtn
             // 
-            this.showAllBtn.Location = new System.Drawing.Point(12, 201);
+            this.showAllBtn.Location = new System.Drawing.Point(14, 258);
+            this.showAllBtn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.showAllBtn.Name = "showAllBtn";
-            this.showAllBtn.Size = new System.Drawing.Size(184, 38);
+            this.showAllBtn.Size = new System.Drawing.Size(207, 49);
             this.showAllBtn.TabIndex = 22;
             this.showAllBtn.Text = "Показать все";
             this.showAllBtn.UseVisualStyleBackColor = true;
@@ -219,7 +221,7 @@
             this.hint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.hint.AutoSize = true;
             this.hint.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.hint.Location = new System.Drawing.Point(14, 323);
+            this.hint.Location = new System.Drawing.Point(16, 393);
             this.hint.Name = "hint";
             this.hint.Size = new System.Drawing.Size(241, 14);
             this.hint.TabIndex = 23;
@@ -228,9 +230,9 @@
             // 
             // FigureViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 14F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(669, 346);
+            this.ClientSize = new System.Drawing.Size(806, 414);
             this.Controls.Add(this.hint);
             this.Controls.Add(this.showAllBtn);
             this.Controls.Add(this.label1);
@@ -239,8 +241,8 @@
             this.Controls.Add(this.groupsControl);
             this.Controls.Add(this.figureView);
             this.Controls.Add(this.GroupList);
-            this.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FigureViewer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Просмотр фигур";

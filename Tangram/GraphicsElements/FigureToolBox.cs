@@ -14,6 +14,10 @@ namespace Tangram.GraphicsElements
     public partial class FigureToolBox : FlowLayoutPanel
     {
 
+        public delegate void FigureSelected(PictureBox figurePicture,Point location);
+
+        public event FigureSelected OnFigureSelect;
+
         public int FigureCount { get { return figures.Count(); } }
         private List<Figure> figures = new List<Figure>();
 
@@ -42,7 +46,7 @@ namespace Tangram.GraphicsElements
         }
 
         public void Add(Figure figure)
-       {
+        {
             RectangleF rectangle = figure.Path.GetBounds();
             figure.Translate(-rectangle.X, -rectangle.Y);
             figures.Add(figure);
@@ -65,7 +69,6 @@ namespace Tangram.GraphicsElements
             figurePicture.MouseEnter += Figure_enter;
             figurePicture.MouseLeave += Figure_leave;
             figurePicture.MouseDown += Figure_mouse_down;
-
             this.Controls.Add(figurePicture);
 
         }
@@ -79,26 +82,31 @@ namespace Tangram.GraphicsElements
             pictureBox.Refresh();
         }
 
+
         public void Figure_leave(object c, EventArgs e)
         {
             PictureBox pictureBox = c as PictureBox;
             int pos = Controls.IndexOf(pictureBox);
-            pictureBox.Image =normalBitmap[pos];
+            pictureBox.Image = normalBitmap[pos];
             pictureBox.Refresh();
         }
 
         public void Figure_mouse_down(object c, MouseEventArgs e)
         {
             PictureBox pictureBox = c as PictureBox;
-            int pos = Controls.IndexOf(pictureBox);
-            selectedFigure = figures[pos];
-            pictureBox.DoDragDrop(Controls[pos], DragDropEffects.Copy );
 
+            PictureBox clonedPicture = new PictureBox();
+            clonedPicture.SizeMode = PictureBoxSizeMode.AutoSize;
+
+            int pos = Controls.IndexOf(pictureBox);
+
+            selectedFigure = figures[pos];
+            clonedPicture.Image = normalBitmap[pos];
+            //pictureBox.DoDragDrop(Controls[pos], DragDropEffects.Copy);
+            this.Enabled = false;
+            OnFigureSelect(clonedPicture, e.Location);
         }
 
-
-
-       
         public FigureToolBox()
         {
             InitializeComponent();

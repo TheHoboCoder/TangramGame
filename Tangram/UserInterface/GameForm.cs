@@ -24,6 +24,10 @@ namespace Tangram.UserInterface
         private Result.DifficultyTypes difficulty;
         private int classId;
 
+        Point point = new Point();
+        PictureBox draggedFig;
+        bool dragging = false;
+
         public GameForm(Figure figure, Child child, Result.DifficultyTypes difficulty, int classId)
         {
             InitializeComponent();
@@ -45,14 +49,60 @@ namespace Tangram.UserInterface
                 subfigures.Remove(selected);
             }
 
-             gameCanvas = new GraphicsElements.GameCanvas(figure.TangramElement, difficulty);
+            figureToolBox1.OnFigureSelect += FigureSelected;
+
+            gameCanvas = new GraphicsElements.GameCanvas(figure.TangramElement, difficulty);
             canvasPanel.Controls.Add(gameCanvas);
             gameCanvas.BackColor = Color.White;
             gameCanvas.AllowDrop = true;
             gameCanvas.DragDrop += Drag_drop;
             gameCanvas.DragEnter += Canvas_DragEnter;
+
+            ChildName.Text = child.FullName;
+
             this.DoubleBuffered = true;
+           
         }
+
+
+        private void FigureSelected(PictureBox box, Point location)
+        {
+            draggedFig = box;
+            Point point = PointToClient(Cursor.Position);
+            box.Left = (point.X- location.X);
+            box.Top = (point.Y- location.Y);
+            this.point = location;
+            
+           
+            this.Controls.Add(draggedFig);
+            draggedFig.BringToFront();
+
+            dragging = true;
+            draggedFig.MouseMove += DraggedFig_Move;
+            draggedFig.Focus();
+            draggedFig.Select();
+        }
+
+        private void DraggedFig_Move(object sender, MouseEventArgs e){
+
+            if (e.Button == MouseButtons.Left)
+            {
+                draggedFig.Left += e.X - point.X;
+                draggedFig.Top += e.Y - point.Y;
+            }
+        }
+
+
+        private void GameForm_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void GameForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+        }
+
 
         private void Drag_drop(object sender, DragEventArgs e)
         {

@@ -37,22 +37,23 @@
             // 
             // childList
             // 
-            this.childList.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.childList.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.childList.FormattingEnabled = true;
-            this.childList.Location = new System.Drawing.Point(25, 52);
-            this.childList.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.childList.Location = new System.Drawing.Point(24, 48);
+            this.childList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.childList.Name = "childList";
             this.childList.ScrollAlwaysVisible = true;
-            this.childList.Size = new System.Drawing.Size(281, 208);
+            this.childList.Size = new System.Drawing.Size(263, 193);
             this.childList.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(22, 15);
+            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(20, 15);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 14);
+            this.label1.Size = new System.Drawing.Size(84, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "Подгруппа";
             // 
@@ -62,19 +63,20 @@
             this.subGroup.FormattingEnabled = true;
             this.subGroup.Items.AddRange(new object[] {
             "<Не выбрано>"});
-            this.subGroup.Location = new System.Drawing.Point(143, 9);
+            this.subGroup.Location = new System.Drawing.Point(138, 15);
+            this.subGroup.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.subGroup.Name = "subGroup";
-            this.subGroup.Size = new System.Drawing.Size(163, 26);
+            this.subGroup.Size = new System.Drawing.Size(147, 26);
             this.subGroup.TabIndex = 1;
             this.subGroup.DropDownClosed += new System.EventHandler(this.subGroup_DropDownClosed);
             // 
             // OKBtn
             // 
-            this.OKBtn.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.OKBtn.Location = new System.Drawing.Point(5, 276);
-            this.OKBtn.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.OKBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.OKBtn.Location = new System.Drawing.Point(3, 252);
+            this.OKBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.OKBtn.Name = "OKBtn";
-            this.OKBtn.Size = new System.Drawing.Size(139, 51);
+            this.OKBtn.Size = new System.Drawing.Size(151, 49);
             this.OKBtn.TabIndex = 14;
             this.OKBtn.Text = "Продолжить";
             this.OKBtn.UseVisualStyleBackColor = true;
@@ -82,11 +84,11 @@
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cancelBtn.Location = new System.Drawing.Point(180, 276);
-            this.cancelBtn.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.cancelBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cancelBtn.Location = new System.Drawing.Point(162, 252);
+            this.cancelBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cancelBtn.Name = "cancelBtn";
-            this.cancelBtn.Size = new System.Drawing.Size(149, 51);
+            this.cancelBtn.Size = new System.Drawing.Size(148, 49);
             this.cancelBtn.TabIndex = 15;
             this.cancelBtn.Text = "Отмена";
             this.cancelBtn.UseVisualStyleBackColor = true;
@@ -94,17 +96,17 @@
             // 
             // ChildPicker
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(332, 337);
+            this.ClientSize = new System.Drawing.Size(318, 308);
             this.Controls.Add(this.subGroup);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.OKBtn);
             this.Controls.Add(this.childList);
-            this.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ChildPicker";

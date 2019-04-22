@@ -38,44 +38,44 @@
             // loginLabel
             // 
             this.loginLabel.AutoSize = true;
-            this.loginLabel.Location = new System.Drawing.Point(21, 17);
+            this.loginLabel.Location = new System.Drawing.Point(19, 17);
             this.loginLabel.Name = "loginLabel";
-            this.loginLabel.Size = new System.Drawing.Size(58, 18);
+            this.loginLabel.Size = new System.Drawing.Size(50, 18);
             this.loginLabel.TabIndex = 0;
             this.loginLabel.Text = "Логин";
             // 
             // LoginTB
             // 
-            this.LoginTB.Location = new System.Drawing.Point(134, 17);
+            this.LoginTB.Location = new System.Drawing.Point(94, 17);
             this.LoginTB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LoginTB.Name = "LoginTB";
-            this.LoginTB.Size = new System.Drawing.Size(236, 27);
+            this.LoginTB.Size = new System.Drawing.Size(200, 26);
             this.LoginTB.TabIndex = 1;
             // 
             // passwordTB
             // 
-            this.passwordTB.Location = new System.Drawing.Point(134, 51);
+            this.passwordTB.Location = new System.Drawing.Point(94, 48);
             this.passwordTB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.passwordTB.Name = "passwordTB";
             this.passwordTB.PasswordChar = '*';
-            this.passwordTB.Size = new System.Drawing.Size(236, 27);
+            this.passwordTB.Size = new System.Drawing.Size(200, 26);
             this.passwordTB.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 53);
+            this.label1.Location = new System.Drawing.Point(19, 53);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 18);
+            this.label1.Size = new System.Drawing.Size(63, 18);
             this.label1.TabIndex = 2;
             this.label1.Text = "Пароль";
             // 
             // LoginBtn
             // 
-            this.LoginBtn.Location = new System.Drawing.Point(12, 91);
+            this.LoginBtn.Location = new System.Drawing.Point(11, 91);
             this.LoginBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LoginBtn.Name = "LoginBtn";
-            this.LoginBtn.Size = new System.Drawing.Size(358, 38);
+            this.LoginBtn.Size = new System.Drawing.Size(304, 38);
             this.LoginBtn.TabIndex = 4;
             this.LoginBtn.Text = "Вход";
             this.LoginBtn.UseVisualStyleBackColor = true;
@@ -83,17 +83,17 @@
             // 
             // LoginForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(392, 144);
+            this.ClientSize = new System.Drawing.Size(325, 138);
             this.Controls.Add(this.LoginBtn);
             this.Controls.Add(this.passwordTB);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.LoginTB);
             this.Controls.Add(this.loginLabel);
-            this.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LoginForm";
