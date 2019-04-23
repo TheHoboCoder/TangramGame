@@ -86,6 +86,28 @@ namespace Tangram.Data
             
         }
 
+        public void EndClass()
+        {
+            using (MySqlCommand command = new MySqlCommand())
+            {
+                command.Connection = connection;
+                try
+                {
+                    command.CommandText = "select count(*) from results where id_class = '" + CurrentClassId + "'";
+                    int res = Convert.ToInt32(command.ExecuteScalar());
+                    if (res == 0)
+                    {
+                        command.CommandText = "delete from classes where id_class = '" + CurrentClassId + "'";
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    System.Windows.Forms.MessageBox.Show("Ошибка базы данных №" + ex.Number);
+                }
+            }
+        }
+
         public TeacherWorkspace(MySqlConnection connection,User teacher)
         {
             this.teacher = teacher;
@@ -136,7 +158,7 @@ namespace Tangram.Data
 
                 figureGroups.Dispose();
                 Figures.Dispose();
-
+                adapter.Dispose();
                 // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
                 // TODO: задать большим полям значение NULL.
 

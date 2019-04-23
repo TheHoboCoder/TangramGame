@@ -64,10 +64,16 @@ namespace Tangram.Data
 
             if (!Upload(String.Format("login = '{0}' and password='{1}'", login, hash))) {
                 return AuthResult.EXCEPTION;
+
             }
 
             if (Table.Rows.Count == 0)
             {
+                
+                if (currentUser!=null && currentUser.UserType == User.UserTypes.MET)
+                {
+                    Upload(" id_user <> '" + currentUser.Id + "'");
+                }
                 return AuthResult.AUTH_FAIL;
             }
             else

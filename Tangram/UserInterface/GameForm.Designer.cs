@@ -42,7 +42,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.splitContainer1.Location = new System.Drawing.Point(0, 54);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -53,7 +53,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.figureToolBox1);
             this.splitContainer1.Size = new System.Drawing.Size(901, 432);
-            this.splitContainer1.SplitterDistance = 667;
+            this.splitContainer1.SplitterDistance = 579;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 4;
             // 
@@ -63,9 +63,9 @@
             this.canvasPanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.canvasPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.canvasPanel.Location = new System.Drawing.Point(0, 0);
-            this.canvasPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.canvasPanel.Margin = new System.Windows.Forms.Padding(4);
             this.canvasPanel.Name = "canvasPanel";
-            this.canvasPanel.Size = new System.Drawing.Size(667, 432);
+            this.canvasPanel.Size = new System.Drawing.Size(579, 432);
             this.canvasPanel.TabIndex = 1;
             // 
             // figureToolBox1
@@ -74,10 +74,10 @@
             this.figureToolBox1.BackColor = System.Drawing.Color.Transparent;
             this.figureToolBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.figureToolBox1.Location = new System.Drawing.Point(0, 0);
-            this.figureToolBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.figureToolBox1.Margin = new System.Windows.Forms.Padding(4);
             this.figureToolBox1.Name = "figureToolBox1";
             this.figureToolBox1.Padding = new System.Windows.Forms.Padding(15, 14, 15, 14);
-            this.figureToolBox1.Size = new System.Drawing.Size(228, 432);
+            this.figureToolBox1.Size = new System.Drawing.Size(316, 432);
             this.figureToolBox1.TabIndex = 0;
             // 
             // ChildName
@@ -98,9 +98,10 @@
             this.Controls.Add(this.ChildName);
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Игра";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameForm_FormClosing);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

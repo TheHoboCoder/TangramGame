@@ -8,7 +8,7 @@ using Tangram.Data.DataModels;
 
 namespace Tangram.Data
 {
-    public class ListViewAdapter
+    public class ListViewAdapter:IDisposable
     {
         private int FilteredUserID = 1;
 
@@ -193,5 +193,45 @@ namespace Tangram.Data
             cloned.Name = listViewItem.Name;
             listView.Items.Add(cloned);
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // Для определения избыточных вызовов
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    figureGroups.Clear();
+                    items.Clear();
+                    // TODO: освободить управляемое состояние (управляемые объекты).
+                }
+                listView.Dispose();
+                figureImages.Dispose();
+                
+                // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
+                // TODO: задать большим полям значение NULL.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: переопределить метод завершения, только если Dispose(bool disposing) выше включает код для освобождения неуправляемых ресурсов.
+        ~ListViewAdapter()
+        {
+            // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
+            Dispose(false);
+        }
+
+        // Этот код добавлен для правильной реализации шаблона высвобождаемого класса.
+        public void Dispose()
+        {
+            // Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
+            Dispose(true);
+            // TODO: раскомментировать следующую строку, если метод завершения переопределен выше.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

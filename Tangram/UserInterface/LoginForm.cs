@@ -20,21 +20,22 @@ namespace Tangram.UserInterface
         {
             InitializeComponent();
             this.reLog = reLog;
+            this.KeyPreview = true;
         }
 
 
-        private void LoginBtn_Click(object sender, EventArgs e)
+        private void Auth()
         {
-            if(LoginBtn.Text=="" || passwordTB.Text == "")
+            if (LoginBtn.Text == "" || passwordTB.Text == "")
             {
-                MessageBox.Show("Заполните поля","Ошибка",  MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Заполните поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
                 switch (Database.userRepository.Auth(LoginTB.Text.Trim(), passwordTB.Text.Trim()))
                 {
                     case UserRepository.AuthResult.AUTH_FAIL:
-                        MessageBox.Show( "Неверный логин и/или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Неверный логин и/или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     case UserRepository.AuthResult.AUTH_PASS:
                         //Database.Init(Database.userRepository.currentUser.UserType);
@@ -52,7 +53,7 @@ namespace Tangram.UserInterface
                                 {
                                     Close();
                                 }
-                               
+
                                 break;
                             case (User.UserTypes.MET):
                                 AdministratorPanel panel = new AdministratorPanel();
@@ -78,6 +79,11 @@ namespace Tangram.UserInterface
             }
         }
 
+        private void LoginBtn_Click(object sender, EventArgs e)
+        {
+            Auth();
+        }
+
         private void LoginForm_Load(object sender, EventArgs e)
         {
             if (!reLog)
@@ -94,6 +100,14 @@ namespace Tangram.UserInterface
                 Database.Close();
             }
               
+        }
+
+        private void LoginForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                Auth();
+            }
         }
     }
 }

@@ -35,6 +35,7 @@ namespace Tangram.UserInterface
 
         private void endClass_Click(object sender, EventArgs e)
         {
+            Database.Teacher_Workspace.EndClass();
             MainForm form = new MainForm();
             form.Show();
             this.Close();

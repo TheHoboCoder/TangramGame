@@ -37,12 +37,19 @@ namespace Tangram.GraphicsElements
 
         public void Remove(Figure figure)
         {
+           
             int pos = figures.IndexOf(figure);
-            Controls.RemoveAt(pos);
+            PictureBox b = Controls[pos] as PictureBox;
+            Controls.Remove(b);
+            b.Dispose();
             normalBitmap[pos].Dispose();
             normalBitmap.RemoveAt(pos);
             hoverBitmap[pos].Dispose();
             hoverBitmap.RemoveAt(pos);
+
+            figures.Remove(figure);
+            figure.Dispose();
+            figure = null;
         }
 
         public void Add(Figure figure)
@@ -101,7 +108,7 @@ namespace Tangram.GraphicsElements
             int pos = Controls.IndexOf(pictureBox);
 
             selectedFigure = figures[pos];
-            clonedPicture.Image = normalBitmap[pos];
+            clonedPicture.Image = (Image)normalBitmap[pos].Clone();
             //pictureBox.DoDragDrop(Controls[pos], DragDropEffects.Copy);
             this.Enabled = false;
             OnFigureSelect(clonedPicture, e.Location);

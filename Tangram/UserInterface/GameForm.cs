@@ -19,23 +19,18 @@ namespace Tangram.UserInterface
         private int score = 0;
         private int max_score = 0;
 
-        private Child child;
-        private Figure fig;
-        private Result.DifficultyTypes difficulty;
-        private int classId;
+        private ScoreSetter scoreSetter;
 
         Point point = new Point();
         PictureBox draggedFig;
-        bool dragging = false;
+        bool onCanvas = false;
 
         public GameForm(Figure figure, Child child, Result.DifficultyTypes difficulty, int classId)
         {
             InitializeComponent();
 
-            this.child = child;
-            this.fig = figure;
-            this.difficulty = difficulty;
-            this.classId = classId;
+            scoreSetter = new ScoreSetter(figure, child, difficulty, classId);
+
 
             Random randomizer = new Random();
 
@@ -52,11 +47,9 @@ namespace Tangram.UserInterface
             figureToolBox1.OnFigureSelect += FigureSelected;
 
             gameCanvas = new GraphicsElements.GameCanvas(figure.TangramElement, difficulty);
+
             canvasPanel.Controls.Add(gameCanvas);
             gameCanvas.BackColor = Color.White;
-            gameCanvas.AllowDrop = true;
-            gameCanvas.DragDrop += Drag_drop;
-            gameCanvas.DragEnter += Canvas_DragEnter;
 
             ChildName.Text = child.FullName;
 
@@ -73,109 +66,88 @@ namespace Tangram.UserInterface
             box.Top = (point.Y- location.Y);
             this.point = location;
             
-           
             this.Controls.Add(draggedFig);
             draggedFig.BringToFront();
-
-            dragging = true;
+            draggedFig.BackColor = Color.Transparent;
             draggedFig.MouseMove += DraggedFig_Move;
+            draggedFig.MouseUp += DraggedFig_MouseUp;
             draggedFig.Focus();
             draggedFig.Select();
         }
 
         private void DraggedFig_Move(object sender, MouseEventArgs e){
 
+            PictureBox pictureBox = sender as PictureBox;
             if (e.Button == MouseButtons.Left)
             {
                 draggedFig.Left += e.X - point.X;
                 draggedFig.Top += e.Y - point.Y;
-            }
-        }
-
-
-        private void GameForm_MouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void GameForm_MouseUp(object sender, MouseEventArgs e)
-        {
-            dragging = false;
-        }
-
-
-        private void Drag_drop(object sender, DragEventArgs e)
-        {
-            GraphicsElements.Figure fig = figureToolBox1.SelectedFigure;
-            GraphicsElements.Figure fig2 = fig.Clone();
-            Point point = gameCanvas.PointToClient(new Point(e.X, e.Y));
-            //RectangleF bounds = fig2.Path.GetBounds();
-            fig2.Location = point;
-            if (gameCanvas.PlaceFigure((GraphicsElements.TangramFigure)fig2))
-            {
-                figureToolBox1.Remove(fig);
-                fig.Dispose();
-                if(figureToolBox1.FigureCount == 0)
+                Point currentLocation = gameCanvas.PointToClient(Cursor.Position);
+                if (!gameCanvas.Bounds.Contains(currentLocation))
                 {
-                    MessageBox.Show("ЕЕЕЕ, я победил, еее", "Перемога", MessageBoxButtons.OK, MessageBoxIcon.None);
-                    float percentage = ((float)score * 100) / (float)max_score;
-                    int normalizedScore = (int)Math.Round(percentage);
-
-                    if(Database.Teacher_Workspace.gameRepository.Add(new Result() {
-                        Score = normalizedScore,
-                        ChildId = child.Id,
-                        FigureId = this.fig.Id,
-                        DifficultyType = this.difficulty,
-                        GroupId = child.GroupId,
-                        ClassId = classId
-                    }) != -1)
-                    {
-                        this.Close();
-                        this.DialogResult = DialogResult.OK;
-                    }
-
+                    pictureBox.Cursor = Cursors.No;
+                    onCanvas = false;
+                }
+                else
+                {
+                    pictureBox.Cursor = Cursors.Default;
+                    onCanvas = true;
                 }
             }
-            else
+        }
+
+        private void DraggedFig_MouseUp(object sender, MouseEventArgs e)
+        {
+            PictureBox pictureBox = sender as PictureBox;
+
+            if (onCanvas)
             {
-                if (score != 0) score--;
+                GraphicsElements.Figure fig = figureToolBox1.SelectedFigure.Clone();
+
+                Point point = gameCanvas.PointToClient(Cursor.Position);
+                point.X = point.X - this.point.X;
+                point.Y = point.Y - this.point.Y;
+
+                fig.Translate(point.X, point.Y);
+
+
+                if (gameCanvas.PlaceFigure((GraphicsElements.TangramFigure)fig))
+                {
+                    figureToolBox1.Remove(figureToolBox1.SelectedFigure);
+                    if (figureToolBox1.FigureCount == 0)
+                    {
+                        MessageBox.Show("Ураа", "Победа", MessageBoxButtons.OK, MessageBoxIcon.None);
+                        DialogResult res = scoreSetter.ShowDialog();
+                        if(res == DialogResult.OK)
+                        {
+                            this.DialogResult = res;
+                            this.Close();
+                        }
+                    }
+                }
+                else
+                {
+                    if (score != 0) score--;
+                }
+
+
             }
 
+            figureToolBox1.Enabled = true;
+
+            Controls.Remove(sender as Control);
+            pictureBox.Dispose();
+            pictureBox = null;
         }
 
-        private void Canvas_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.Copy;
-        }
 
         private void GameForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(this.DialogResult != DialogResult.OK)
             {
-                DialogResult res = MessageBox.Show("Игра не была закончена. Сохранить результат игры (0 баллов)?", "Закрытие", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                switch (res)
-                {
-                    case DialogResult.Cancel:
-                        e.Cancel = true;
-                        break;
-                    case DialogResult.Yes:
-                        e.Cancel = false;
-                        Database.Teacher_Workspace.gameRepository.Add(new Result()
-                        {
-                            Score = 0,
-                            ChildId = child.Id,
-                            FigureId = this.fig.Id,
-                            DifficultyType = this.difficulty,
-                            GroupId = child.GroupId,
-                            ClassId = classId
-                        });
-                        break;
-                    case DialogResult.No:
-                        e.Cancel = false;
-                        break;
-                }
+                DialogResult res = scoreSetter.ShowDialog();
+                e.Cancel = res != DialogResult.OK;
             }
-          
 
         }
     }

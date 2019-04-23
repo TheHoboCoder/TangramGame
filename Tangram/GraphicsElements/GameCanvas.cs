@@ -65,8 +65,6 @@ namespace Tangram.GraphicsElements
 
             if(found == null)
             {
-                placedFigures.Add(placedFigure);
-                Refresh();
                 return false;
             }
             else

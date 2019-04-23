@@ -53,31 +53,20 @@ namespace Tangram.Data
 
         static public void  Init(User user)
         {
+            GroupsRepository?.Dispose();
+            GroupTypeRepository?.Dispose();
+            ChildrenRepository?.Dispose();
+
             switch (user.UserType)
             {
                 case User.UserTypes.MET:
-
-                    if (GroupsRepository != null)
-                        GroupsRepository.Dispose();
-                    if (GroupTypeRepository != null)
-                        GroupTypeRepository.Dispose();
-                    if (ChildrenRepository != null)
-                        ChildrenRepository.Dispose();
-
                     GroupsRepository = new GroupsRepository(connection);
                     GroupTypeRepository = new GroupTypeRepository(connection);
                     ChildrenRepository = new ChildrenRepository(connection);
                     break;
                 case User.UserTypes.VOSP:
 
-                    if (GroupsRepository != null)
-                        GroupsRepository.Dispose();
-                    if (GroupTypeRepository != null)
-                        GroupTypeRepository.Dispose();
-                    if (ChildrenRepository != null)
-                        ChildrenRepository.Dispose();
-                    if (Teacher_Workspace != null)
-                        Teacher_Workspace.Dispose();
+                    Teacher_Workspace?.Dispose();
                     Teacher_Workspace = new TeacherWorkspace(connection, user);
                     break;
             }
