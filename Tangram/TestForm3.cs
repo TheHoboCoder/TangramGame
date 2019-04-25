@@ -42,7 +42,6 @@ namespace Tangram
             figureTypeCombo.SelectedIndex = 0;
             designerCanvas1.GridEnabled = true;
             designerCanvas1.SnapAngle = 45;
-            designerCanvas1.CurrentMode = DesignerCanvas.Mode.ROTATE;
             KeyPreview = true;
         }
 
@@ -93,18 +92,18 @@ namespace Tangram
         {
             if(e.KeyData == Keys.X)
             {
-                switch (designerCanvas1.CurrentMode)
-                {
-                    case DesignerCanvas.Mode.ROTATE:
-                        designerCanvas1.CurrentMode = DesignerCanvas.Mode.MOVE;
-                        break;
-                    case DesignerCanvas.Mode.MOVE:
-                        designerCanvas1.CurrentMode = DesignerCanvas.Mode.ROTATE;
-                        break;
+                //switch (designerCanvas1.CurrentMode)
+                //{
+                //    case DesignerCanvas.Mode.ROTATE:
+                //        designerCanvas1.CurrentMode = DesignerCanvas.Mode.MOVE;
+                //        break;
+                //    case DesignerCanvas.Mode.MOVE:
+                //        designerCanvas1.CurrentMode = DesignerCanvas.Mode.ROTATE;
+                //        break;
 
 
 
-                }
+                //}
             }
         }
     }

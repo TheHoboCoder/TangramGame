@@ -15,6 +15,7 @@ namespace Tangram.GraphicsElements
     {
 
         private const float SNAP_DISTANCE = 10;
+        private const float THICKNESS = 3;
 
         private Result.DifficultyTypes difficulty;
 
@@ -24,7 +25,8 @@ namespace Tangram.GraphicsElements
         public GameCanvas(TangramElement el, Result.DifficultyTypes difficulty)
         {
             InitializeComponent();
-            this.Size = el.FigureSize;
+            this.Width = el.FigureSize.Width;
+            this.Height= el.FigureSize.Height;
             groundFigures = new List<TangramFigure>(el.Figures.Count());
             placedFigures = new List<TangramFigure>(el.Figures.Count());
             foreach (TangramFigure f in el.Figures )
@@ -34,6 +36,12 @@ namespace Tangram.GraphicsElements
             Refresh();
             this.AllowDrop = true;
             this.difficulty = difficulty;
+
+            this.DoubleBuffered = true;
+
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            UpdateStyles();
         }
 
         public bool PlaceFigure(TangramFigure placedFigure)
@@ -82,6 +90,7 @@ namespace Tangram.GraphicsElements
 
         private void GameCanvas_Paint(object sender, PaintEventArgs e)
         {
+           e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
            SolidBrush brush = new SolidBrush(Color.DimGray);
             foreach (TangramFigure figure in groundFigures)
             {
@@ -90,7 +99,7 @@ namespace Tangram.GraphicsElements
                 {
                     using (SolidBrush br = new SolidBrush(Color.LightGray))
                     {
-                        using (Pen p = new Pen(br, 5))
+                        using (Pen p = new Pen(br, THICKNESS))
                         {
                             p.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
                             e.Graphics.DrawPath(p, figure.Path);

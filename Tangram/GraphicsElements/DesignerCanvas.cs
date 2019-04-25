@@ -65,10 +65,12 @@ namespace Tangram.GraphicsElements
 
         private Pen selectionPen,previewPen;
 
+        private Point panPoint = new Point();
+
         public enum Mode
         {
-            MOVE,
-            ROTATE
+            SELECT,
+            PAN
         }
 
         public bool GridEnabled { get; set; }
@@ -105,14 +107,12 @@ namespace Tangram.GraphicsElements
             }
             set
             {
-                
-                
                 _currentMode = value;
                 
-                Refresh();
-                
+                Refresh();    
             }
         }
+
 
 
         private void DesignerCanvas_Resize(object sender, EventArgs e)
@@ -165,7 +165,12 @@ namespace Tangram.GraphicsElements
 
         private void DesignerCanvas_MouseDown(object sender, MouseEventArgs e)
         {
-            
+            if(CurrentMode == Mode.PAN)
+            {
+                panPoint = e.Location;
+                return;
+            }
+
             if (readyToMove||readyToRotate)
             {
                 if(e.Button == MouseButtons.Right)
@@ -361,6 +366,13 @@ namespace Tangram.GraphicsElements
 
             if (e.Button == MouseButtons.Left)
             {
+                if (CurrentMode == Mode.PAN)
+                {
+                    this.Top +=  e.Location.Y- panPoint.Y;
+                    this.Left +=  e.Location.X-panPoint.X;
+                    return;
+                }
+
                 if (!operating)
                 {
                     if (rubberSelectionStarted)
@@ -702,7 +714,52 @@ namespace Tangram.GraphicsElements
             Refresh();
         }
 
-        
+
+        public void TranslateAll(PointF vector)
+        {
+            foreach(Figure f in selectedFigures)
+            {
+                f.Translate(vector.X, vector.Y);
+            }
+        }
+
+        public void Rotate(float angle)
+        {
+
+        }
+
+
+        public bool HasSelection {
+            get
+            {
+                return selectedFigures != null && selectedFigures.Count >= 1;
+            }
+        }
+
+        public Color FigureColors {
+
+            get
+            {
+                if (selectedFigures.Count >= 1)
+                {
+                    return selectedFigures[0].FigureColor;
+                }
+                else
+                {
+                    return Color.Orange;
+                }
+            }
+            set
+            {
+                foreach(Figure f in selectedFigures)
+                {
+                    f.FigureColor = value;
+                }
+                Refresh();
+            }
+        }
+
+
 
         private void DesignerCanvas_Paint(object sender, PaintEventArgs e)
         {

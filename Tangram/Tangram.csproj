@@ -109,6 +109,12 @@
     <Compile Include="UserInterface\AdministratorPanel.Designer.cs">
       <DependentUpon>AdministratorPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\ChangeChildGroupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\ChangeChildGroupForm.Designer.cs">
+      <DependentUpon>ChangeChildGroupForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\ChildPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,6 +219,9 @@
     <EmbeddedResource Include="UserInterface\AdministratorPanel.resx">
       <DependentUpon>AdministratorPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\ChangeChildGroupForm.resx">
+      <DependentUpon>ChangeChildGroupForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\ChildPicker.resx">
       <DependentUpon>ChildPicker.cs</DependentUpon>
     </EmbeddedResource>
@@ -305,6 +314,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\user-silhouette-small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\color_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

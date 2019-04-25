@@ -57,25 +57,92 @@ namespace Tangram.UserInterface
            
         }
 
+        //private void FigureSelected2(Tangram.GraphicsElements.Figure f, Point location)
+        //{
+        //    currentFigure = f;
+        //    this.point = PointToClient(Cursor.Position);
+        //    currentFigure.Translate(point.X - location.X, point.Y - location.Y);
+        //    gameCanvas.Enabled = false;
+        //    //this.Paint += PaintFigure;
+        //    this.MouseMove += Fig_Move;
+        //    draggin = true;
+        //    this.Focus();
+        //    Refresh();
+        //}
+
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    base.OnPaint(e);
+
+        //    if (draggin)
+        //    {
+        //        using (SolidBrush br = new SolidBrush(Color.FromArgb(120, currentFigure.FigureColor)))
+        //        {
+        //            e.Graphics.FillPath(br, currentFigure.Path);
+        //        }
+        //    }
+
+        //}
+
+        //private void PaintFigure(object sender, PaintEventArgs e)
+        //{
+        //    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        //    e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+        //    using(SolidBrush br = new SolidBrush(Color.FromArgb(120, currentFigure.FigureColor)))
+        //    {
+        //        e.Graphics.FillPath(br,currentFigure.Path);
+        //    }
+        //}
+
+        //private void Fig_Move(object sender, MouseEventArgs e)
+        //{
+        //    if(e.Button == MouseButtons.Left)
+        //    {
+        //        currentFigure.Translate(e.Location.X - point.X, e.Location.Y - point.Y);
+        //        point.X = e.Location.X;
+        //        point.Y = e.Location.Y;
+        //        Point currentLocation = gameCanvas.PointToClient(Cursor.Position);
+        //        if (!gameCanvas.Bounds.Contains(currentLocation))
+        //        {
+        //           Cursor = Cursors.No;
+        //            onCanvas = false;
+        //        }
+        //        else
+        //        {
+        //            Cursor = Cursors.Default;
+        //            onCanvas = true;
+        //        }
+        //        Refresh();
+        //    }
+        //}
+
+        //private void Fig_Up(object sender, MouseEventArgs e)
+        //{
+        //}
+
+
 
         private void FigureSelected(PictureBox box, Point location)
         {
             draggedFig = box;
             Point point = PointToClient(Cursor.Position);
-            box.Left = (point.X- location.X);
-            box.Top = (point.Y- location.Y);
+            box.Left = (point.X - location.X);
+            box.Top = (point.Y - location.Y);
             this.point = location;
-            
+
             this.Controls.Add(draggedFig);
             draggedFig.BringToFront();
-            draggedFig.BackColor = Color.Transparent;
+            draggedFig.BackColor = Color.White;
+            ((Bitmap)draggedFig.Image).MakeTransparent();
             draggedFig.MouseMove += DraggedFig_Move;
             draggedFig.MouseUp += DraggedFig_MouseUp;
+            draggedFig.MouseLeave += DraggedFig_MouseLeave;
             draggedFig.Focus();
             draggedFig.Select();
         }
 
-        private void DraggedFig_Move(object sender, MouseEventArgs e){
+        private void DraggedFig_Move(object sender, MouseEventArgs e)
+        {
 
             PictureBox pictureBox = sender as PictureBox;
             if (e.Button == MouseButtons.Left)
@@ -94,6 +161,22 @@ namespace Tangram.UserInterface
                     onCanvas = true;
                 }
             }
+        }
+
+        private void DraggedFig_MouseLeave(object sender, EventArgs e)
+        {
+            PictureBox pictureBox = sender as PictureBox;
+            Point point = PointToClient(Cursor.Position);
+            pictureBox.Left = (point.X - this.point.X);
+            pictureBox.Top = (point.Y - this.point.Y);
+            //this.point = point;
+
+            
+            //figureToolBox1.Enabled = true;
+
+            //Controls.Remove(sender as Control);
+            //pictureBox.Dispose();
+            //pictureBox = null;
         }
 
         private void DraggedFig_MouseUp(object sender, MouseEventArgs e)
@@ -145,9 +228,30 @@ namespace Tangram.UserInterface
         {
             if(this.DialogResult != DialogResult.OK)
             {
-                DialogResult res = scoreSetter.ShowDialog();
-                e.Cancel = res != DialogResult.OK;
+                DialogResult res = MessageBox.Show("Сохранить результаты игры?","Закрытие",MessageBoxButtons.YesNoCancel,MessageBoxIcon.Warning);
+                switch (res) {
+                    case DialogResult.Yes:
+                        DialogResult scoreRes = scoreSetter.ShowDialog();
+                        e.Cancel = scoreRes != DialogResult.OK;
+                        break;
+                    case DialogResult.No:
+                        e.Cancel = false;
+                        break;
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        break;
+                }
             }
+
+        }
+
+        private void canvasPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void GameForm_Load(object sender, EventArgs e)
+        {
 
         }
     }

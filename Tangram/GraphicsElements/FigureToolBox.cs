@@ -18,6 +18,7 @@ namespace Tangram.GraphicsElements
 
         public event FigureSelected OnFigureSelect;
 
+
         public int FigureCount { get { return figures.Count(); } }
         private List<Figure> figures = new List<Figure>();
 
@@ -111,13 +112,18 @@ namespace Tangram.GraphicsElements
             clonedPicture.Image = (Image)normalBitmap[pos].Clone();
             //pictureBox.DoDragDrop(Controls[pos], DragDropEffects.Copy);
             this.Enabled = false;
-            OnFigureSelect(clonedPicture, e.Location);
+            OnFigureSelect?.Invoke(clonedPicture, e.Location);
+            //OnFigureSelect2(figures[pos].Clone(), e.Location);
         }
 
         public FigureToolBox()
         {
             InitializeComponent();
-            this.SetStyle(ControlStyles.DoubleBuffer, true);
+            DoubleBuffered = true;
+            //SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            //UpdateStyles();
+            //this.SetStyle(ControlStyles.DoubleBuffer, true);
             Refresh();
         }
 

@@ -35,10 +35,16 @@ namespace Tangram.UserInterface
 
         private void endClass_Click(object sender, EventArgs e)
         {
-            Database.Teacher_Workspace.EndClass();
-            MainForm form = new MainForm();
-            form.Show();
-            this.Close();
+            if (MessageBox.Show("Завершить занятие?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                Database.Teacher_Workspace.EndClass();
+                MainForm form = new MainForm();
+                this.DialogResult = DialogResult.OK;
+                form.Show();
+                this.Close();
+                
+            }
+            
         }
 
         private void StartGame_Click(object sender, EventArgs e)
@@ -69,18 +75,22 @@ namespace Tangram.UserInterface
 
         private void ClassControl_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(MessageBox.Show("Завершить занятие?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            if(this.DialogResult != DialogResult.OK)
             {
-                MainForm form = new MainForm();
-                form.Show();
-                e.Cancel = false;
-                this.Dispose();
-                
+                if (MessageBox.Show("Завершить занятие?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    MainForm form = new MainForm();
+                    form.Show();
+                    e.Cancel = false;
+                    this.Dispose();
+
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
             }
-            else
-            {
-                e.Cancel = true;
-            }
+          
         }
     }
 }

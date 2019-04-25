@@ -43,8 +43,14 @@ namespace Tangram.UserInterface
             {
                 Database.Teacher_Workspace.ViewAdapter.AddFigure(designer.currentFigure);
             }
-           
-            
+
+            if (designer.AddedGroup != null)
+            {
+                Database.Teacher_Workspace.ViewAdapter.AddGroup(designer.AddedGroup);
+            }
+
+            source.ResetBindings(false);
+
             designer.Dispose();
         }
 
@@ -111,8 +117,11 @@ namespace Tangram.UserInterface
                     if(res == DialogResult.Yes)
                     {
                         int index = Convert.ToInt32(selectedItem.Name.Substring(selectedItem.Name.IndexOf('_') + 1));
-                        Database.Teacher_Workspace.Figures.Delete(index);
-                        Database.Teacher_Workspace.ViewAdapter.RemoveItem(selectedItem);
+                        if (Database.Teacher_Workspace.Figures.Delete(index))
+                        {
+                            Database.Teacher_Workspace.ViewAdapter.RemoveItem(selectedItem);
+                        }
+                       
                     }
                 }
             }
@@ -139,7 +148,12 @@ namespace Tangram.UserInterface
                     {
                         Database.Teacher_Workspace.ViewAdapter.UpdateFigure(designer.currentFigure);
                     }
-                       
+                    if (designer.AddedGroup != null)
+                    {
+                        Database.Teacher_Workspace.ViewAdapter.AddGroup(designer.AddedGroup);
+                    }
+
+                    source.ResetBindings(false);
                     designer.Dispose();
                 }
             }

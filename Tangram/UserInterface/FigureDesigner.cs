@@ -17,6 +17,12 @@ namespace Tangram.UserInterface
     {
         bool editMode = false;
         public Tangram.Data.DataModels.Figure currentFigure { get; private set; }
+        public Tangram.Data.DataModels.FigureGroup AddedGroup { get; private set; }
+
+
+        Point point = new Point();
+        PictureBox draggedFig;
+        bool onCanvas = false;
 
         public FigureDesigner()
         {
@@ -27,9 +33,10 @@ namespace Tangram.UserInterface
             figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.RECT, Color.Red, new PointF(0, 0)));
             figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.Blue, new PointF(0, 0)));
 
-            designerCanvas.AllowDrop = true;
-            designerCanvas.DragEnter += Canvas_DragEnter;
-            designerCanvas.DragDrop += Canvas_DragDrop;
+            //designerCanvas.AllowDrop = true;
+            //designerCanvas.DragEnter += Canvas_DragEnter;
+            //designerCanvas.DragDrop += Canvas_DragDrop;
+            figureToolBox1.OnFigureSelect += FigureSelected;
             figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
             figureTypeCombo.DisplayMember = "Name";
             figureTypeCombo.ValueMember = "Id";
@@ -44,9 +51,10 @@ namespace Tangram.UserInterface
             figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.RECT, Color.Red, new PointF(0, 0)));
             figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.Blue, new PointF(0, 0)));
 
-            designerCanvas.AllowDrop = true;
-            designerCanvas.DragEnter += Canvas_DragEnter;
-            designerCanvas.DragDrop += Canvas_DragDrop;
+            //designerCanvas.AllowDrop = true;
+            //designerCanvas.DragEnter += Canvas_DragEnter;
+            //designerCanvas.DragDrop += Canvas_DragDrop;
+            figureToolBox1.OnFigureSelect += FigureSelected;
             designerCanvas.Init(figure.TangramElement.Figures.Cast<Figure>().ToList(), figure.TangramElement.FigureSize);
             FigureNameTB.Text = figure.FigureName;
             currentFigure = figure;
@@ -59,7 +67,81 @@ namespace Tangram.UserInterface
         }
 
 
-            private void Canvas_DragEnter(object sender, DragEventArgs e)
+        private void FigureSelected(PictureBox box, Point location)
+        {
+            draggedFig = box;
+            Point point = PointToClient(Cursor.Position);
+            box.Left = (point.X - location.X);
+            box.Top = (point.Y - location.Y);
+            this.point = location;
+
+            this.Controls.Add(draggedFig);
+            draggedFig.BringToFront();
+            draggedFig.BackColor = Color.White;
+            ((Bitmap)draggedFig.Image).MakeTransparent();
+            draggedFig.MouseMove += DraggedFig_Move;
+            draggedFig.MouseUp += DraggedFig_MouseUp;
+            draggedFig.MouseLeave += DraggedFig_MouseLeave;
+            draggedFig.Focus();
+            draggedFig.Select();
+        }
+
+        private void DraggedFig_Move(object sender, MouseEventArgs e)
+        {
+
+            PictureBox pictureBox = sender as PictureBox;
+            if (e.Button == MouseButtons.Left)
+            {
+                draggedFig.Left += e.X - point.X;
+                draggedFig.Top += e.Y - point.Y;
+                Point currentLocation = designerCanvas.PointToClient(Cursor.Position);
+                if (!designerCanvas.Bounds.Contains(currentLocation))
+                {
+                    pictureBox.Cursor = Cursors.No;
+                    onCanvas = false;
+                }
+                else
+                {
+                    pictureBox.Cursor = Cursors.Default;
+                    onCanvas = true;
+                }
+            }
+        }
+
+        private void DraggedFig_MouseLeave(object sender, EventArgs e)
+        {
+            PictureBox pictureBox = sender as PictureBox;
+            Point point = PointToClient(Cursor.Position);
+            pictureBox.Left = (point.X - this.point.X);
+            pictureBox.Top = (point.Y - this.point.Y);
+        }
+
+        private void DraggedFig_MouseUp(object sender, MouseEventArgs e)
+        {
+            PictureBox pictureBox = sender as PictureBox;
+
+            if (onCanvas)
+            {
+                GraphicsElements.Figure fig = figureToolBox1.SelectedFigure.Clone();
+
+                Point point = designerCanvas.PointToClient(Cursor.Position);
+                point.X = point.X - this.point.X;
+                point.Y = point.Y - this.point.Y;
+
+                fig.Translate(point.X, point.Y);
+                designerCanvas.AddFigure(fig);
+              
+            }
+            figureToolBox1.Enabled = true;
+
+            Controls.Remove(sender as Control);
+            pictureBox.Dispose();
+            pictureBox = null;
+        }
+
+
+
+        private void Canvas_DragEnter(object sender, DragEventArgs e)
         {
             //if (e.Data.GetType() == typeof(Figure))
             //{
@@ -119,6 +201,7 @@ namespace Tangram.UserInterface
                         currentFigure.TangramElement.FigureSize = size;
                         currentFigure.FigureName = FigureNameTB.Text.Trim();
                         currentFigure.Group_id = Convert.ToInt32(figureTypeCombo.SelectedValue);
+
                         if (Database.Teacher_Workspace.Figures.Update(currentFigure))
                         {
                             this.DialogResult = DialogResult.OK;
@@ -163,14 +246,57 @@ namespace Tangram.UserInterface
                 {
                     e.Cancel = true;
                 }
+                else
+                {
+                    currentFigure = null;
+                }
+                
             }
            
         }
 
         private void AddFigureGroup_Click(object sender, EventArgs e)
         {
+            
             FigureGroupsEdit groupsEdit = new FigureGroupsEdit();
             groupsEdit.ShowDialog();
+            AddedGroup = groupsEdit.group;
+
+            figureTypeCombo.DataSource = null;
+            figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+            figureTypeCombo.DisplayMember = "Name";
+            figureTypeCombo.ValueMember = "Id";
+            figureTypeCombo.SelectedValue = AddedGroup.Id;
+
+
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void PickColor_Click(object sender, EventArgs e)
+        {
+            if (designerCanvas.HasSelection)
+            {
+                ColorDialog colorDialog = new ColorDialog();
+                colorDialog.Color = designerCanvas.FigureColors;
+                if(colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    designerCanvas.FigureColors = colorDialog.Color;
+                }
+            }
+        }
+
+        private void PanMode_Click(object sender, EventArgs e)
+        {
+            designerCanvas.CurrentMode = DesignerCanvas.Mode.PAN;
+        }
+
+        private void SelectMode_Click(object sender, EventArgs e)
+        {
+            designerCanvas.CurrentMode = DesignerCanvas.Mode.SELECT;
         }
     }
 }

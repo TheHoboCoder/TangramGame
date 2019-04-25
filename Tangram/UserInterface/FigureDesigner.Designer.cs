@@ -28,27 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FigureDesigner));
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.AddFigureGroup = new System.Windows.Forms.ToolStripButton();
             this.figureTypeCombo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.FigureNameTB = new System.Windows.Forms.TextBox();
             this.famLabel = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.Designer = new System.Windows.Forms.TableLayoutPanel();
+            this.MainToolBox = new System.Windows.Forms.ToolStrip();
+            this.PickColor = new System.Windows.Forms.ToolStripButton();
+            this.InfoButton = new System.Windows.Forms.ToolStripButton();
             this.canvasPanel = new System.Windows.Forms.Panel();
             this.designerCanvas = new Tangram.GraphicsElements.DesignerCanvas();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.SelectMode = new System.Windows.Forms.ToolStripButton();
+            this.PanMode = new System.Windows.Forms.ToolStripButton();
             this.figureToolBox1 = new Tangram.GraphicsElements.FigureToolBox();
-            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.EditFigureGroup = new System.Windows.Forms.ToolStripButton();
-            this.AddFigureGroup = new System.Windows.Forms.ToolStripButton();
             this.panel2.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.Designer.SuspendLayout();
+            this.MainToolBox.SuspendLayout();
             this.canvasPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).BeginInit();
-            this.toolStrip2.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -75,8 +85,29 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(5);
-            this.panel2.Size = new System.Drawing.Size(919, 56);
+            this.panel2.Size = new System.Drawing.Size(961, 56);
             this.panel2.TabIndex = 2;
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddFigureGroup});
+            this.toolStrip2.Location = new System.Drawing.Point(805, 17);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(35, 25);
+            this.toolStrip2.TabIndex = 27;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // AddFigureGroup
+            // 
+            this.AddFigureGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AddFigureGroup.Image = global::Tangram.Properties.Resources.plus_green;
+            this.AddFigureGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AddFigureGroup.Name = "AddFigureGroup";
+            this.AddFigureGroup.Size = new System.Drawing.Size(23, 22);
+            this.AddFigureGroup.Text = "toolStripButton1";
+            this.AddFigureGroup.Click += new System.EventHandler(this.AddFigureGroup_Click);
             // 
             // figureTypeCombo
             // 
@@ -125,14 +156,65 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.canvasPanel);
+            this.splitContainer1.Panel1.Controls.Add(this.Designer);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.figureToolBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(919, 441);
-            this.splitContainer1.SplitterDistance = 595;
+            this.splitContainer1.Size = new System.Drawing.Size(961, 424);
+            this.splitContainer1.SplitterDistance = 615;
             this.splitContainer1.TabIndex = 3;
+            // 
+            // Designer
+            // 
+            this.Designer.ColumnCount = 2;
+            this.Designer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.Designer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.Designer.Controls.Add(this.MainToolBox, 1, 0);
+            this.Designer.Controls.Add(this.canvasPanel, 1, 1);
+            this.Designer.Controls.Add(this.toolStrip1, 0, 1);
+            this.Designer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Designer.Location = new System.Drawing.Point(0, 0);
+            this.Designer.Name = "Designer";
+            this.Designer.RowCount = 2;
+            this.Designer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.Designer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.Designer.Size = new System.Drawing.Size(615, 424);
+            this.Designer.TabIndex = 2;
+            this.Designer.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
+            // 
+            // MainToolBox
+            // 
+            this.MainToolBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainToolBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PickColor,
+            this.InfoButton});
+            this.MainToolBox.Location = new System.Drawing.Point(38, 0);
+            this.MainToolBox.Name = "MainToolBox";
+            this.MainToolBox.Size = new System.Drawing.Size(577, 32);
+            this.MainToolBox.TabIndex = 0;
+            this.MainToolBox.Text = "toolStrip1";
+            // 
+            // PickColor
+            // 
+            this.PickColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.PickColor.Image = global::Tangram.Properties.Resources.color_small;
+            this.PickColor.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.PickColor.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.PickColor.Name = "PickColor";
+            this.PickColor.Size = new System.Drawing.Size(28, 29);
+            this.PickColor.Text = "Выбор цвета";
+            this.PickColor.Click += new System.EventHandler(this.PickColor_Click);
+            // 
+            // InfoButton
+            // 
+            this.InfoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.InfoButton.Image = global::Tangram.Properties.Resources.info_small;
+            this.InfoButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.InfoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.InfoButton.Name = "InfoButton";
+            this.InfoButton.Size = new System.Drawing.Size(28, 29);
+            this.InfoButton.Text = "Информация";
             // 
             // canvasPanel
             // 
@@ -140,15 +222,16 @@
             this.canvasPanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.canvasPanel.Controls.Add(this.designerCanvas);
             this.canvasPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.canvasPanel.Location = new System.Drawing.Point(0, 0);
+            this.canvasPanel.Location = new System.Drawing.Point(41, 35);
             this.canvasPanel.Name = "canvasPanel";
-            this.canvasPanel.Size = new System.Drawing.Size(595, 441);
+            this.canvasPanel.Size = new System.Drawing.Size(571, 386);
             this.canvasPanel.TabIndex = 1;
             // 
             // designerCanvas
             // 
             this.designerCanvas.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.designerCanvas.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.MOVE;
+            this.designerCanvas.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.SELECT;
+            this.designerCanvas.FigureColors = System.Drawing.Color.Orange;
             this.designerCanvas.GridEnabled = false;
             this.designerCanvas.GridSnapEnabled = false;
             this.designerCanvas.Location = new System.Drawing.Point(8, 0);
@@ -159,6 +242,39 @@
             this.designerCanvas.TabIndex = 0;
             this.designerCanvas.TabStop = false;
             // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SelectMode,
+            this.PanMode});
+            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
+            this.toolStrip1.Location = new System.Drawing.Point(0, 32);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(38, 392);
+            this.toolStrip1.TabIndex = 1;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // SelectMode
+            // 
+            this.SelectMode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SelectMode.Image = ((System.Drawing.Image)(resources.GetObject("SelectMode.Image")));
+            this.SelectMode.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SelectMode.Name = "SelectMode";
+            this.SelectMode.Size = new System.Drawing.Size(36, 20);
+            this.SelectMode.Text = "Режим выбора";
+            this.SelectMode.Click += new System.EventHandler(this.SelectMode_Click);
+            // 
+            // PanMode
+            // 
+            this.PanMode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.PanMode.Image = ((System.Drawing.Image)(resources.GetObject("PanMode.Image")));
+            this.PanMode.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.PanMode.Name = "PanMode";
+            this.PanMode.Size = new System.Drawing.Size(36, 20);
+            this.PanMode.Text = "Перемещение";
+            this.PanMode.Click += new System.EventHandler(this.PanMode_Click);
+            // 
             // figureToolBox1
             // 
             this.figureToolBox1.AutoScroll = true;
@@ -167,46 +283,15 @@
             this.figureToolBox1.Location = new System.Drawing.Point(0, 0);
             this.figureToolBox1.Name = "figureToolBox1";
             this.figureToolBox1.Padding = new System.Windows.Forms.Padding(10);
-            this.figureToolBox1.Size = new System.Drawing.Size(320, 441);
+            this.figureToolBox1.Size = new System.Drawing.Size(342, 424);
             this.figureToolBox1.TabIndex = 0;
-            // 
-            // toolStrip2
-            // 
-            this.toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AddFigureGroup,
-            this.EditFigureGroup});
-            this.toolStrip2.Location = new System.Drawing.Point(805, 17);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(89, 25);
-            this.toolStrip2.TabIndex = 27;
-            this.toolStrip2.Text = "toolStrip2";
-            // 
-            // EditFigureGroup
-            // 
-            this.EditFigureGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EditFigureGroup.Image = global::Tangram.Properties.Resources.pencil;
-            this.EditFigureGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.EditFigureGroup.Name = "EditFigureGroup";
-            this.EditFigureGroup.Size = new System.Drawing.Size(23, 22);
-            this.EditFigureGroup.Text = "Редактирование подгрупп";
-            // 
-            // AddFigureGroup
-            // 
-            this.AddFigureGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddFigureGroup.Image = global::Tangram.Properties.Resources.plus_green;
-            this.AddFigureGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.AddFigureGroup.Name = "AddFigureGroup";
-            this.AddFigureGroup.Size = new System.Drawing.Size(23, 22);
-            this.AddFigureGroup.Text = "toolStripButton1";
-            this.AddFigureGroup.Click += new System.EventHandler(this.AddFigureGroup_Click);
             // 
             // FigureDesigner
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(919, 497);
+            this.ClientSize = new System.Drawing.Size(961, 480);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel2);
             this.Name = "FigureDesigner";
@@ -216,14 +301,20 @@
             this.Load += new System.EventHandler(this.FigureDesigner_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.Designer.ResumeLayout(false);
+            this.Designer.PerformLayout();
+            this.MainToolBox.ResumeLayout(false);
+            this.MainToolBox.PerformLayout();
             this.canvasPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).EndInit();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -243,6 +334,12 @@
         private System.Windows.Forms.ComboBox figureTypeCombo;
         private System.Windows.Forms.ToolStrip toolStrip2;
         private System.Windows.Forms.ToolStripButton AddFigureGroup;
-        private System.Windows.Forms.ToolStripButton EditFigureGroup;
+        private System.Windows.Forms.TableLayoutPanel Designer;
+        private System.Windows.Forms.ToolStrip MainToolBox;
+        private System.Windows.Forms.ToolStripButton PickColor;
+        private System.Windows.Forms.ToolStripButton InfoButton;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton SelectMode;
+        private System.Windows.Forms.ToolStripButton PanMode;
     }
 }

@@ -88,7 +88,7 @@
             // designerCanvas1
             // 
             this.designerCanvas1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.designerCanvas1.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.MOVE;
+            //this.designerCanvas1.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.MOVE;
             this.designerCanvas1.GridEnabled = false;
             this.designerCanvas1.GridSnapEnabled = false;
             this.designerCanvas1.Location = new System.Drawing.Point(3, 20);
