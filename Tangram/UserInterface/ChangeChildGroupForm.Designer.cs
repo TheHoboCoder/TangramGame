@@ -28,42 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.childList = new System.Windows.Forms.CheckedListBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.userFilterCombo = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.startGroupCombo = new System.Windows.Forms.ComboBox();
+            this.endGroupCombo = new System.Windows.Forms.ComboBox();
+            this.endChildList = new System.Windows.Forms.ListBox();
+            this.RemoveFromBtn = new System.Windows.Forms.Button();
+            this.AddToGroupBtn = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.startYear = new System.Windows.Forms.NumericUpDown();
+            this.endYear = new System.Windows.Forms.NumericUpDown();
+            this.SelectAllStart = new System.Windows.Forms.Button();
+            this.ChildList = new System.Windows.Forms.ListBox();
+            this.SelectAllEnd = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.startYear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.endYear)).BeginInit();
             this.SuspendLayout();
-            // 
-            // childList
-            // 
-            this.childList.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.childList.FormattingEnabled = true;
-            this.childList.Location = new System.Drawing.Point(13, 119);
-            this.childList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.childList.Name = "childList";
-            this.childList.ScrollAlwaysVisible = true;
-            this.childList.Size = new System.Drawing.Size(292, 256);
-            this.childList.TabIndex = 1;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(15, 87);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(123, 22);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Выбрать все";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -87,80 +68,66 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "В группу";
             // 
-            // userFilterCombo
+            // startGroupCombo
             // 
-            this.userFilterCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.userFilterCombo.FormattingEnabled = true;
-            this.userFilterCombo.Items.AddRange(new object[] {
+            this.startGroupCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.startGroupCombo.FormattingEnabled = true;
+            this.startGroupCombo.Items.AddRange(new object[] {
             "<Не выбрано>",
             "Мои фигуры",
             "Не мои фигуры"});
-            this.userFilterCombo.Location = new System.Drawing.Point(198, 13);
-            this.userFilterCombo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.userFilterCombo.Name = "userFilterCombo";
-            this.userFilterCombo.Size = new System.Drawing.Size(172, 26);
-            this.userFilterCombo.TabIndex = 21;
+            this.startGroupCombo.Location = new System.Drawing.Point(198, 13);
+            this.startGroupCombo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.startGroupCombo.Name = "startGroupCombo";
+            this.startGroupCombo.Size = new System.Drawing.Size(172, 26);
+            this.startGroupCombo.TabIndex = 21;
+            this.startGroupCombo.DropDownClosed += new System.EventHandler(this.startGroupCombo_DropDownClosed);
             // 
-            // comboBox1
+            // endGroupCombo
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.endGroupCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.endGroupCombo.FormattingEnabled = true;
+            this.endGroupCombo.Items.AddRange(new object[] {
             "<Не выбрано>",
             "Мои фигуры",
             "Не мои фигуры"});
-            this.comboBox1.Location = new System.Drawing.Point(484, 13);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(172, 26);
-            this.comboBox1.TabIndex = 22;
+            this.endGroupCombo.Location = new System.Drawing.Point(484, 13);
+            this.endGroupCombo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.endGroupCombo.Name = "endGroupCombo";
+            this.endGroupCombo.Size = new System.Drawing.Size(172, 26);
+            this.endGroupCombo.TabIndex = 22;
+            this.endGroupCombo.DropDownClosed += new System.EventHandler(this.endGroupCombo_DropDownClosed);
             // 
-            // listBox1
+            // endChildList
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 18;
-            this.listBox1.Location = new System.Drawing.Point(392, 119);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBox1.Size = new System.Drawing.Size(336, 256);
-            this.listBox1.TabIndex = 23;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.endChildList.FormattingEnabled = true;
+            this.endChildList.ItemHeight = 18;
+            this.endChildList.Location = new System.Drawing.Point(392, 126);
+            this.endChildList.Name = "endChildList";
+            this.endChildList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.endChildList.Size = new System.Drawing.Size(322, 256);
+            this.endChildList.TabIndex = 23;
+            this.endChildList.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
-            // button1
+            // RemoveFromBtn
             // 
-            this.button1.Location = new System.Drawing.Point(314, 218);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 41);
-            this.button1.TabIndex = 24;
-            this.button1.Text = "<<";
-            this.button1.UseVisualStyleBackColor = true;
+            this.RemoveFromBtn.Location = new System.Drawing.Point(314, 218);
+            this.RemoveFromBtn.Name = "RemoveFromBtn";
+            this.RemoveFromBtn.Size = new System.Drawing.Size(72, 41);
+            this.RemoveFromBtn.TabIndex = 24;
+            this.RemoveFromBtn.Text = "<<";
+            this.RemoveFromBtn.UseVisualStyleBackColor = true;
+            this.RemoveFromBtn.Click += new System.EventHandler(this.RemoveFromBtn_Click);
             // 
-            // button2
+            // AddToGroupBtn
             // 
-            this.button2.Location = new System.Drawing.Point(314, 171);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(72, 41);
-            this.button2.TabIndex = 25;
-            this.button2.Text = ">>";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(392, 381);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(158, 46);
-            this.button3.TabIndex = 26;
-            this.button3.Text = "Сохранить";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(570, 381);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(158, 46);
-            this.button4.TabIndex = 27;
-            this.button4.Text = "Очистить";
-            this.button4.UseVisualStyleBackColor = true;
+            this.AddToGroupBtn.Location = new System.Drawing.Point(314, 171);
+            this.AddToGroupBtn.Name = "AddToGroupBtn";
+            this.AddToGroupBtn.Size = new System.Drawing.Size(72, 41);
+            this.AddToGroupBtn.TabIndex = 25;
+            this.AddToGroupBtn.Text = ">>";
+            this.AddToGroupBtn.UseVisualStyleBackColor = true;
+            this.AddToGroupBtn.Click += new System.EventHandler(this.AddToGroupBtn_Click);
             // 
             // label3
             // 
@@ -184,48 +151,126 @@
             this.label4.TabIndex = 29;
             this.label4.Text = "Учебный год";
             // 
+            // startYear
+            // 
+            this.startYear.Location = new System.Drawing.Point(121, 52);
+            this.startYear.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.startYear.Minimum = new decimal(new int[] {
+            1910,
+            0,
+            0,
+            0});
+            this.startYear.Name = "startYear";
+            this.startYear.Size = new System.Drawing.Size(120, 26);
+            this.startYear.TabIndex = 30;
+            this.startYear.Value = new decimal(new int[] {
+            1910,
+            0,
+            0,
+            0});
+            // 
+            // endYear
+            // 
+            this.endYear.Location = new System.Drawing.Point(505, 54);
+            this.endYear.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.endYear.Minimum = new decimal(new int[] {
+            1910,
+            0,
+            0,
+            0});
+            this.endYear.Name = "endYear";
+            this.endYear.Size = new System.Drawing.Size(120, 26);
+            this.endYear.TabIndex = 31;
+            this.endYear.Value = new decimal(new int[] {
+            1910,
+            0,
+            0,
+            0});
+            // 
+            // SelectAllStart
+            // 
+            this.SelectAllStart.Location = new System.Drawing.Point(14, 84);
+            this.SelectAllStart.Name = "SelectAllStart";
+            this.SelectAllStart.Size = new System.Drawing.Size(160, 33);
+            this.SelectAllStart.TabIndex = 32;
+            this.SelectAllStart.Text = "Выбрать всех";
+            this.SelectAllStart.UseVisualStyleBackColor = true;
+            this.SelectAllStart.Click += new System.EventHandler(this.SelectAllStart_Click);
+            // 
+            // ChildList
+            // 
+            this.ChildList.FormattingEnabled = true;
+            this.ChildList.ItemHeight = 18;
+            this.ChildList.Location = new System.Drawing.Point(14, 126);
+            this.ChildList.Name = "ChildList";
+            this.ChildList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.ChildList.Size = new System.Drawing.Size(294, 256);
+            this.ChildList.TabIndex = 33;
+            // 
+            // SelectAllEnd
+            // 
+            this.SelectAllEnd.Location = new System.Drawing.Point(392, 84);
+            this.SelectAllEnd.Name = "SelectAllEnd";
+            this.SelectAllEnd.Size = new System.Drawing.Size(160, 33);
+            this.SelectAllEnd.TabIndex = 34;
+            this.SelectAllEnd.Text = "Выбрать всех";
+            this.SelectAllEnd.UseVisualStyleBackColor = true;
+            this.SelectAllEnd.Click += new System.EventHandler(this.SelectAllEnd_Click);
+            // 
             // ChangeChildGroupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(742, 435);
+            this.ClientSize = new System.Drawing.Size(736, 408);
+            this.Controls.Add(this.SelectAllEnd);
+            this.Controls.Add(this.ChildList);
+            this.Controls.Add(this.SelectAllStart);
+            this.Controls.Add(this.endYear);
+            this.Controls.Add(this.startYear);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.userFilterCombo);
+            this.Controls.Add(this.AddToGroupBtn);
+            this.Controls.Add(this.RemoveFromBtn);
+            this.Controls.Add(this.endChildList);
+            this.Controls.Add(this.endGroupCombo);
+            this.Controls.Add(this.startGroupCombo);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.childList);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ChangeChildGroupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Перевести детей";
+            this.Load += new System.EventHandler(this.ChangeChildGroupForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.startYear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.endYear)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.CheckedListBox childList;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox userFilterCombo;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ComboBox startGroupCombo;
+        private System.Windows.Forms.ComboBox endGroupCombo;
+        private System.Windows.Forms.ListBox endChildList;
+        private System.Windows.Forms.Button RemoveFromBtn;
+        private System.Windows.Forms.Button AddToGroupBtn;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown startYear;
+        private System.Windows.Forms.NumericUpDown endYear;
+        private System.Windows.Forms.Button SelectAllStart;
+        private System.Windows.Forms.ListBox ChildList;
+        private System.Windows.Forms.Button SelectAllEnd;
     }
 }

@@ -21,7 +21,7 @@ namespace Tangram.UserInterface
         public UserTypesEdit()
         {
             InitializeComponent();
-            GridView.DataSource = Database.GroupTypeRepository.Table;
+            GridView.DataSource = Database.MetWorkspace.GroupTypes.Table;
         }
 
         private Group_types GetGroupType()
@@ -38,7 +38,7 @@ namespace Tangram.UserInterface
             DialogResult res = MessageBox.Show("Удалить тип группы?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (res == DialogResult.Yes)
             {
-                Database.GroupTypeRepository.Delete(Convert.ToInt32(GridView.SelectedRows[0].Cells["id_group_type"].Value));
+                Database.MetWorkspace.GroupTypes.Delete(Convert.ToInt32(GridView.SelectedRows[0].Cells["id_group_type"].Value));
             }
         }
 
@@ -70,7 +70,7 @@ namespace Tangram.UserInterface
             {
                 if (!isEmpty())
                 {
-                    if (Database.GroupTypeRepository.Update(GetGroupType()))
+                    if (Database.MetWorkspace.GroupTypes.Update(GetGroupType()))
                     {
                         ControlPanel.Visible = false;
                     }
@@ -85,7 +85,7 @@ namespace Tangram.UserInterface
             {
                 if (!isEmpty())
                 {
-                    if (Database.GroupTypeRepository.Add(GetGroupType())!=-1)
+                    if (Database.MetWorkspace.GroupTypes.Add(GetGroupType())!=-1)
                     {
                         ControlPanel.Visible = false;
                     }

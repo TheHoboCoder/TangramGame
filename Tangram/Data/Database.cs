@@ -26,10 +26,11 @@ namespace Tangram.Data
         public static ChildrenRepository ChildrenRepository;
 
         public static TeacherWorkspace Teacher_Workspace;
+        public static MetWorkspace MetWorkspace;
 
-        //static public DataTable statistics = new DataTable();
+       //static public DataTable statistics = new DataTable();
 
-        static public  bool Open()
+       static public  bool Open()
         {
             try
             {
@@ -53,21 +54,22 @@ namespace Tangram.Data
 
         static public void  Init(User user)
         {
-            GroupsRepository?.Dispose();
-            GroupTypeRepository?.Dispose();
-            ChildrenRepository?.Dispose();
+            //GroupsRepository?.Dispose();
+            //GroupTypeRepository?.Dispose();
+            //ChildrenRepository?.Dispose();
+            Teacher_Workspace?.Dispose();
+            MetWorkspace?.Dispose();
 
             switch (user.UserType)
             {
                 case User.UserTypes.MET:
-                    GroupsRepository = new GroupsRepository(connection);
-                    GroupTypeRepository = new GroupTypeRepository(connection);
-                    ChildrenRepository = new ChildrenRepository(connection);
+                    //GroupsRepository = new GroupsRepository(connection);
+                    //GroupTypeRepository = new GroupTypeRepository(connection);
+                    //ChildrenRepository = new ChildrenRepository(connection);
+                    MetWorkspace = new MetWorkspace(connection, user);
                     break;
                 case User.UserTypes.VOSP:
-
-                    Teacher_Workspace?.Dispose();
-                    Teacher_Workspace = new TeacherWorkspace(connection, user);
+                   Teacher_Workspace = new TeacherWorkspace(connection, user);
                     break;
             }
         }

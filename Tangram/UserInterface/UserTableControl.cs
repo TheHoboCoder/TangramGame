@@ -110,7 +110,7 @@ namespace Tangram.UserInterface
                               FamTB.Text.Trim(),
                               OtchTB.Text.Trim(),
                               PhoneTB.Text.Trim(),
-                              PasswordTB.Text.Trim());
+                              User.getHash(PasswordTB.Text.Trim()));
         }
 
         private bool isEmpty()
@@ -207,6 +207,11 @@ namespace Tangram.UserInterface
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
         }

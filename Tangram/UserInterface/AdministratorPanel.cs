@@ -74,6 +74,7 @@ namespace Tangram.UserInterface
 
         private void button1_Click(object sender, EventArgs e)
         {
+            childGroup.Dock = DockStyle.Fill;
             childGroup.ReUpdate();
             TablePlace.Controls.Clear();
             TablePlace.Controls.Add(childGroup);

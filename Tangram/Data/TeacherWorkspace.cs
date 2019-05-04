@@ -13,8 +13,8 @@ namespace Tangram.Data
     {
         private MySqlConnection connection;
 
-        private Garden_groups _teacherGroup;
-        public Garden_groups TeacherGroup {
+        private int _teacherGroup;
+        public int TeacherGroup {
             get {
                 return _teacherGroup;
             }
@@ -113,32 +113,34 @@ namespace Tangram.Data
             this.teacher = teacher;
             this.connection = connection;
 
-            using (GroupsRepository groups = new GroupsRepository(connection, teacher.Id))
+            using (MySqlCommand command = new MySqlCommand())
             {
-                if (groups.Entities.Count() >= 1)
+                command.Connection = connection;
+
+                command.CommandText = String.Format("select id_group_h from group_history where id_user = '{0}' and history_year='{1}'", teacher.Id, GroupsRepository.GetWorkYear(DateTime.Now));
+                Object res = command.ExecuteScalar();
+
+                if (res != null)
                 {
-                    _teacherGroup = groups.Entities.First();
-                    
+                    _teacherGroup = Convert.ToInt32(res);
                 }
                 else
                 {
-                    _teacherGroup = null;
-                }
-                
+                    _teacherGroup = -1;
+                }  
             }
 
-            if (_teacherGroup != null)
+            if (_teacherGroup != -1)
             {
-                using (ChildrenRepository childs = new ChildrenRepository(connection, _teacherGroup.Id))
+                using (ChildrenRepository childs = new ChildrenRepository(connection, _teacherGroup))
                 {
                     children = childs.Entities.ToList();
                     SubGroupCount = childs.currentGroupCount;
                 }
+                gameRepository = new GameRepository(connection);
             }
 
             figureGroups = new FigureGroupsRepository(connection);
-
-            gameRepository = new GameRepository(connection);
         }
 
         #region IDisposable Support
@@ -150,15 +152,15 @@ namespace Tangram.Data
             {
                 if (disposing)
                 {
-                    children.Clear();
+                    children?.Clear();
                     children = null;
                     //childrenInGroup.Clear();
                     teacher = null;
                 }
 
-                figureGroups.Dispose();
-                Figures.Dispose();
-                adapter.Dispose();
+                figureGroups?.Dispose();
+                Figures?.Dispose();
+                adapter?.Dispose();
                 // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить ниже метод завершения.
                 // TODO: задать большим полям значение NULL.
 

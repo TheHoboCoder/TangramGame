@@ -25,7 +25,7 @@ namespace Tangram.Data.DataModels
             resultInfo.parameters.Add(new MySqlParameter("id_figure", MySqlDbType.Int32));
             resultInfo.parameters.Add(new MySqlParameter("id_level", MySqlDbType.Int32));
             resultInfo.parameters.Add(new MySqlParameter("id_class", MySqlDbType.Int32));
-            resultInfo.parameters.Add(new MySqlParameter("id_group", MySqlDbType.Int32));
+            resultInfo.parameters.Add(new MySqlParameter("id_group_h", MySqlDbType.Int32));
 
             resultInfo.GenerateStatements();
 
@@ -46,7 +46,7 @@ namespace Tangram.Data.DataModels
             parameters["id_child"].Value = c.ChildId;
             parameters["id_figure"].Value = c.FigureId;
             parameters["id_level"].Value = ((int)c.DifficultyType)+1;
-            parameters["id_group"].Value = c.GroupId;
+            parameters["id_group_h"].Value = c.GroupId;
             parameters["id_class"].Value = c.ClassId;
             parameters["score"].Value = c.Score;
         }

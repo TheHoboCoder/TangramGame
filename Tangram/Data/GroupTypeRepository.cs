@@ -9,7 +9,7 @@ using Tangram.Data.DataModels;
 
 namespace Tangram.Data
 {
-    class GroupTypeRepository : Repository<Group_types>
+    public class GroupTypeRepository : Repository<Group_types>
     {
         private TableInfo group_types;
         protected override TableInfo info => group_types;

@@ -23,6 +23,14 @@ namespace Tangram.UserInterface
 
         private void ChildPicker_Load(object sender, EventArgs e)
         {
+            if (Database.Teacher_Workspace.TeacherGroup == -1)
+            {
+                MessageBox.Show("Воспитатель не зарегистрирован ни в одной из групп", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
+            }
+
+
             for (int i = 1; i <= Database.Teacher_Workspace.SubGroupCount; i++)
             {
                 subGroup.Items.Add(i + " подруппа");

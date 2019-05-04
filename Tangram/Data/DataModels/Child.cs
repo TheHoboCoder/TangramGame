@@ -10,7 +10,7 @@ namespace Tangram.Data.DataModels
     {
         public string Name { get; set; }
         public string Fam { get; set; }
-        public int GroupId { get; set; }
+        //public int GroupId { get; set; }
         public bool gender { get; set; }
         public int SubGroup { get; set; }
         public string GenderName
@@ -27,6 +27,8 @@ namespace Tangram.Data.DataModels
                 }
             }
         }
+
+        public DateTime birthday;
 
         public string FullName
         {

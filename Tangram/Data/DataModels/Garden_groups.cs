@@ -10,7 +10,7 @@ namespace Tangram.Data.DataModels
     {
         public int GroupTypeId { get; set; }
         public string Group_Name { get; set; }
-        public int TeacherId { get; set; }
-        public int childCount { get; set; }
+        //public int TeacherId { get; set; }
+        //public int childCount { get; set; }
     }
 }

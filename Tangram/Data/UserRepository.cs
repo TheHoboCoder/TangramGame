@@ -42,7 +42,7 @@ namespace Tangram.Data
 
             usersInfo.linkedTables.Add("classes");
             usersInfo.linkedTables.Add("figures");
-            usersInfo.linkedTables.Add("garden_groups");
+            usersInfo.linkedTables.Add("group_history");
             InitCommandParameters();
 
         }
@@ -151,7 +151,7 @@ namespace Tangram.Data
             parameters["name"].Value = user.Name;
             parameters["otch"].Value = user.Otch;
             parameters["phone"].Value = user.Phone;
-            parameters["password"].Value =User.getHash(user.Password);
+            parameters["password"].Value =user.Password;
 
             if(user.UserType == User.UserTypes.MET)
             {

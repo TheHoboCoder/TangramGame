@@ -44,7 +44,7 @@ namespace Tangram.UserInterface
                 ChildId = child.Id,
                 FigureId = this.fig.Id,
                 DifficultyType = this.difficulty,
-                GroupId = child.GroupId,
+                GroupId = Database.Teacher_Workspace.TeacherGroup,
                 ClassId = classId
             }) != -1)
             {

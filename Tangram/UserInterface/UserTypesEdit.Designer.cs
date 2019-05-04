@@ -52,7 +52,7 @@
             this.Group_type,
             this.Id_group_type});
             this.GridView.Location = new System.Drawing.Point(13, 13);
-            this.GridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GridView.Margin = new System.Windows.Forms.Padding(4);
             this.GridView.MultiSelect = false;
             this.GridView.Name = "GridView";
             this.GridView.ReadOnly = true;
@@ -78,24 +78,27 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.Location = new System.Drawing.Point(6, 12);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(136, 18);
+            this.label4.Size = new System.Drawing.Size(145, 16);
             this.label4.TabIndex = 9;
-            this.label4.Text = "Название группы:";
+            this.label4.Text = "Название типа группы:";
             // 
             // GroupNameTB
             // 
+            this.GroupNameTB.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.GroupNameTB.Location = new System.Drawing.Point(9, 34);
-            this.GroupNameTB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GroupNameTB.Margin = new System.Windows.Forms.Padding(4);
             this.GroupNameTB.Name = "GroupNameTB";
-            this.GroupNameTB.Size = new System.Drawing.Size(202, 26);
+            this.GroupNameTB.Size = new System.Drawing.Size(202, 22);
             this.GroupNameTB.TabIndex = 10;
             this.GroupNameTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GroupNameTB_KeyPress);
             // 
             // AddBtn
             // 
+            this.AddBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AddBtn.Location = new System.Drawing.Point(13, 303);
             this.AddBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.AddBtn.Name = "AddBtn";
@@ -107,6 +110,7 @@
             // 
             // UpdateBtn
             // 
+            this.UpdateBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.UpdateBtn.Location = new System.Drawing.Point(246, 303);
             this.UpdateBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.UpdateBtn.Name = "UpdateBtn";
@@ -118,6 +122,7 @@
             // 
             // DeleteBtn
             // 
+            this.DeleteBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.DeleteBtn.Location = new System.Drawing.Point(480, 303);
             this.DeleteBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.DeleteBtn.Name = "DeleteBtn";
@@ -129,6 +134,7 @@
             // 
             // SaveBtn
             // 
+            this.SaveBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SaveBtn.Location = new System.Drawing.Point(9, 67);
             this.SaveBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SaveBtn.Name = "SaveBtn";
@@ -140,6 +146,7 @@
             // 
             // CancelBtn
             // 
+            this.CancelBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CancelBtn.Location = new System.Drawing.Point(150, 67);
             this.CancelBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CancelBtn.Name = "CancelBtn";
@@ -157,7 +164,7 @@
             this.ControlPanel.Controls.Add(this.GroupNameTB);
             this.ControlPanel.Controls.Add(this.SaveBtn);
             this.ControlPanel.Location = new System.Drawing.Point(261, 13);
-            this.ControlPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ControlPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ControlPanel.Name = "ControlPanel";
             this.ControlPanel.Size = new System.Drawing.Size(305, 126);
             this.ControlPanel.TabIndex = 28;
@@ -175,7 +182,7 @@
             this.Controls.Add(this.GridView);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UserTypesEdit";
