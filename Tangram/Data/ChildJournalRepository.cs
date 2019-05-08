@@ -15,7 +15,7 @@ namespace Tangram.Data
 
         protected override TableInfo info => tableInfo;
 
-        public ChildJournalRepository(MySqlConnection connection) : base(connection, false)
+        public ChildJournalRepository(MySqlConnection connection) : base(connection, true)
         {
             tableInfo  = new TableInfo();
 
@@ -26,16 +26,21 @@ namespace Tangram.Data
 
             tableInfo.TableName = "child_journal";
             tableInfo.IdName = "id_journal";
-
+            tableInfo.SelectStatement = "select * from child_journal";
             tableInfo.GenerateStatements();
             InitCommandParameters();
             AutoUpload = false;
+            Upload();
         }
 
-       
         protected override Child_Journal MapOut(DataRow row)
         {
-            throw new NotImplementedException();
+            Child_Journal journal = new Child_Journal();
+            journal.Id = Convert.ToInt32(row["id_journal"]);
+            journal.SubGroup = Convert.ToInt32(row["subGroup"]);
+            journal.ChildId = Convert.ToInt32(row["id_child"]);
+            journal.GroupHistoryId = Convert.ToInt32(row["id_group_h"]);
+            return journal;
         }
 
         protected override void SetCommandParameters(Child_Journal c, MySqlParameterCollection parameters)

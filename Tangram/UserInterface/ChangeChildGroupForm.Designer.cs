@@ -42,6 +42,8 @@
             this.SelectAllStart = new System.Windows.Forms.Button();
             this.ChildList = new System.Windows.Forms.ListBox();
             this.SelectAllEnd = new System.Windows.Forms.Button();
+            this.RemoveFromEndGroup = new System.Windows.Forms.Button();
+            this.RemoveFromStartGroup = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.startYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.endYear)).BeginInit();
             this.SuspendLayout();
@@ -53,9 +55,9 @@
             this.label1.Location = new System.Drawing.Point(10, 16);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(181, 19);
+            this.label1.Size = new System.Drawing.Size(65, 19);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Перевести из группы";
+            this.label1.Text = "Группа";
             // 
             // label2
             // 
@@ -64,9 +66,9 @@
             this.label2.Location = new System.Drawing.Point(397, 16);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 19);
+            this.label2.Size = new System.Drawing.Size(65, 19);
             this.label2.TabIndex = 4;
-            this.label2.Text = "В группу";
+            this.label2.Text = "Группа";
             // 
             // startGroupCombo
             // 
@@ -76,7 +78,7 @@
             "<Не выбрано>",
             "Мои фигуры",
             "Не мои фигуры"});
-            this.startGroupCombo.Location = new System.Drawing.Point(198, 13);
+            this.startGroupCombo.Location = new System.Drawing.Point(82, 13);
             this.startGroupCombo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.startGroupCombo.Name = "startGroupCombo";
             this.startGroupCombo.Size = new System.Drawing.Size(172, 26);
@@ -172,6 +174,7 @@
             0,
             0,
             0});
+            this.startYear.ValueChanged += new System.EventHandler(this.startYear_ValueChanged);
             // 
             // endYear
             // 
@@ -225,11 +228,33 @@
             this.SelectAllEnd.UseVisualStyleBackColor = true;
             this.SelectAllEnd.Click += new System.EventHandler(this.SelectAllEnd_Click);
             // 
+            // RemoveFromEndGroup
+            // 
+            this.RemoveFromEndGroup.Location = new System.Drawing.Point(392, 388);
+            this.RemoveFromEndGroup.Name = "RemoveFromEndGroup";
+            this.RemoveFromEndGroup.Size = new System.Drawing.Size(233, 41);
+            this.RemoveFromEndGroup.TabIndex = 35;
+            this.RemoveFromEndGroup.Text = "Исключить из группы";
+            this.RemoveFromEndGroup.UseVisualStyleBackColor = true;
+            this.RemoveFromEndGroup.Click += new System.EventHandler(this.RemoveFromEndGroup_Click);
+            // 
+            // RemoveFromStartGroup
+            // 
+            this.RemoveFromStartGroup.Location = new System.Drawing.Point(12, 388);
+            this.RemoveFromStartGroup.Name = "RemoveFromStartGroup";
+            this.RemoveFromStartGroup.Size = new System.Drawing.Size(233, 41);
+            this.RemoveFromStartGroup.TabIndex = 36;
+            this.RemoveFromStartGroup.Text = "Исключить из группы";
+            this.RemoveFromStartGroup.UseVisualStyleBackColor = true;
+            this.RemoveFromStartGroup.Click += new System.EventHandler(this.RemoveFromStartGroup_Click);
+            // 
             // ChangeChildGroupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(736, 408);
+            this.ClientSize = new System.Drawing.Size(728, 435);
+            this.Controls.Add(this.RemoveFromStartGroup);
+            this.Controls.Add(this.RemoveFromEndGroup);
             this.Controls.Add(this.SelectAllEnd);
             this.Controls.Add(this.ChildList);
             this.Controls.Add(this.SelectAllStart);
@@ -244,11 +269,15 @@
             this.Controls.Add(this.startGroupCombo);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ChangeChildGroupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Перевести детей";
+            this.Text = "Управление детьми в группе";
             this.Load += new System.EventHandler(this.ChangeChildGroupForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.startYear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.endYear)).EndInit();
@@ -272,5 +301,7 @@
         private System.Windows.Forms.Button SelectAllStart;
         private System.Windows.Forms.ListBox ChildList;
         private System.Windows.Forms.Button SelectAllEnd;
+        private System.Windows.Forms.Button RemoveFromEndGroup;
+        private System.Windows.Forms.Button RemoveFromStartGroup;
     }
 }

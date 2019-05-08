@@ -138,6 +138,7 @@
             this.StatisticsBtn.TabIndex = 16;
             this.StatisticsBtn.Text = "Статистика";
             this.StatisticsBtn.UseVisualStyleBackColor = false;
+            this.StatisticsBtn.Click += new System.EventHandler(this.StatisticsBtn_Click);
             // 
             // flowLayoutPanel1
             // 

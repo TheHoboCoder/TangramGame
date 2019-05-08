@@ -28,6 +28,7 @@ namespace Tangram.UserInterface
         public GameForm(Figure figure, Child child, Result.DifficultyTypes difficulty, int classId)
         {
             InitializeComponent();
+           
 
             scoreSetter = new ScoreSetter(figure, child, difficulty, classId);
 
@@ -47,8 +48,10 @@ namespace Tangram.UserInterface
             figureToolBox1.OnFigureSelect += FigureSelected;
 
             gameCanvas = new GraphicsElements.GameCanvas(figure.TangramElement, difficulty);
-
             canvasPanel.Controls.Add(gameCanvas);
+            gameCanvas.Size = figure.TangramElement.FigureSize;
+
+
             gameCanvas.BackColor = Color.White;
 
             ChildName.Text = child.FullName;

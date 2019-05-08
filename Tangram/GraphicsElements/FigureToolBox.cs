@@ -34,7 +34,7 @@ namespace Tangram.GraphicsElements
             }
         }
 
-        private const int BRIGHTNES_SHIFT = 2;
+        private const float BRIGHTNES_SHIFT = 0.1F;
 
         public void Remove(Figure figure)
         {
@@ -64,10 +64,15 @@ namespace Tangram.GraphicsElements
             //image.Save("figure_" + normalBitmap.Count() + ".jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
             float hue = figure.FigureColor.GetHue();
             float saturation = figure.FigureColor.GetSaturation() ;
+            
             float brightness = figure.FigureColor.GetBrightness() + BRIGHTNES_SHIFT;
-            Color color = ColorTools.HSBtoRGG(255, hue, saturation, figure.FigureColor.GetBrightness());
+            if (brightness > 1.0F)
+            {
+                brightness = figure.FigureColor.GetBrightness() - BRIGHTNES_SHIFT;
+            }
+            //Color color = ColorTools.HSBtoRGG(255, hue, saturation, figure.FigureColor.GetBrightness());
 
-            hoverBitmap.Add(figure.GetImage(ColorTools.HSBtoRGG(255, hue, saturation, brightness)));
+            hoverBitmap.Add(figure.GetImage(ColorTools.ColorFromAhsb(255, hue, saturation, brightness)));
 
 
             PictureBox figurePicture = new PictureBox();

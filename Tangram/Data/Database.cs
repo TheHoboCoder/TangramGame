@@ -75,6 +75,172 @@ namespace Tangram.Data
         }
 
 
+        public struct Statistics {
+
+            public DataTable mainResult;
+            public DataTable attendance;
+
+            public int low_count_diff1;
+            public int mid_count_diff1;
+            public int hight_count_diff1;
+
+            public int low_count_diff2;
+            public int mid_count_diff2;
+            public int hight_count_diff2;
+
+        }
+
+        public static Statistics GetStatistics(int id_group_h,DateTime start, DateTime end)
+        {
+            Statistics st = new Statistics();
+
+            st.mainResult = new DataTable();
+
+            int userId = 0;
+
+            switch (userRepository.currentUser.UserType)
+            {
+                case User.UserTypes.MET:
+                    command.CommandText = "select id_user from group_history where id_group_h = '" + id_group_h + "'";
+                    Object res = command.ExecuteScalar();
+                    if (res != null)
+                    {
+                        userId = Convert.ToInt32(res);
+                    }
+                    break;
+                case User.UserTypes.VOSP:
+                    userId = userRepository.currentUser.Id;
+                    break;
+            }
+
+            command.CommandText =String.Format(@"select childs.id_child,
+                                           concat(childs.name, ' ', childs.fam) as 'childName',
+	                                      (select avg(results.score)
+                                           from results
+                                           inner join classes on classes.id_class = results.id_class
+                                           where results.id_child = childs.id_child and id_level = 1 and
+                                           classes.class_date between '{0}' and '{1}') as 'diff_1_result',
+	                                       (select avg(results.score)
+                                            from results
+                                            inner join classes on classes.id_class = results.id_class
+                                            where results.id_child = childs.id_child and id_level = 2 and
+                                            classes.class_date between '{0}' and '{1}') as 'diff_2_result',
+                                         (select count(distinct results.id_class) 
+                                          from results
+		                                  inner join classes on  classes.id_class = results.id_class
+		                                  where results.id_child = childs.id_child and
+                                          classes.class_date between '{0}' and '{1}') as 'classCount'
+                                   from childs
+                                   inner join child_journal on child_journal.id_child = childs.id_child
+                                   inner
+                                   join group_history on child_journal.id_group_h = group_history.id_group_h
+                                   where group_history.id_group_h = '{2}' order by childName", start.ToString("yyyy-MM-dd"), end.ToString("yyyy-MM-dd"),
+                                   id_group_h);
+
+            using(MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+            {
+                command.ExecuteNonQuery();
+                adapter.Fill(st.mainResult);
+            }
+
+            st.attendance = new DataTable();
+            st.attendance.Columns.Add("child_name", typeof(string));
+
+
+            Dictionary<int, string> classes = new Dictionary<int, string>();
+            command.CommandText = String.Format("select id_class, class_date from classes where id_user = '{0}' and " +
+                                  "classes.class_date between '{1}' and '{2}'", userId, start.ToString("yyyy-MM-dd"), end.ToString("yyyy-MM-dd"));
+
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    classes.Add(reader.GetInt32(0), reader.GetString(1));
+                    st.attendance.Columns.Add(classes.Last().Value, typeof(string));
+                }
+            }
+
+
+            command.CommandText = String.Format("select count(*) from classes where id_user = '{0}' and " +
+                                  "classes.class_date between '{1}' and '{2}'", userId, start.ToString("yyyy-MM-dd"), end.ToString("yyyy-MM-dd"));
+
+            int totalClassCount = Convert.ToInt32(command.ExecuteScalar());
+
+            //table.Columns.Add(new DataColumn("diff_1_res_text", typeof(string)));
+            //table.Columns.Add(new DataColumn("diff_2_res_text", typeof(string)));
+            st.mainResult.Columns.Add(new DataColumn("classCount_text", typeof(string)));
+
+            st.low_count_diff1 = 0;
+            st.mid_count_diff1 = 0;
+            st.hight_count_diff1 = 0;
+
+            st.low_count_diff2 = 0;
+            st.mid_count_diff2 = 0;
+            st.hight_count_diff2 = 0;
+
+            foreach (DataRow row in st.mainResult.Rows)
+            {
+                st.attendance.Rows.Add(row["childName"]);
+                row["classCount_text"] = row["classCount"].ToString() + " из " + totalClassCount;
+
+                if(row["diff_1_result"]!=DBNull.Value && row["diff_1_result"] != null)
+                {
+                    int res = Convert.ToInt32(row["diff_1_result"]);
+                    if (res <= 4)
+                    {
+                        st.low_count_diff1++;
+                    }
+                    if(res>4 && res <= 7)
+                    {
+                        st.mid_count_diff1++;
+                    }
+                    if (res > 7)
+                    {
+                        st.hight_count_diff1++;
+                    }
+
+                }
+
+                if (row["diff_2_result"] != DBNull.Value && row["diff_2_result"] != null)
+                {
+                    int res = Convert.ToInt32(row["diff_2_result"]);
+                    if (res <= 4)
+                    {
+                        st.low_count_diff2++;
+                    }
+                    if (res > 4 && res <= 7)
+                    {
+                        st.mid_count_diff2++;
+                    }
+                    if (res > 7)
+                    {
+                        st.hight_count_diff2++;
+                    }
+
+                }
+            }
+
+
+            
+            foreach(var classItem in classes)
+            {
+                int i = 0;
+                foreach (DataRow row in st.mainResult.Rows)
+                {
+                    
+                    command.CommandText = String.Format(@"select id_result from results where id_class='{0}' and id_child='{1}'", 
+                                                         classItem.Key.ToString(), 
+                                                         row["id_child"].ToString());
+                    st.attendance.Rows[i][classItem.Value] = command.ExecuteScalar() != null ? "+":"-";
+                    i++;
+                }
+            }
+
+
+            return st;
+        }
+
+
         //public enum AuthResult{
         //      AUTH_FAIL,
         //      AUTH_PASS,

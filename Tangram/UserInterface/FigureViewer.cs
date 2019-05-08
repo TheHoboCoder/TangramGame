@@ -87,7 +87,11 @@ namespace Tangram.UserInterface
             FigureGroupsEdit groupsEdit = new FigureGroupsEdit();
             groupsEdit.ShowDialog();
             source.ResetBindings(false);
-            Database.Teacher_Workspace.ViewAdapter.AddGroup(groupsEdit.group);
+            if (groupsEdit.group != null)
+            {
+                Database.Teacher_Workspace.ViewAdapter.AddGroup(groupsEdit.group);
+            }
+            
             //GroupList.DataSource = null;
             //GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
         }
@@ -109,7 +113,7 @@ namespace Tangram.UserInterface
                 ListViewItem selectedItem = figureView.SelectedItems[0];
                 if (Convert.ToInt32(selectedItem.Tag) != Database.Teacher_Workspace.teacher.Id)
                 {
-                    MessageBox.Show("Вы не являетесь создателем этой фигуры?", "Невозможно удалить фигуру", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    MessageBox.Show("Вы не являетесь создателем этой фигуры", "Невозможно удалить фигуру", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -136,7 +140,7 @@ namespace Tangram.UserInterface
                 ListViewItem selectedItem = figureView.SelectedItems[0];
                 if (Convert.ToInt32(selectedItem.Tag) != Database.Teacher_Workspace.teacher.Id)
                 {
-                    MessageBox.Show("Вы не являетесь создателем этой фигуры.", "Невозможно изменить фигуру", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    MessageBox.Show("Вы не являетесь создателем этой фигуры", "Невозможно изменить фигуру", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {

@@ -64,7 +64,7 @@
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 58.7822F));
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.331378F));
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.24927F));
-            this.RootLayout.Size = new System.Drawing.Size(774, 400);
+            this.RootLayout.Size = new System.Drawing.Size(761, 400);
             this.RootLayout.TabIndex = 2;
             // 
             // UserPanel
@@ -75,7 +75,7 @@
             this.UserPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UserPanel.Location = new System.Drawing.Point(3, 3);
             this.UserPanel.Name = "UserPanel";
-            this.UserPanel.Size = new System.Drawing.Size(264, 41);
+            this.UserPanel.Size = new System.Drawing.Size(260, 41);
             this.UserPanel.TabIndex = 4;
             // 
             // userName
@@ -98,7 +98,7 @@
             this.tableLayoutPanel1.Controls.Add(this.userProfile, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.Logout, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(156, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(152, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -147,10 +147,10 @@
             this.FiguresBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FiguresBtn.Image = global::Tangram.Properties.Resources.shapes;
             this.FiguresBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.FiguresBtn.Location = new System.Drawing.Point(556, 342);
+            this.FiguresBtn.Location = new System.Drawing.Point(548, 342);
             this.FiguresBtn.Margin = new System.Windows.Forms.Padding(5);
             this.FiguresBtn.Name = "FiguresBtn";
-            this.FiguresBtn.Size = new System.Drawing.Size(213, 53);
+            this.FiguresBtn.Size = new System.Drawing.Size(208, 53);
             this.FiguresBtn.TabIndex = 0;
             this.FiguresBtn.Text = "Фигуры";
             this.FiguresBtn.UseVisualStyleBackColor = false;
@@ -168,10 +168,11 @@
             this.StatisticsBtn.Location = new System.Drawing.Point(5, 342);
             this.StatisticsBtn.Margin = new System.Windows.Forms.Padding(5);
             this.StatisticsBtn.Name = "StatisticsBtn";
-            this.StatisticsBtn.Size = new System.Drawing.Size(234, 53);
+            this.StatisticsBtn.Size = new System.Drawing.Size(230, 53);
             this.StatisticsBtn.TabIndex = 4;
             this.StatisticsBtn.Text = "Статистика";
             this.StatisticsBtn.UseVisualStyleBackColor = false;
+            this.StatisticsBtn.Click += new System.EventHandler(this.StatisticsBtn_Click);
             // 
             // StartGameBtn
             // 
@@ -181,10 +182,10 @@
             this.StartGameBtn.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.StartGameBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.StartGameBtn.Image = global::Tangram.Properties.Resources.play_button;
-            this.StartGameBtn.Location = new System.Drawing.Point(275, 77);
+            this.StartGameBtn.Location = new System.Drawing.Point(271, 77);
             this.StartGameBtn.Margin = new System.Windows.Forms.Padding(5);
             this.StartGameBtn.Name = "StartGameBtn";
-            this.StartGameBtn.Size = new System.Drawing.Size(242, 226);
+            this.StartGameBtn.Size = new System.Drawing.Size(238, 226);
             this.StartGameBtn.TabIndex = 3;
             this.StartGameBtn.Text = "Начать занятие";
             this.StartGameBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -196,7 +197,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(774, 400);
+            this.ClientSize = new System.Drawing.Size(761, 400);
             this.Controls.Add(this.RootLayout);
             this.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(5);

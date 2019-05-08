@@ -88,12 +88,22 @@ namespace Tangram.UserInterface
             }
         }
 
-        public void UpdateChilds( List<Child_Journal> childs, ListBox list, int groupId)
+        public void UpdateChilds(List<Child_Journal> childs, ListBox list, int groupId)
         {
             childs.Clear();
             list.Items.Clear();
 
-            DataRow[] childRows = Database.MetWorkspace.ChildManager.children.Table.Select("id_group_h = '" +groupId  + "'");
+            //var children  = from child in Database.MetWorkspace.ChildManager.childJournal.Entities
+            //         where child.GroupHistoryId == groupId
+            //         select child;
+
+            //foreach(var child in children)
+            //{
+            //    list.Items.Add(Database.MetWorkspace.ChildManager.children.Table.Select("id_child = '" + child.ChildId+ "'")[0]["childName"]);
+            //    childs.Add(child);
+            //}
+
+            DataRow[] childRows = Database.MetWorkspace.ChildManager.children.Table.Select("id_group_h = '" + groupId + "'");
             foreach (DataRow row in childRows)
             {
                 list.Items.Add(row["childName"]);
@@ -110,14 +120,37 @@ namespace Tangram.UserInterface
 
         private void ChangeGroup(List<Child_Journal> selectedChilds, int groupId, List<Child_Journal>  childs,ListBox list)
         {
-            var original = selectedChilds.Where(row2 => childs.Any(row1 => row2.ChildId != row1.ChildId));
-            
-            foreach (Child_Journal child in original)
+            if (childs.Count() != 0)
             {
-                child.GroupHistoryId = groupId;
-                Database.MetWorkspace.ChildManager.childJournal.Add(child);
-              
+                var original = selectedChilds.Where(row2 => childs.Any(row1 => row2.ChildId != row1.ChildId));
+
+                foreach (Child_Journal child in original)
+                {
+                    Child_Journal newChild = new Child_Journal();
+                    newChild.ChildId = child.ChildId;
+                    newChild.SubGroup = child.SubGroup;
+                    newChild.GroupHistoryId = groupId;
+
+                    Database.MetWorkspace.ChildManager.childJournal.Add(newChild);
+                    
+
+                }
             }
+            else
+            {
+                foreach (Child_Journal child in selectedChilds)
+                {
+                    Child_Journal newChild = new Child_Journal();
+                    newChild.ChildId = child.ChildId;
+                    newChild.SubGroup = child.SubGroup;
+                    newChild.GroupHistoryId = groupId;
+                    Database.MetWorkspace.ChildManager.childJournal.Add(newChild);
+
+                }
+            }
+
+
+           
             Database.MetWorkspace.ChildManager.children.GetData();
 
         }
@@ -164,7 +197,7 @@ namespace Tangram.UserInterface
         private void SelectAllEnd_Click(object sender, EventArgs e)
         {
             endChildList.BeginUpdate();
-            for (int i = 0; i < ChildList.Items.Count; i++)
+            for (int i = 0; i < endChildList.Items.Count; i++)
             {
                 endChildList.SetSelected(i, true);
             }
@@ -189,6 +222,59 @@ namespace Tangram.UserInterface
         private void endGroupCombo_DropDownClosed(object sender, EventArgs e)
         {
             UpdateChilds(endChilds, endChildList, endGroupIndexies[endGroupCombo.SelectedIndex]);
+        }
+
+        private void RemoveFromEndGroup_Click(object sender, EventArgs e)
+        {
+            if(DialogResult.Yes == MessageBox.Show("Исключить выбранных детей из группы?","Предупреждение",MessageBoxButtons.YesNo, MessageBoxIcon.Warning)){
+
+                foreach (int index in endChildList.SelectedIndices)
+                {
+                    if (Database.MetWorkspace.ChildManager.childJournal.Entities.Where(c=>c.ChildId == endChilds[index].ChildId).Count() != 1)
+                    {
+                        Database.MetWorkspace.ChildManager.childJournal.Delete(endChilds[index].Id);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Невозможно исключить ребенка из группы", "Невозможно исключить", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                   
+                }
+                Database.MetWorkspace.ChildManager.children.GetData();
+                UpdateChilds(endChilds, endChildList, endGroupIndexies[endGroupCombo.SelectedIndex]);
+                Database.MetWorkspace.GroupManager.groups.FilterByYear((int)endYear.Value);
+
+            }
+        }
+
+        private void RemoveFromStartGroup_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("Исключить выбранных детей из группы?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+            {
+
+                foreach (int index in ChildList.SelectedIndices)
+                {
+                    if (Database.MetWorkspace.ChildManager.childJournal.Entities.Where(c => c.ChildId == startChilds[index].ChildId).Count() != 1)
+                    {
+
+                        Database.MetWorkspace.ChildManager.childJournal.Delete(startChilds[index].Id);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Невозможно исключить ребенка из группы", "Невозможно исключить", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+
+                }
+                Database.MetWorkspace.ChildManager.children.GetData();
+                Database.MetWorkspace.GroupManager.groups.FilterByYear((int)startYear.Value);
+                UpdateChilds(startChilds, ChildList, startGroupIndexies[startGroupCombo.SelectedIndex]);
+            }
+        }
+
+        private void startYear_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

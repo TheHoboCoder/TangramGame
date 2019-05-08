@@ -106,7 +106,7 @@ namespace Tangram.Data
 
             children.EndTransacation();
             childJournal.EndTransacation();
-            children.UpdateTable();
+            children.GetData();
             return true;
         }
 

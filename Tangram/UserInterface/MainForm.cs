@@ -72,5 +72,11 @@ namespace Tangram.UserInterface
             FigureViewer viewer = new FigureViewer(false);
             viewer.Show();
         }
+
+        private void StatisticsBtn_Click(object sender, EventArgs e)
+        {
+            StatisticsForm f = new StatisticsForm();
+            f.Show();
+        }
     }
 }

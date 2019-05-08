@@ -50,9 +50,10 @@ namespace Tangram.UserInterface
             groupTypeCombo.DisplayMember = "group_type_name";
             groupTypeCombo.SelectedIndex = 0;
 
-            GroupsCombo.DataSource = Database.MetWorkspace.GroupManager.groups.PureGroups;
-            GroupsCombo.ValueMember = "id_group";
+           
+            GroupsCombo.ValueMember = "id_group_h";
             GroupsCombo.DisplayMember = "group_name";
+            GroupsCombo.DataSource = Database.MetWorkspace.GroupManager.groups.PureGroups;
 
             GroupGridView.DataSource = Database.MetWorkspace.GroupManager.groups.Table;
 
@@ -63,40 +64,9 @@ namespace Tangram.UserInterface
 
             //groupTypeFilter.Items.Insert(0, "<Не выбрано>");
 
-            if (Database.MetWorkspace.GroupManager.groups.Table.Rows.Count > 0 &&
-                Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"] != DBNull.Value)
-            {
-               
-                filterTable(Convert.ToInt32(Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"]));
-
-            }
-            else
-            {
-                filterTable(-1);
-                AddChildBtn.Enabled = EditChildBtn.Enabled = DeleteChildBtn.Enabled = false;
-                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = false;
-            }
-        }
-
-        private void UpdateCurrentYear(int year)
-        {
-            currentYear = year;
-            workYear.Text = " - " + (year+1);
-            Database.MetWorkspace.GroupManager.groups.FilterByYear(currentYear);
-            GroupsCombo.DataSource = Database.MetWorkspace.GroupManager.groups.PureGroups;
-            GroupsCombo.ValueMember = "id_group";
-            GroupsCombo.DisplayMember = "group_name";
-        }
-
-
-        private void yearPicker_ValueChanged(object sender, EventArgs e)
-        {
-            UpdateCurrentYear((int)yearPicker.Value);
-
             if (Database.MetWorkspace.GroupManager.groups.Table.Rows.Count > 0)
             {
-             
-                if (Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"] != DBNull.Value)
+                if (GroupGridView.Rows[0].Cells["id_group_h"].Value != DBNull.Value)
                 {
                     AddChildBtn.Enabled = true;
                     filterTable(Convert.ToInt32(Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"]));
@@ -106,13 +76,40 @@ namespace Tangram.UserInterface
                     AddChildBtn.Enabled = false;
                     filterTable(-1);
                 }
-                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = true;
-                
+
             }
-            else
+        }
+
+        private void UpdateCurrentYear(int year)
+        {
+            currentYear = year;
+            workYear.Text = " - " + (year+1);
+            Database.MetWorkspace.GroupManager.groups.FilterByYear(currentYear);
+            GroupsCombo.ValueMember = "id_group_h";
+            GroupsCombo.DisplayMember = "group_name";
+            GroupsCombo.DataSource = Database.MetWorkspace.GroupManager.groups.PureGroups;
+        }
+
+
+        private void yearPicker_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateCurrentYear((int)yearPicker.Value);
+
+            if (Database.MetWorkspace.GroupManager.groups.Table.Rows.Count > 0)
             {
-                
-                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = false;
+
+                if (GroupGridView.SelectedRows.Count > 0 &&
+                     GroupGridView.SelectedRows[0].Cells["id_group_h"].Value != DBNull.Value)
+                {
+                    AddChildBtn.Enabled = true;
+                    filterTable(Convert.ToInt32(Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"]));
+                }
+                else
+                {
+                    AddChildBtn.Enabled = false;
+                    filterTable(-1);
+                }
+
             }
         }
 
@@ -181,7 +178,7 @@ namespace Tangram.UserInterface
             return new Child_Journal() {
                 Id = childJournalId,
                 ChildId = childId,
-                GroupHistoryId = group_hId,
+                GroupHistoryId = Convert.ToInt32(GroupsCombo.SelectedValue),
                 SubGroup=subGroupFilter.SelectedIndex + 1,
             };
         }
@@ -432,7 +429,7 @@ namespace Tangram.UserInterface
 
             subGroupFilter.SelectedIndex = Convert.ToInt32(ChildGridView.SelectedRows[0].Cells["subGroup"].Value) - 1;
             group_hId = Convert.ToInt32(ChildGridView.SelectedRows[0].Cells["id_group_h_2"].Value);
-            GroupsCombo.SelectedValue = Convert.ToInt32(ChildGridView.SelectedRows[0].Cells["id_group"].Value);
+            GroupsCombo.SelectedValue = Convert.ToInt32(ChildGridView.SelectedRows[0].Cells["id_group_h_2"].Value);
 
             childEdit = true;
         }
@@ -461,8 +458,8 @@ namespace Tangram.UserInterface
             {
                 if (NameTB.Text != "" && FamTB.Text != "")
                 {
-                    DataRow row = Database.MetWorkspace.GroupManager.groups.Table.Select("id_group = '" + GroupsCombo.SelectedValue + "'")[0];
-                    group_hId = Convert.ToInt32(row["id_group_h"]);
+                    //DataRow row = Database.MetWorkspace.GroupManager.groups.Table.Select("id_group = '" + GroupsCombo.SelectedValue + "'")[0];
+                    //group_hId = Convert.ToInt32(row["id_group_h"]);
                     if (Database.MetWorkspace.ChildManager.Add(getChild(),GetChild_Journal()))
                     {
                         filterTable(Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["id_group_h"].Value));
@@ -491,7 +488,7 @@ namespace Tangram.UserInterface
             {
                 group_hId = Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["id_group_h"].Value);
                 filterTable(Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["id_group_h"].Value));
-                GroupsCombo.SelectedValue = Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["Id"].Value);
+                GroupsCombo.SelectedValue = Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["id_group_h"].Value);
             }
             else
             {

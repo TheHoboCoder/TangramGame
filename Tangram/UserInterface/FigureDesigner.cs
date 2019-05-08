@@ -27,10 +27,10 @@ namespace Tangram.UserInterface
         public FigureDesigner()
         {
             InitializeComponent();
-            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.BIG_TRIANGLE, Color.Yellow, new PointF(0, 0)));
-            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.MID_TRIANGLE, Color.Violet, new PointF(0, 0)));
-            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.SMALL_TRIANGLE, Color.Green, new PointF(0, 0)));
-            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.RECT, Color.Red, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.BIG_TRIANGLE, Color.Blue, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.MID_TRIANGLE, Color.Blue, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.SMALL_TRIANGLE, Color.Blue, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.RECT, Color.Blue, new PointF(0, 0)));
             figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.Blue, new PointF(0, 0)));
 
             //designerCanvas.AllowDrop = true;
@@ -45,10 +45,10 @@ namespace Tangram.UserInterface
         public FigureDesigner(Tangram.Data.DataModels.Figure figure)
         {
             InitializeComponent();
-            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.BIG_TRIANGLE, Color.Yellow, new PointF(0, 0)));
-            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.MID_TRIANGLE, Color.Violet, new PointF(0, 0)));
-            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.SMALL_TRIANGLE, Color.Green, new PointF(0, 0)));
-            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.RECT, Color.Red, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.BIG_TRIANGLE, Color.Blue, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.MID_TRIANGLE, Color.Blue, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.SMALL_TRIANGLE, Color.Blue, new PointF(0, 0)));
+            figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.RECT, Color.Blue, new PointF(0, 0)));
             figureToolBox1.Add(new TangramFigure(TangramFigure.FigureTypes.PARALLELOGRAM, Color.Blue, new PointF(0, 0)));
 
             //designerCanvas.AllowDrop = true;
@@ -292,11 +292,13 @@ namespace Tangram.UserInterface
         private void PanMode_Click(object sender, EventArgs e)
         {
             designerCanvas.CurrentMode = DesignerCanvas.Mode.PAN;
+            designerCanvas.Cursor = Cursors.Hand;
         }
 
         private void SelectMode_Click(object sender, EventArgs e)
         {
             designerCanvas.CurrentMode = DesignerCanvas.Mode.SELECT;
+            designerCanvas.Cursor = Cursors.Default;
         }
     }
 }

@@ -72,7 +72,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.GroupNameTB = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.ChildBirthDay = new System.Windows.Forms.DateTimePicker();
             this.label8 = new System.Windows.Forms.Label();
             this.FamTB = new System.Windows.Forms.TextBox();
@@ -104,6 +103,7 @@
             this.yearPicker = new System.Windows.Forms.NumericUpDown();
             this.workYear = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.GroupGridView)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChildGridView)).BeginInit();
@@ -117,6 +117,7 @@
             this.panel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.yearPicker)).BeginInit();
@@ -574,7 +575,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.ChildBirthDay);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.FamTB);
@@ -596,16 +596,6 @@
             this.panel1.Size = new System.Drawing.Size(556, 212);
             this.panel1.TabIndex = 26;
             this.panel1.Visible = false;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(410, 15);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(137, 60);
-            this.button1.TabIndex = 32;
-            this.button1.Text = "Перевести детей...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ChildBirthDay
             // 
@@ -882,6 +872,7 @@
             // 
             // panel6
             // 
+            this.panel6.Controls.Add(this.button1);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
@@ -962,6 +953,16 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "Учебный год ";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(3, 1);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(161, 36);
+            this.button1.TabIndex = 33;
+            this.button1.Text = "Перевести детей...";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // GroupChildControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -990,6 +991,7 @@
             this.panel2.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();

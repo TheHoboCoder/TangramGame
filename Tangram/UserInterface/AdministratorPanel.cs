@@ -85,5 +85,11 @@ namespace Tangram.UserInterface
             UserTypesEdit groupTypes = new UserTypesEdit();
             groupTypes.ShowDialog();
         }
+
+        private void StatisticsBtn_Click(object sender, EventArgs e)
+        {
+            StatisticsForm f = new StatisticsForm();
+            f.Show();
+        }
     }
 }

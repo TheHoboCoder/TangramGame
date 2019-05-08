@@ -14,8 +14,8 @@ namespace Tangram.GraphicsElements
     public partial class GameCanvas : UserControl
     {
 
-        private const float SNAP_DISTANCE = 10;
-        private const float THICKNESS = 3;
+        private const float SNAP_DISTANCE = 6;
+        private const float THICKNESS = 4;
 
         private Result.DifficultyTypes difficulty;
 
@@ -25,8 +25,9 @@ namespace Tangram.GraphicsElements
         public GameCanvas(TangramElement el, Result.DifficultyTypes difficulty)
         {
             InitializeComponent();
-            this.Width = el.FigureSize.Width;
-            this.Height= el.FigureSize.Height;
+            this.Size = el.FigureSize;
+            //this.Width = el.FigureSize.Width;
+            //this.Height= el.FigureSize.Height;
             groundFigures = new List<TangramFigure>(el.Figures.Count());
             placedFigures = new List<TangramFigure>(el.Figures.Count());
             foreach (TangramFigure f in el.Figures )
@@ -90,7 +91,7 @@ namespace Tangram.GraphicsElements
 
         private void GameCanvas_Paint(object sender, PaintEventArgs e)
         {
-           e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+           e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
            SolidBrush brush = new SolidBrush(Color.DimGray);
             foreach (TangramFigure figure in groundFigures)
             {
