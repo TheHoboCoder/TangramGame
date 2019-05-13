@@ -32,8 +32,13 @@ namespace Tangram.Data
             groupInfo.TableName = "garden_groups";
             groupInfo.IdName = "id_group";
             groupInfo.GenerateStatements();
-            //groupInfo.linkedTables.Add("childs");
-            PureGroups = new DataView(Table);
+
+            RepeatErrorMsg = "Название группы не должно повторяться";
+            DeleteErrorMsg = "Не удалось удалить группу";
+            InsertErrorMsg = "Не удалось добавить группу";
+            UpdateErrorMsg = "Не удалось изменить группу";
+           //groupInfo.linkedTables.Add("childs");
+           PureGroups = new DataView(Table);
             InitCommandParameters();
             AutoUpload = false;
             FilterByYear(GroupsRepository.GetWorkYear(DateTime.Now));
@@ -66,6 +71,18 @@ namespace Tangram.Data
             }
 
             return year;
+        }
+
+        public static DateTime GetWorkYearStart(int year)
+        {
+            return new DateTime(year, START_MONTH, START_DAY);
+
+        }
+
+        public static DateTime GetWorkYearEnd(int year)
+        {
+            return new DateTime(++year, END_MONTH, END_DAY);
+
         }
 
         public void UpdatePureGroups()

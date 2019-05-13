@@ -78,6 +78,8 @@ namespace Tangram.UserInterface
                 }
 
             }
+
+            ChildBirthDay.MaxDate = DateTime.Now.AddYears(-7);
         }
 
         private void UpdateCurrentYear(int year)
@@ -503,17 +505,16 @@ namespace Tangram.UserInterface
 
             //filterTable(Convert.ToInt32(groupTypeFilter.SelectedValue));
 
-            if (GroupGridView.Rows.Count == 0 &&
-                 Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"] == DBNull.Value)
+            if (GroupGridView.Rows.Count > 0 && GroupGridView.SelectedRows.Count>0 &&
+                GroupGridView.SelectedRows[0].Cells["id_group_h"].Value != DBNull.Value)
             {
-                filterTable(-1);
-                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = false;
+                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = true;
+                filterTable(Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["id_group_h"].Value));   
             }
             else
             {
-               
-                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = true;
-                filterTable(Convert.ToInt32(GroupGridView.Rows[0].Cells["id_group_h"].Value));
+                filterTable(-1);
+                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = false;
             }
 
 

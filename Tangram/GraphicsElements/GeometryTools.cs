@@ -137,24 +137,28 @@ namespace Tangram.GraphicsElements
             PointF point = new PointF();
 
             double p = first.Ax / second.Ax;
-            if( second.By * p == first.By)
+
+            if( second.By * p == first.By || (second.By == 0 && first.By == 0))
             {
                 throw new LinesIsParallelException();
             }
 
-            if (second.By == 0)
+            if(first.By == 0)
             {
-                if(first.By == 0)
-                {
-                    throw new LinesIsParallelException();
-                }
-                else
-                {
-                    point.X = -second.C / second.Ax;
-                }
+                point.X = -first.C / first.Ax;
+                point.Y = -(second.C +point.X * second.Ax) / second.By;
+                return point;
             }
-            else
+
+            if(second.By == 0)
             {
+                point.X = -second.C / second.Ax;
+                point.Y = -(first.C +point.X * first.Ax) / first.By;
+                return point;
+            }
+
+
+           
                 double operand2 = first.Ax + (second.Ax * first.By) /  -second.By;
                 if(operand2 == 0)
                 {
@@ -162,10 +166,9 @@ namespace Tangram.GraphicsElements
                 }
                 double operand1 = -first.C - (second.C * first.By) / -second.By;
                 double x = operand1 / operand2;
-                double y = (-first.C - first.Ax * x) / first.By;
+                double y = (-first.C - first.Ax * x) / first.By; //TODO: division by zero
                 point.X = (float)x;
                 point.Y = (float)y;
-            }
 
 
             //if(first.Ax==second.Ax && 
@@ -205,6 +208,8 @@ namespace Tangram.GraphicsElements
             result.snapPoint = new PointF();
             result.translateVector = new PointF();
             result.distance = float.MaxValue;
+
+            bool firstTime = true;
 
             for (int i = 0, count = testPolygon.Count(); i<count-2; i++)
             {
@@ -261,6 +266,14 @@ namespace Tangram.GraphicsElements
                     }
                 }
 
+                if (firstTime)
+                {
+                    result = res;
+                    firstTime = false;
+                    continue;
+                }
+
+                //TODO
                 if(!res.intersects && result.intersects)
                 {
                     result = res;
@@ -280,6 +293,7 @@ namespace Tangram.GraphicsElements
                 
             }
 
+            //firstTime = true;
 
             for (int i = 0, count = staticPolygon.Count(); i < count - 2; i++)
             {
@@ -336,6 +350,13 @@ namespace Tangram.GraphicsElements
                     }
                 }
 
+                //if (firstTime)
+                //{
+                //    result = res;
+                //    firstTime = false;
+                //    continue;
+                //}
+
                 if (!res.intersects && result.intersects)
                 {
                     result = res;
@@ -359,7 +380,7 @@ namespace Tangram.GraphicsElements
             return result;
         }
 
-        static private IntersectionResult PolygonIntersection(PointF startPoint, PointF endPoint, bool vertical, List<PointF> testPolygonPoints, List<PointF> staticPolygonPoints, float snapDistance)
+        static public IntersectionResult PolygonIntersection(PointF startPoint, PointF endPoint, bool vertical, List<PointF> testPolygonPoints, List<PointF> staticPolygonPoints, float snapDistance)
         {
             IntersectionResult intersection = new IntersectionResult();
 
@@ -1002,7 +1023,7 @@ namespace Tangram.GraphicsElements
         //};
 
 
-        private struct PolygonProjection
+        public struct PolygonProjection
         {
             public PointF startPoint;
             public PointF endPoint;
@@ -1010,28 +1031,32 @@ namespace Tangram.GraphicsElements
             public List<PointF> endPoints;
         }
 
-        static private PolygonProjection GetProjection(PointF[] polygon, LineEquation axis, int index = -1)
+        static public PolygonProjection GetProjection(PointF[] polygon, LineEquation axis, int index = -1)
         {
             PolygonProjection result = new PolygonProjection();
 
             result.startPoint = new PointF();
             result.endPoint = new PointF();
 
-            if (index == -1)
-            {
-                result.startPoint.X = 0;
-                result.startPoint.Y = 0;
-                result.endPoint.X = 0;
-                result.endPoint.Y = 0;
-            }
-            else
-            {
-                result.startPoint.X = polygon[index].X;
-                result.startPoint.Y = polygon[index].Y;
-                result.endPoint.X = polygon[index].X;
-                result.endPoint.Y = polygon[index].Y;
-            }
-          
+            PointF preview = new PointF();
+            preview = Intersection(GetNormal(axis, polygon[0]), axis);
+
+            //if (index == -1)
+            //{
+            //    preview = Intersection(GetNormal(axis, polygon[0]), axis);
+            //}
+            //else
+            //{
+            //    preview = polygon[index];
+               
+                
+            //}
+
+            result.startPoint.X = preview.X;
+            result.startPoint.Y = preview.Y;
+            result.endPoint.X = preview.X;
+            result.endPoint.Y = preview.Y;
+
             result.startPoints = new List<PointF>();
             result.endPoints = new List<PointF>();
 
@@ -1039,9 +1064,19 @@ namespace Tangram.GraphicsElements
 
             for(int i =0, polygonCount = polygon.Count(); i<polygonCount; i++)
             {
-                if (index != -1 && i == index || i == index + 1) continue;
+                PointF projection = new PointF();
 
-                PointF projection = Intersection(GetNormal(axis, polygon[i]), axis);
+                //if (index != -1 && i == index || i == index + 1)
+                //{
+                //    projection.X = preview.X;
+                //    projection.Y = preview.Y;
+                //}
+                //else
+                //{
+                    projection = Intersection(GetNormal(axis, polygon[i]), axis);
+                //}
+
+               
 
                 if (result.endPoint.X == projection.X &&
                     result.endPoint.Y == projection.Y)

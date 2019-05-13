@@ -24,7 +24,7 @@ namespace Tangram.Data
             group_types.TableName = "group_type";
             group_types.IdName = "group_type_id";
 
-            group_types.linkedTables.Add("garden_groups");
+            group_types.linkedTables.Add("garden_groups","Группы");
 
             group_types.SelectStatement = "select group_type_id,group_type_name from group_type";
             group_types.GenerateStatements();

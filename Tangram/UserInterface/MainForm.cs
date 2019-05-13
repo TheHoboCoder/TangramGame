@@ -8,12 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tangram.Data;
+using Tangram.GraphicsElements;
 
 namespace Tangram.UserInterface
 {
     public partial class MainForm : Form
     {
         bool userClose = false;
+
+        private static float BRIGHTNESS_SHIFT = 0.09F;
+
         public MainForm()
         {
             InitializeComponent();
@@ -77,6 +81,21 @@ namespace Tangram.UserInterface
         {
             StatisticsForm f = new StatisticsForm();
             f.Show();
+        }
+
+        private void StartGameBtn_MouseEnter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StartGameBtn_MouseLeave(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RootLayout_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -261,12 +261,17 @@ namespace Tangram.UserInterface
             FigureGroupsEdit groupsEdit = new FigureGroupsEdit();
             groupsEdit.ShowDialog();
             AddedGroup = groupsEdit.group;
+            if (AddedGroup != null)
+            {
+                figureTypeCombo.DataSource = null;
+                figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
+                figureTypeCombo.DisplayMember = "Name";
+                figureTypeCombo.ValueMember = "Id";
 
-            figureTypeCombo.DataSource = null;
-            figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
-            figureTypeCombo.DisplayMember = "Name";
-            figureTypeCombo.ValueMember = "Id";
-            figureTypeCombo.SelectedValue = AddedGroup.Id;
+                figureTypeCombo.SelectedValue = AddedGroup.Id;
+            }
+
+          
 
 
         }
@@ -299,6 +304,29 @@ namespace Tangram.UserInterface
         {
             designerCanvas.CurrentMode = DesignerCanvas.Mode.SELECT;
             designerCanvas.Cursor = Cursors.Default;
+        }
+
+        private void FigureDesigner_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if(e.KeyCode == Keys.Left || e.KeyCode == Keys.D)
+            //{
+            //    designerCanvas.TranslateAll(new PointF(-1, 0));
+            //}
+
+            //if (e.KeyCode == Keys.Right|| e.KeyCode == Keys.A)
+            //{
+            //    designerCanvas.TranslateAll(new PointF(1, 0));
+            //}
+
+            //if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
+            //{
+            //    designerCanvas.TranslateAll(new PointF(0, 1));
+            //}
+
+            //if (e.KeyCode == Keys.Up || e.KeyCode == Keys.W)
+            //{
+            //    designerCanvas.TranslateAll(new PointF(0, -1));
+            //}
         }
     }
 }

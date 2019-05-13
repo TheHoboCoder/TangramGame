@@ -288,17 +288,18 @@
             // 
             // FigureDesigner
             // 
-            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(961, 480);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel2);
+            this.KeyPreview = true;
             this.Name = "FigureDesigner";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Редактирование фигур";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FigureDesigner_FormClosing);
             this.Load += new System.EventHandler(this.FigureDesigner_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FigureDesigner_KeyDown);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.toolStrip2.ResumeLayout(false);

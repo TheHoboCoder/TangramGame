@@ -31,7 +31,7 @@
             this.LoginBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.userName = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.resultBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.StatisticsBtn = new System.Windows.Forms.Button();
@@ -39,6 +39,7 @@
             this.Logout = new System.Windows.Forms.Button();
             this.userProfile = new System.Windows.Forms.Button();
             this.ButtonPanel = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
             this.TablePlace = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -81,17 +82,17 @@
             this.userName.Text = "Курлык П.С.";
             this.userName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button2
+            // resultBtn
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.Control;
-            this.button2.Location = new System.Drawing.Point(13, 134);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(207, 53);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "Типы подрупп";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.resultBtn.BackColor = System.Drawing.SystemColors.Control;
+            this.resultBtn.Location = new System.Drawing.Point(13, 193);
+            this.resultBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.resultBtn.Name = "resultBtn";
+            this.resultBtn.Size = new System.Drawing.Size(207, 53);
+            this.resultBtn.TabIndex = 11;
+            this.resultBtn.Text = "Просмотр результатов";
+            this.resultBtn.UseVisualStyleBackColor = false;
+            this.resultBtn.Click += new System.EventHandler(this.button2_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -126,7 +127,7 @@
             this.StatisticsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatisticsBtn.Dock = System.Windows.Forms.DockStyle.Right;
             this.StatisticsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.StatisticsBtn.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.StatisticsBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.StatisticsBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.StatisticsBtn.Image = global::Tangram.Properties.Resources.graph;
             this.StatisticsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -182,14 +183,27 @@
             // ButtonPanel
             // 
             this.ButtonPanel.BackColor = System.Drawing.Color.SteelBlue;
+            this.ButtonPanel.Controls.Add(this.button3);
             this.ButtonPanel.Controls.Add(this.LoginBtn);
             this.ButtonPanel.Controls.Add(this.button1);
-            this.ButtonPanel.Controls.Add(this.button2);
+            this.ButtonPanel.Controls.Add(this.resultBtn);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ButtonPanel.Location = new System.Drawing.Point(3, 64);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(234, 576);
             this.ButtonPanel.TabIndex = 14;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.SystemColors.Control;
+            this.button3.Location = new System.Drawing.Point(13, 134);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(207, 53);
+            this.button3.TabIndex = 12;
+            this.button3.Text = "Типы подрупп";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // TablePlace
             // 
@@ -232,12 +246,13 @@
         private System.Windows.Forms.Label userName;
         private System.Windows.Forms.Button userProfile;
         private System.Windows.Forms.Button Logout;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button resultBtn;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel ButtonPanel;
         private System.Windows.Forms.Panel TablePlace;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button StatisticsBtn;
+        private System.Windows.Forms.Button button3;
     }
 }

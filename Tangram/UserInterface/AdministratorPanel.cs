@@ -17,7 +17,7 @@ namespace Tangram.UserInterface
 
         private UserTableControl control;
         private GroupChildControl childGroup;
-
+        private ResultsViewer viewer;
 
         public AdministratorPanel()
         {
@@ -35,7 +35,7 @@ namespace Tangram.UserInterface
             UpdateName();
             control = new UserTableControl();
             childGroup = new GroupChildControl();
-            
+            viewer = new ResultsViewer();
         }
 
         private void userProfile_Click(object sender, EventArgs e)
@@ -82,14 +82,21 @@ namespace Tangram.UserInterface
 
         private void button2_Click(object sender, EventArgs e)
         {
-            UserTypesEdit groupTypes = new UserTypesEdit();
-            groupTypes.ShowDialog();
+            viewer.Dock = DockStyle.Fill;
+            TablePlace.Controls.Clear();
+            TablePlace.Controls.Add(viewer);
         }
 
         private void StatisticsBtn_Click(object sender, EventArgs e)
         {
             StatisticsForm f = new StatisticsForm();
             f.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            UserTypesEdit groupTypes = new UserTypesEdit();
+            groupTypes.ShowDialog();
         }
     }
 }

@@ -67,6 +67,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.MetPanel = new System.Windows.Forms.Panel();
             this.reportViewers = new System.Windows.Forms.Panel();
+            this.resultsBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -106,14 +107,14 @@
             // diff_1_r
             // 
             this.diff_1_r.DataPropertyName = "diff_1_result";
-            this.diff_1_r.HeaderText = "Результат сложность 1";
+            this.diff_1_r.HeaderText = "С контуром";
             this.diff_1_r.Name = "diff_1_r";
             this.diff_1_r.ReadOnly = true;
             // 
             // diff_2_r
             // 
             this.diff_2_r.DataPropertyName = "diff_2_result";
-            this.diff_2_r.HeaderText = "Результат сложность 2";
+            this.diff_2_r.HeaderText = "Без контура";
             this.diff_2_r.Name = "diff_2_r";
             this.diff_2_r.ReadOnly = true;
             // 
@@ -503,11 +504,22 @@
             this.reportViewers.Size = new System.Drawing.Size(716, 62);
             this.reportViewers.TabIndex = 21;
             // 
+            // resultsBtn
+            // 
+            this.resultsBtn.Location = new System.Drawing.Point(735, 496);
+            this.resultsBtn.Name = "resultsBtn";
+            this.resultsBtn.Size = new System.Drawing.Size(350, 52);
+            this.resultsBtn.TabIndex = 20;
+            this.resultsBtn.Text = "Результаты игр";
+            this.resultsBtn.UseVisualStyleBackColor = true;
+            this.resultsBtn.Click += new System.EventHandler(this.resultsBtn_Click);
+            // 
             // StatisticsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1238, 559);
+            this.Controls.Add(this.resultsBtn);
             this.Controls.Add(this.reportViewers);
             this.Controls.Add(this.MetPanel);
             this.Controls.Add(this.CreateRepBtn);
@@ -538,12 +550,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn child_name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn diff_1_r;
-        private System.Windows.Forms.DataGridViewTextBoxColumn diff_2_r;
-        private System.Windows.Forms.DataGridViewTextBoxColumn countClasss;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id_child;
-        private System.Windows.Forms.DataGridViewTextBoxColumn count;
         private System.Windows.Forms.Panel diff1_mid_flowchart;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
@@ -576,5 +582,12 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Panel MetPanel;
         private System.Windows.Forms.Panel reportViewers;
+        private System.Windows.Forms.DataGridViewTextBoxColumn child_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn diff_1_r;
+        private System.Windows.Forms.DataGridViewTextBoxColumn diff_2_r;
+        private System.Windows.Forms.DataGridViewTextBoxColumn countClasss;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id_child;
+        private System.Windows.Forms.DataGridViewTextBoxColumn count;
+        private System.Windows.Forms.Button resultsBtn;
     }
 }

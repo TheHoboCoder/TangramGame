@@ -92,10 +92,24 @@ namespace Tangram.UserInterface
                     start = new DateTime(end.Year, end.Month, 1);
                     break;
                 case 1:
-                    //DateTime cur = DateTime.Now;
-                    //end = DateTime.Now
+                    DateTime cur = DateTime.Now;
+                    DateTime month = new DateTime(cur.Year, cur.Month, 1);
+                    start = month.AddMonths(-1);
+                    end = month.AddDays(-1);
                     break;
                 case 2:
+
+                    if (Database.userRepository.currentUser.UserType == Data.DataModels.User.UserTypes.VOSP)
+                    {
+                        start = GroupsRepository.GetWorkYearStart(GroupsRepository.GetWorkYear(DateTime.Now));
+                        end = GroupsRepository.GetWorkYearEnd(GroupsRepository.GetWorkYear(DateTime.Now));
+                    }
+                    else
+                    {
+                        start = GroupsRepository.GetWorkYearStart((int)yearPicker.Value);
+                        end = GroupsRepository.GetWorkYearEnd((int)yearPicker.Value);
+                    } 
+
                     break;
                 case 3:
                     break;
@@ -399,6 +413,12 @@ namespace Tangram.UserInterface
             excelApp.Visible = true;
         }
 
+        private void resultsBtn_Click(object sender, EventArgs e)
+        {
+            TeacherResultViewer viewer = new TeacherResultViewer();
+            viewer.Show();
+        }
+
         private void StatisticsForm_Load(object sender, EventArgs e)
         {
             periodCombo.SelectedIndex = 0;
@@ -411,6 +431,8 @@ namespace Tangram.UserInterface
                 MetPanel.Visible = false;
                 reportViewers.Visible = false;
                 groupId = Database.Teacher_Workspace.TeacherGroup;
+                resultsBtn.Visible = true;
+                resultsBtn.Left = dataGridView1.Left;
             }
             else
             {
@@ -423,6 +445,8 @@ namespace Tangram.UserInterface
                 groupCombo.SelectedIndex = 0;
                 MetPanel.Visible = true;
                 reportViewers.Visible = true;
+                resultsBtn.Visible = false;
+
             }
         }
     }

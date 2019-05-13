@@ -40,9 +40,9 @@ namespace Tangram.Data
                                           inner join user_roles on users.role_id = user_roles.role_id";
             usersInfo.GenerateStatements();
 
-            usersInfo.linkedTables.Add("classes");
-            usersInfo.linkedTables.Add("figures");
-            usersInfo.linkedTables.Add("group_history");
+            usersInfo.linkedTables.Add("classes","Занятия");
+            usersInfo.linkedTables.Add("figures","Фигуры");
+            usersInfo.linkedTables.Add("group_history","Группы");
             InitCommandParameters();
 
         }

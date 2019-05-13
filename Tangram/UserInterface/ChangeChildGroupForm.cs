@@ -42,8 +42,9 @@ namespace Tangram.UserInterface
         private void ChangeChildGroupForm_Load(object sender, EventArgs e)
         {
             DateTime currentTime =  DateTime.Now;
-            startYear.Value = currentTime.Year - 1;
-            endYear.Value = currentTime.Year;
+            int year = GroupsRepository.GetWorkYear(currentTime);
+            startYear.Value = year-1;
+            endYear.Value = year;
 
             UpdateList((int)startYear.Value, ChildList, startGroupCombo, startGroupIndexies, startChilds);
             UpdateList((int)endYear.Value, endChildList, endGroupCombo, endGroupIndexies, endChilds);

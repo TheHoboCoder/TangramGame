@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tangram.GraphicsElements;
 
@@ -63,5 +64,55 @@ namespace UnitTests
 
             }
         }
+
+        [TestMethod]
+        public void PolygonProjectionTest(){
+
+            GeometryTools.LineEquation eq = GeometryTools.GetLineEquation(new PointF(0, 0), new PointF(1, 0));
+            PointF[] firstPolygon = new PointF[4] { new PointF(0, 0), new PointF(0, 10), new PointF(7, 8), new PointF(7, 0) };
+            GeometryTools.PolygonProjection projection = GeometryTools.GetProjection(firstPolygon, eq,2);
+
+            Assert.IsTrue(projection.startPoint.Equals(new PointF(0, 0)) &&
+                          projection.endPoint.Equals(new PointF(7, 0)));
+
+
+            PointF[] secondPolygon = new PointF[4] { new PointF(5, 5), new PointF(10, 10), new PointF(15, 5), new PointF(10, 0) };
+            GeometryTools.PolygonProjection secondProjection = GeometryTools.GetProjection(secondPolygon, eq);
+
+            Assert.IsTrue(secondProjection.startPoint.Equals(new PointF(5, 5)) &&
+                          secondProjection.endPoint.Equals(new PointF(15, 5)));
+        }
+
+        [TestMethod]
+        public void IntersectionTest()
+        {
+            PointF[] firstPolygon = new PointF[4] { new PointF(0, 0), new PointF(-2, 2), new PointF(0, 4), new PointF(2, 2) };
+            PointF[] secondPolygon = new PointF[3] { new PointF(4, 4), new PointF(1, 4), new PointF(4, 7) };
+            //GeometryTools.IntersectionResult result = GeometryTools.PolygonIntersection(fisrt_projection.endPoint, second_projection.startPoint, false, fisrt_projection.endPoints, second_projection.startPoints, 1);
+            GeometryTools.IntersectionResult res= GeometryTools.SAT_intersects(firstPolygon,secondPolygon,1);
+
+            Assert.IsTrue(!res.intersects && res.snapped && res.snapPoint.Equals(new PointF(0.5F, 3.5F)));
+
+            firstPolygon = new PointF[4] { new PointF(0, 0), new PointF(0, 4), new PointF(3, 4), new PointF(3, 0) };
+            secondPolygon = new PointF[4] { new PointF(4, 4), new PointF(4, 7), new PointF(7, 7),  new PointF(7,4) };
+
+            res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
+
+            firstPolygon = new PointF[3] { new PointF(0, 0), new PointF(0, 4), new PointF(5, 0) };
+            secondPolygon = new PointF[4] { new PointF(2, 2), new PointF(2, 4), new PointF(4, 4), new PointF(4, 2) };
+
+            res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
+
+            firstPolygon = new PointF[3] { new PointF(0, 0), new PointF(0, 4), new PointF(5, 0) };
+            secondPolygon = new PointF[4] { new PointF(3, 2), new PointF(1, 2), new PointF(1, 4), new PointF(3, 4) };
+
+            res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
+
+            firstPolygon = new PointF[3] { new PointF(0, 0), new PointF(0, 4), new PointF(6, 0) };
+            secondPolygon = new PointF[4] { new PointF(1, 1), new PointF(3, 1), new PointF(3, -2), new PointF(1, -2) };
+
+            res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
+        }
+
     }
 }

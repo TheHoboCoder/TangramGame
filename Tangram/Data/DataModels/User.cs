@@ -25,6 +25,14 @@ namespace Tangram.Data.DataModels
         public string Phone { get; private set; }
         public string Password { get; private set; }
 
+        public string Initials
+        {
+            get
+            {
+                return Fam + " " + Name.Substring(0, 1).ToUpper() + "." + Otch.Substring(0, 1).ToUpper();
+            }
+        }
+
         public static string getHash(string password)
         {
             using (MD5 cipher = MD5.Create())

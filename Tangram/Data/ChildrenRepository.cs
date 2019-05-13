@@ -44,7 +44,7 @@ namespace Tangram.Data
                                          from childs
                                          inner join child_journal on child_journal.id_child = childs.id_child
                                          inner join group_history on child_journal.id_group_h = group_history.id_group_h";
-            childInfo.linkedTables.Add("results");
+            childInfo.linkedTables.Add("results","Результаты");
             childInfo.GenerateStatements();
             InitCommandParameters();
             AutoUpload = false;

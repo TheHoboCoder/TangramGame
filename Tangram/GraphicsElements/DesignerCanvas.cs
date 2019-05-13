@@ -41,7 +41,7 @@ namespace Tangram.GraphicsElements
 
         }
 
-
+        private const float BRIGHTNESS_SHIFT = 0.2F;
         List<Figure> figures = new List<Figure>();
         List<Figure> selectedFigures = new List<Figure>();
         Figure previewSelection,currentSelection;
@@ -721,6 +721,7 @@ namespace Tangram.GraphicsElements
             {
                 f.Translate(vector.X, vector.Y);
             }
+            Refresh();
         }
 
         public void Rotate(float angle)
@@ -783,20 +784,30 @@ namespace Tangram.GraphicsElements
 
             foreach (Figure figure in selectedFigures)
             {
-                
+                brush.Color = ColorTools.ColorFromAhsb(255, figure.FigureColor.GetHue(), figure.FigureColor.GetSaturation(),
+                    figure.FigureColor.GetBrightness() - BRIGHTNESS_SHIFT);
+                pen.Brush = brush;
                 e.Graphics.DrawPath(pen, figure.Path);
             }
 
             if (previewSelection != null)
             {
+                brush.Color = ColorTools.ColorFromAhsb(255, previewSelection.FigureColor.GetHue(), previewSelection.FigureColor.GetSaturation(),
+                   previewSelection.FigureColor.GetBrightness() - BRIGHTNESS_SHIFT);
                 pen.DashStyle = DashStyle.Dash;
+                pen.Brush = brush;
                 e.Graphics.DrawPath(pen, previewSelection.Path);
             }
+
             pen.DashStyle = DashStyle.Solid;
             if (rubberSelectionStarted)
             {
+                brush.Color = Color.FromArgb(180, Color.Blue);
+                pen.Brush = brush;
                 e.Graphics.DrawRectangle(pen, Rectangle.Ceiling(rubberBandSelection));
-                
+                brush.Color = Color.FromArgb(100, Color.Blue);
+                e.Graphics.FillRectangle(brush, Rectangle.Ceiling(rubberBandSelection));
+
             }
 
              brush.Color = Color.Gray;

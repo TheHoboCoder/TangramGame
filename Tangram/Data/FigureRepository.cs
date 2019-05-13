@@ -28,7 +28,7 @@ namespace Tangram.Data
 
             figureInfo.SelectStatement = "select id_figure, figure_data, figure_name, id_group, id_user from figures";
             figureInfo.GenerateStatements();
-            figureInfo.linkedTables.Add("results");
+            figureInfo.linkedTables.Add("results","Результаты");
 
             DeleteErrorMsg = "Невозможно удалить фигуру";
             UpdateErrorMsg = "Невозможно обновить фигуру";

@@ -15,7 +15,7 @@ namespace Tangram.Data
         public GroupTypeRepository GroupTypes{ get; private set; }
         public GroupHelper GroupManager { get; private set; }
         public ChildHelper ChildManager { get; private set; }
-
+        public GameRepository Results { get; private set; }
         public User Met { get; private set; }
 
         public MetWorkspace(MySqlConnection connection, User met)
@@ -25,6 +25,7 @@ namespace Tangram.Data
             GroupTypes = new GroupTypeRepository(connection);
             GroupManager = new GroupHelper(connection);
             ChildManager = new ChildHelper(connection);
+            Results = new GameRepository(connection);
             Met = met;
 
         }

@@ -37,12 +37,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.NameTB = new System.Windows.Forms.TextBox();
             this.OcthTB = new System.Windows.Forms.TextBox();
-            this.PhoneTB = new System.Windows.Forms.TextBox();
             this.PasswordTB = new System.Windows.Forms.TextBox();
             this.RepassTB = new System.Windows.Forms.TextBox();
             this.LoginBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.PhoneTB = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // famLabel
@@ -130,14 +130,6 @@
             this.OcthTB.Size = new System.Drawing.Size(190, 26);
             this.OcthTB.TabIndex = 9;
             // 
-            // PhoneTB
-            // 
-            this.PhoneTB.Location = new System.Drawing.Point(123, 144);
-            this.PhoneTB.Margin = new System.Windows.Forms.Padding(2);
-            this.PhoneTB.Name = "PhoneTB";
-            this.PhoneTB.Size = new System.Drawing.Size(190, 26);
-            this.PhoneTB.TabIndex = 10;
-            // 
             // PasswordTB
             // 
             this.PasswordTB.Location = new System.Drawing.Point(123, 246);
@@ -145,6 +137,7 @@
             this.PasswordTB.Name = "PasswordTB";
             this.PasswordTB.Size = new System.Drawing.Size(190, 26);
             this.PasswordTB.TabIndex = 11;
+            this.PasswordTB.UseSystemPasswordChar = true;
             // 
             // RepassTB
             // 
@@ -153,6 +146,7 @@
             this.RepassTB.Name = "RepassTB";
             this.RepassTB.Size = new System.Drawing.Size(190, 26);
             this.RepassTB.TabIndex = 12;
+            this.RepassTB.UseSystemPasswordChar = true;
             // 
             // LoginBtn
             // 
@@ -187,17 +181,25 @@
             this.label6.TabIndex = 15;
             this.label6.Text = "Оставьте поля незаполненными,\r\nесли не хотите менять пароль";
             // 
+            // PhoneTB
+            // 
+            this.PhoneTB.Location = new System.Drawing.Point(123, 144);
+            this.PhoneTB.Mask = "000000000000";
+            this.PhoneTB.Name = "PhoneTB";
+            this.PhoneTB.Size = new System.Drawing.Size(190, 26);
+            this.PhoneTB.TabIndex = 16;
+            // 
             // UserEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(340, 399);
+            this.Controls.Add(this.PhoneTB);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.LoginBtn);
             this.Controls.Add(this.RepassTB);
             this.Controls.Add(this.PasswordTB);
-            this.Controls.Add(this.PhoneTB);
             this.Controls.Add(this.OcthTB);
             this.Controls.Add(this.NameTB);
             this.Controls.Add(this.label5);
@@ -232,11 +234,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox NameTB;
         private System.Windows.Forms.TextBox OcthTB;
-        private System.Windows.Forms.TextBox PhoneTB;
         private System.Windows.Forms.TextBox PasswordTB;
         private System.Windows.Forms.TextBox RepassTB;
         private System.Windows.Forms.Button LoginBtn;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.MaskedTextBox PhoneTB;
     }
 }

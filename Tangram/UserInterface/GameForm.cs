@@ -133,6 +133,9 @@ namespace Tangram.UserInterface
             box.Top = (point.Y - location.Y);
             this.point = location;
 
+            draggedFig.Region = new Region(figureToolBox1.SelectedFigure.Path);
+
+
             this.Controls.Add(draggedFig);
             draggedFig.BringToFront();
             draggedFig.BackColor = Color.White;

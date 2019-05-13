@@ -98,12 +98,12 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.yearPicker = new System.Windows.Forms.NumericUpDown();
             this.workYear = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.GroupGridView)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChildGridView)).BeginInit();
@@ -240,6 +240,8 @@
             // DeleteGroupBtn
             // 
             this.DeleteGroupBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DeleteGroupBtn.Image = global::Tangram.Properties.Resources.delete;
+            this.DeleteGroupBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DeleteGroupBtn.Location = new System.Drawing.Point(387, 2);
             this.DeleteGroupBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DeleteGroupBtn.Name = "DeleteGroupBtn";
@@ -252,6 +254,8 @@
             // UpdateGroupBtn
             // 
             this.UpdateGroupBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.UpdateGroupBtn.Image = global::Tangram.Properties.Resources.pencil;
+            this.UpdateGroupBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UpdateGroupBtn.Location = new System.Drawing.Point(195, 2);
             this.UpdateGroupBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UpdateGroupBtn.Name = "UpdateGroupBtn";
@@ -264,6 +268,8 @@
             // AddGroupBtn
             // 
             this.AddGroupBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddGroupBtn.Image = global::Tangram.Properties.Resources.plus;
+            this.AddGroupBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.AddGroupBtn.Location = new System.Drawing.Point(3, 2);
             this.AddGroupBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AddGroupBtn.Name = "AddGroupBtn";
@@ -424,6 +430,8 @@
             // DeleteChildBtn
             // 
             this.DeleteChildBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DeleteChildBtn.Image = global::Tangram.Properties.Resources.delete;
+            this.DeleteChildBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DeleteChildBtn.Location = new System.Drawing.Point(389, 2);
             this.DeleteChildBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DeleteChildBtn.Name = "DeleteChildBtn";
@@ -436,6 +444,8 @@
             // EditChildBtn
             // 
             this.EditChildBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.EditChildBtn.Image = global::Tangram.Properties.Resources.pencil;
+            this.EditChildBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.EditChildBtn.Location = new System.Drawing.Point(196, 2);
             this.EditChildBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.EditChildBtn.Name = "EditChildBtn";
@@ -448,6 +458,8 @@
             // AddChildBtn
             // 
             this.AddChildBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddChildBtn.Image = global::Tangram.Properties.Resources.plus;
+            this.AddChildBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.AddChildBtn.Location = new System.Drawing.Point(3, 2);
             this.AddChildBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AddChildBtn.Name = "AddChildBtn";
@@ -879,6 +891,16 @@
             this.panel6.Size = new System.Drawing.Size(579, 41);
             this.panel6.TabIndex = 23;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(3, 1);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(225, 36);
+            this.button1.TabIndex = 33;
+            this.button1.Text = "Управление детьми в группе";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 2;
@@ -952,16 +974,6 @@
             this.label9.Size = new System.Drawing.Size(96, 16);
             this.label9.TabIndex = 0;
             this.label9.Text = "Учебный год ";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(3, 1);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(161, 36);
-            this.button1.TabIndex = 33;
-            this.button1.Text = "Перевести детей...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // GroupChildControl
             // 

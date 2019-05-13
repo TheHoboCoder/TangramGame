@@ -136,32 +136,32 @@ namespace Tangram.GraphicsElements
             }
         }
 
-        //public override PointF BoundaryCenter
-        //{
-        //    get
-        //    {
-        //        switch (FigureType)
-        //        {
-        //            case FigureTypes.RECT:
-        //                return base.BoundaryCenter;
-        //            case FigureTypes.BIG_TRIANGLE:
-        //            case FigureTypes.MID_TRIANGLE:
-        //            case FigureTypes.SMALL_TRIANGLE:
-        //                PointF side1Center = new PointF((Path.PathPoints[0].X + Path.PathPoints[1].X) / 2,
-        //                                                (Path.PathPoints[0].Y + Path.PathPoints[1].Y) / 2);
-        //                GeometryTools.LineEquation median1 = GeometryTools.GetLineEquation(side1Center, Path.PathPoints[1]);
-        //                PointF side2Center = new PointF((Path.PathPoints[1].X + Path.PathPoints[2].X) / 2,
-        //                                             (Path.PathPoints[1].Y + Path.PathPoints[2].Y) / 2);
-        //                GeometryTools.LineEquation median2 = GeometryTools.GetLineEquation(Path.PathPoints[0],side2Center);
-        //                //return GeometryTools.Intersection(median1, median2);
-        //                return base.BoundaryCenter;
-        //            case FigureTypes.PARALLELOGRAM:
-        //                return base.BoundaryCenter;
-        //            default:
-        //                return base.BoundaryCenter;
-        //        }
-        //    }
-        //}
+        public override PointF BoundaryCenter
+        {
+            get
+            {
+                switch (FigureType)
+                {
+                    case FigureTypes.RECT:
+                        return base.BoundaryCenter;
+                    case FigureTypes.BIG_TRIANGLE:
+                    case FigureTypes.MID_TRIANGLE:
+                    case FigureTypes.SMALL_TRIANGLE:
+                        PointF side1Center = new PointF((Path.PathPoints[0].X + Path.PathPoints[1].X) / 2,
+                                                        (Path.PathPoints[0].Y + Path.PathPoints[1].Y) / 2);
+                        GeometryTools.LineEquation median1 = GeometryTools.GetLineEquation(side1Center, Path.PathPoints[2]);
+                        PointF side2Center = new PointF((Path.PathPoints[1].X + Path.PathPoints[2].X) / 2,
+                                                     (Path.PathPoints[1].Y + Path.PathPoints[2].Y) / 2);
+                        GeometryTools.LineEquation median2 = GeometryTools.GetLineEquation(Path.PathPoints[0], side2Center);
+                        return GeometryTools.Intersection(median1, median2);
+                        //return base.BoundaryCenter;
+                    case FigureTypes.PARALLELOGRAM:
+                        return GeometryTools.Intersection(GeometryTools.GetLineEquation(Path.PathPoints[0], Path.PathPoints[2]), GeometryTools.GetLineEquation(Path.PathPoints[1], Path.PathPoints[3]));
+                    default:
+                        return base.BoundaryCenter;
+                }
+            }
+        }
         public override Figure Clone()
         {
             return new TangramFigure(this.graphicPath,this.figureType, this.FigureColor, this.Location, pivot, RotationAngle);

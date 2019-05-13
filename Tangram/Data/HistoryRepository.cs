@@ -25,8 +25,8 @@ namespace Tangram.Data
             historyInfo.TableName = "group_history";
             historyInfo.IdName = "id_group_h";
 
-            historyInfo.linkedTables.Add("results");
-            historyInfo.linkedTables.Add("child_journal");
+            historyInfo.linkedTables.Add("results","Результаты");
+            historyInfo.linkedTables.Add("child_journal","Дети");
             //historyInfo.linkedTables.Add("childs");
 
             historyInfo.GenerateStatements();

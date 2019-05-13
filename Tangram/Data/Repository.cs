@@ -281,15 +281,15 @@ namespace Tangram.Data
 
                 if (_checkOnDelete)
                 {
-                    foreach (string table in info.linkedTables)
+                    foreach (var table in info.linkedTables)
                     {
-                        command.CommandText = String.Format("Select count(*) from {0} where {1} = @{1}", table, info.IdName);
+                        command.CommandText = String.Format("Select count(*) from {0} where {1} = @{1}", table.Key, info.IdName);
                         Object c = command.ExecuteScalar();
                         if (c == null) continue;
                         int rowCount = Convert.ToInt32(c);
                         if (rowCount > 0)
                         {
-                            System.Windows.Forms.MessageBox.Show(linkedErrorMsg(table),
+                            System.Windows.Forms.MessageBox.Show(linkedErrorMsg(table.Value),
                                                           DeleteErrorMsg,
                                                           System.Windows.Forms.MessageBoxButtons.OK,
                                                           System.Windows.Forms.MessageBoxIcon.Warning);

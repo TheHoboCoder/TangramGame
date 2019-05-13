@@ -21,9 +21,9 @@ namespace Tangram.Data
         };
 
         public static UserRepository userRepository;
-        public static GroupsRepository GroupsRepository;
-        public static GroupTypeRepository GroupTypeRepository;
-        public static ChildrenRepository ChildrenRepository;
+        //public static GroupsRepository GroupsRepository;
+        //public static GroupTypeRepository GroupTypeRepository;
+        //public static ChildrenRepository ChildrenRepository;
 
         public static TeacherWorkspace Teacher_Workspace;
         public static MetWorkspace MetWorkspace;
@@ -148,8 +148,11 @@ namespace Tangram.Data
 
 
             Dictionary<int, string> classes = new Dictionary<int, string>();
-            command.CommandText = String.Format("select id_class, class_date from classes where id_user = '{0}' and " +
-                                  "classes.class_date between '{1}' and '{2}'", userId, start.ToString("yyyy-MM-dd"), end.ToString("yyyy-MM-dd"));
+            //command.CommandText = String.Format("select id_class, class_date from classes where id_user = '{0}' and " +
+            //                      "classes.class_date between '{1}' and '{2}'", userId, start.ToString("yyyy-MM-dd"), end.ToString("yyyy-MM-dd"));
+
+            command.CommandText = String.Format("select id_class, class_date from classes where id_user in (select id_user from group_history where group_history.id_group_h = '{0}') and " +
+                                  "classes.class_date between '{1}' and '{2}'", id_group_h, start.ToString("yyyy-MM-dd"), end.ToString("yyyy-MM-dd"));
 
             using (MySqlDataReader reader = command.ExecuteReader())
             {
@@ -161,7 +164,10 @@ namespace Tangram.Data
             }
 
 
-            command.CommandText = String.Format("select count(*) from classes where id_user = '{0}' and " +
+            //command.CommandText = String.Format("select count(*) from classes where id_user = '{0}' and " +
+            //                      "classes.class_date between '{1}' and '{2}'", userId, start.ToString("yyyy-MM-dd"), end.ToString("yyyy-MM-dd"));
+
+            command.CommandText = String.Format("select count(*) from classes where id_user in (select id_user from group_history where group_history.id_group_h = '{0}') and " +
                                   "classes.class_date between '{1}' and '{2}'", userId, start.ToString("yyyy-MM-dd"), end.ToString("yyyy-MM-dd"));
 
             int totalClassCount = Convert.ToInt32(command.ExecuteScalar());

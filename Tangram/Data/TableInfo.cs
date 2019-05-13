@@ -16,7 +16,7 @@ namespace Tangram.Data
         public string UpdateStatement { get; private set; }
         public string DeleteStatement { get; private set; }
         public List<MySqlParameter> parameters = new List<MySqlParameter>();
-        public List<string> linkedTables = new List<string>();
+        public Dictionary<string,string> linkedTables = new Dictionary<string, string>();
 
         public void GenerateStatements()
         {

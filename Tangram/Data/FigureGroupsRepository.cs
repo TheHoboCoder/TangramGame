@@ -27,7 +27,7 @@ namespace Tangram.Data
 
             figure_groups.SelectStatement = "select id_group, group_name, group_description from figure_groups";
             figure_groups.GenerateStatements();
-            figure_groups.linkedTables.Add("figures");
+            figure_groups.linkedTables.Add("figures","Фигуры");
             InitCommandParameters();
             Upload();
 
