@@ -35,7 +35,7 @@ namespace Tangram.Data
             }
         }
 
-        public GameRepository gameRepository { get; private set;  }
+        //public GameRepository gameRepository { get; private set;  }
         
 
         private ListViewAdapter adapter;
@@ -137,7 +137,7 @@ namespace Tangram.Data
                     children = childs.Entities.ToList();
                     SubGroupCount = childs.currentGroupCount;
                 }
-                gameRepository = new GameRepository(connection);
+                //gameRepository = new GameRepository(connection);
             }
 
             figureGroups = new FigureGroupsRepository(connection);

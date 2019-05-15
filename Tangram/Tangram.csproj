@@ -193,12 +193,6 @@
     <Compile Include="UserInterface\ScoreSetter.Designer.cs">
       <DependentUpon>ScoreSetter.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserInterface\Statistics.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UserInterface\Statistics.Designer.cs">
-      <DependentUpon>Statistics.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserInterface\StatisticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -285,9 +279,6 @@
     <EmbeddedResource Include="UserInterface\ScoreSetter.resx">
       <DependentUpon>ScoreSetter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserInterface\Statistics.resx">
-      <DependentUpon>Statistics.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\StatisticsForm.resx">
       <DependentUpon>StatisticsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -360,6 +351,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\info_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

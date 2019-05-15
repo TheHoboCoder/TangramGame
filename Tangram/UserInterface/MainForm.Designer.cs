@@ -28,16 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.RootLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.UserPanel = new System.Windows.Forms.Panel();
-            this.userName = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.userProfile = new System.Windows.Forms.Button();
-            this.Logout = new System.Windows.Forms.Button();
             this.FiguresBtn = new System.Windows.Forms.Button();
             this.StatisticsBtn = new System.Windows.Forms.Button();
             this.StartGameBtn = new System.Windows.Forms.Button();
+            this.UserPanel = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.userName = new System.Windows.Forms.Label();
+            this.userProfile = new System.Windows.Forms.Button();
+            this.Logout = new System.Windows.Forms.Button();
             this.RootLayout.SuspendLayout();
             this.UserPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -69,71 +70,6 @@
             this.RootLayout.Size = new System.Drawing.Size(761, 400);
             this.RootLayout.TabIndex = 2;
             this.RootLayout.Paint += new System.Windows.Forms.PaintEventHandler(this.RootLayout_Paint);
-            // 
-            // UserPanel
-            // 
-            this.RootLayout.SetColumnSpan(this.UserPanel, 2);
-            this.UserPanel.Controls.Add(this.tableLayoutPanel1);
-            this.UserPanel.Location = new System.Drawing.Point(3, 311);
-            this.UserPanel.Name = "UserPanel";
-            this.UserPanel.Size = new System.Drawing.Size(260, 23);
-            this.UserPanel.TabIndex = 4;
-            // 
-            // userName
-            // 
-            this.userName.AutoSize = true;
-            this.userName.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.userName.Location = new System.Drawing.Point(5, 0);
-            this.userName.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.userName.Name = "userName";
-            this.userName.Size = new System.Drawing.Size(89, 20);
-            this.userName.TabIndex = 3;
-            this.userName.Text = "Курлык П.С.";
-            this.userName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(152, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(108, 23);
-            this.tableLayoutPanel1.TabIndex = 5;
-            // 
-            // userProfile
-            // 
-            this.userProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.userProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.userProfile.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.userProfile.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.userProfile.Image = global::Tangram.Properties.Resources.user_silhouette_small;
-            this.userProfile.Location = new System.Drawing.Point(104, 5);
-            this.userProfile.Margin = new System.Windows.Forms.Padding(5);
-            this.userProfile.Name = "userProfile";
-            this.userProfile.Size = new System.Drawing.Size(44, 31);
-            this.userProfile.TabIndex = 4;
-            this.userProfile.UseVisualStyleBackColor = false;
-            this.userProfile.Click += new System.EventHandler(this.userProfile_Click);
-            // 
-            // Logout
-            // 
-            this.Logout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.Logout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Logout.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Logout.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Logout.Image = global::Tangram.Properties.Resources.logout;
-            this.Logout.Location = new System.Drawing.Point(158, 5);
-            this.Logout.Margin = new System.Windows.Forms.Padding(5);
-            this.Logout.Name = "Logout";
-            this.Logout.Size = new System.Drawing.Size(44, 31);
-            this.Logout.TabIndex = 3;
-            this.Logout.UseVisualStyleBackColor = false;
-            this.Logout.Click += new System.EventHandler(this.Logout_Click);
             // 
             // FiguresBtn
             // 
@@ -189,6 +125,29 @@
             this.StartGameBtn.UseVisualStyleBackColor = false;
             this.StartGameBtn.Click += new System.EventHandler(this.StartGameBtn_Click);
             // 
+            // UserPanel
+            // 
+            this.RootLayout.SetColumnSpan(this.UserPanel, 2);
+            this.UserPanel.Controls.Add(this.tableLayoutPanel1);
+            this.UserPanel.Location = new System.Drawing.Point(3, 311);
+            this.UserPanel.Name = "UserPanel";
+            this.UserPanel.Size = new System.Drawing.Size(260, 23);
+            this.UserPanel.TabIndex = 4;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(152, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(108, 23);
+            this.tableLayoutPanel1.TabIndex = 5;
+            // 
             // flowLayoutPanel1
             // 
             this.RootLayout.SetColumnSpan(this.flowLayoutPanel1, 3);
@@ -200,6 +159,48 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(281, 41);
             this.flowLayoutPanel1.TabIndex = 15;
             // 
+            // userName
+            // 
+            this.userName.AutoSize = true;
+            this.userName.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.userName.Location = new System.Drawing.Point(5, 0);
+            this.userName.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.userName.Name = "userName";
+            this.userName.Size = new System.Drawing.Size(89, 20);
+            this.userName.TabIndex = 3;
+            this.userName.Text = "Курлык П.С.";
+            this.userName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // userProfile
+            // 
+            this.userProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.userProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.userProfile.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.userProfile.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.userProfile.Image = global::Tangram.Properties.Resources.user_silhouette_small;
+            this.userProfile.Location = new System.Drawing.Point(104, 5);
+            this.userProfile.Margin = new System.Windows.Forms.Padding(5);
+            this.userProfile.Name = "userProfile";
+            this.userProfile.Size = new System.Drawing.Size(44, 31);
+            this.userProfile.TabIndex = 4;
+            this.userProfile.UseVisualStyleBackColor = false;
+            this.userProfile.Click += new System.EventHandler(this.userProfile_Click);
+            // 
+            // Logout
+            // 
+            this.Logout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.Logout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Logout.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Logout.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Logout.Image = global::Tangram.Properties.Resources.logout;
+            this.Logout.Location = new System.Drawing.Point(158, 5);
+            this.Logout.Margin = new System.Windows.Forms.Padding(5);
+            this.Logout.Name = "Logout";
+            this.Logout.Size = new System.Drawing.Size(44, 31);
+            this.Logout.TabIndex = 3;
+            this.Logout.UseVisualStyleBackColor = false;
+            this.Logout.Click += new System.EventHandler(this.Logout_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
@@ -208,6 +209,7 @@
             this.ClientSize = new System.Drawing.Size(761, 400);
             this.Controls.Add(this.RootLayout);
             this.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.MinimumSize = new System.Drawing.Size(655, 384);
             this.Name = "MainForm";

@@ -38,7 +38,7 @@ namespace Tangram.UserInterface
 
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            if (Database.Teacher_Workspace.gameRepository.Add(new Result()
+            if (Database.GameRepository.Add(new Result()
             {
                 Score = (int)ChildScoreUpDown.Value,
                 ChildId = child.Id,

@@ -42,6 +42,8 @@ namespace Tangram.GraphicsElements
         }
 
         private const float BRIGHTNESS_SHIFT = 0.2F;
+        private const float HUE_SHIFT = 2.0F;
+
         List<Figure> figures = new List<Figure>();
         List<Figure> selectedFigures = new List<Figure>();
         Figure previewSelection,currentSelection;
@@ -108,6 +110,17 @@ namespace Tangram.GraphicsElements
             set
             {
                 _currentMode = value;
+
+                //switch (_currentMode)
+                //{
+                //    case Mode.PAN:
+                //        MouseMove -= DesignerCanvas_MouseMove;
+                //        break;
+                //    case Mode.SELECT:
+                //        MouseMove+= DesignerCanvas_MouseMove;
+                //        break;
+                //}    
+
                 
                 Refresh();    
             }
@@ -363,7 +376,6 @@ namespace Tangram.GraphicsElements
 
         private void DesignerCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-
             if (e.Button == MouseButtons.Left)
             {
                 if (CurrentMode == Mode.PAN)
@@ -431,6 +443,8 @@ namespace Tangram.GraphicsElements
             }
             else
             {
+                if (CurrentMode == Mode.PAN) return;
+                
                 var rotate = rotatePoints.Where(p => p.Contains(e.Location));
 
                 if (rotate.Count() != 0 && rotatePoints.Count()!=0)
@@ -784,16 +798,36 @@ namespace Tangram.GraphicsElements
 
             foreach (Figure figure in selectedFigures)
             {
-                brush.Color = ColorTools.ColorFromAhsb(255, figure.FigureColor.GetHue(), figure.FigureColor.GetSaturation(),
-                    figure.FigureColor.GetBrightness() - BRIGHTNESS_SHIFT);
+                float hue = figure.FigureColor.GetHue() + HUE_SHIFT;
+                if(hue > 360)
+                {
+                    hue = figure.FigureColor.GetHue() - HUE_SHIFT;
+                }
+                float brightness = figure.FigureColor.GetBrightness() - BRIGHTNESS_SHIFT;
+                if (brightness < 0)
+                {
+                    brightness = figure.FigureColor.GetBrightness() + BRIGHTNESS_SHIFT;
+                }
+                brush.Color = ColorTools.ColorFromAhsb(255, hue, figure.FigureColor.GetSaturation(),
+                    brightness);
                 pen.Brush = brush;
                 e.Graphics.DrawPath(pen, figure.Path);
             }
 
             if (previewSelection != null)
             {
-                brush.Color = ColorTools.ColorFromAhsb(255, previewSelection.FigureColor.GetHue(), previewSelection.FigureColor.GetSaturation(),
-                   previewSelection.FigureColor.GetBrightness() - BRIGHTNESS_SHIFT);
+                float hue = previewSelection.FigureColor.GetHue() + HUE_SHIFT;
+                if (hue > 360)
+                {
+                    hue = previewSelection.FigureColor.GetHue() - HUE_SHIFT;
+                }
+                float brightness = previewSelection.FigureColor.GetBrightness() - BRIGHTNESS_SHIFT;
+                if (brightness < 0)
+                {
+                    brightness = previewSelection.FigureColor.GetBrightness() + BRIGHTNESS_SHIFT;
+                }
+                brush.Color = ColorTools.ColorFromAhsb(255, hue, previewSelection.FigureColor.GetSaturation(),
+                   brightness);
                 pen.DashStyle = DashStyle.Dash;
                 pen.Brush = brush;
                 e.Graphics.DrawPath(pen, previewSelection.Path);

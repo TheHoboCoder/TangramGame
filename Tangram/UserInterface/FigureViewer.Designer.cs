@@ -33,6 +33,7 @@
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("пам", 0);
             System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("точка", 0);
             System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("роккк");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FigureViewer));
             this.GroupList = new System.Windows.Forms.ListBox();
             this.figureView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -57,7 +58,7 @@
             this.GroupList.FormattingEnabled = true;
             this.GroupList.ItemHeight = 18;
             this.GroupList.Location = new System.Drawing.Point(15, 48);
-            this.GroupList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GroupList.Margin = new System.Windows.Forms.Padding(4);
             this.GroupList.Name = "GroupList";
             this.GroupList.Size = new System.Drawing.Size(205, 202);
             this.GroupList.TabIndex = 0;
@@ -82,7 +83,7 @@
             listViewItem2,
             listViewItem3});
             this.figureView.Location = new System.Drawing.Point(230, 48);
-            this.figureView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.figureView.Margin = new System.Windows.Forms.Padding(4);
             this.figureView.MultiSelect = false;
             this.figureView.Name = "figureView";
             this.figureView.Size = new System.Drawing.Size(551, 331);
@@ -242,7 +243,8 @@
             this.Controls.Add(this.figureView);
             this.Controls.Add(this.GroupList);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FigureViewer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Просмотр фигур";

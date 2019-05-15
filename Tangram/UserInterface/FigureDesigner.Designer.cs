@@ -234,9 +234,9 @@
             this.designerCanvas.FigureColors = System.Drawing.Color.Orange;
             this.designerCanvas.GridEnabled = false;
             this.designerCanvas.GridSnapEnabled = false;
-            this.designerCanvas.Location = new System.Drawing.Point(8, 0);
+            this.designerCanvas.Location = new System.Drawing.Point(46, 26);
             this.designerCanvas.Name = "designerCanvas";
-            this.designerCanvas.Size = new System.Drawing.Size(548, 438);
+            this.designerCanvas.Size = new System.Drawing.Size(465, 292);
             this.designerCanvas.SnapAngle = 45F;
             this.designerCanvas.SnapDistance = 0F;
             this.designerCanvas.TabIndex = 0;
@@ -258,7 +258,7 @@
             // SelectMode
             // 
             this.SelectMode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.SelectMode.Image = ((System.Drawing.Image)(resources.GetObject("SelectMode.Image")));
+            this.SelectMode.Image = global::Tangram.Properties.Resources.cursor;
             this.SelectMode.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SelectMode.Name = "SelectMode";
             this.SelectMode.Size = new System.Drawing.Size(36, 20);
@@ -268,7 +268,7 @@
             // PanMode
             // 
             this.PanMode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.PanMode.Image = ((System.Drawing.Image)(resources.GetObject("PanMode.Image")));
+            this.PanMode.Image = global::Tangram.Properties.Resources.hand;
             this.PanMode.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PanMode.Name = "PanMode";
             this.PanMode.Size = new System.Drawing.Size(36, 20);
@@ -293,6 +293,7 @@
             this.ClientSize = new System.Drawing.Size(961, 480);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FigureDesigner";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

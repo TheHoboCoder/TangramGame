@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdministratorPanel));
             this.LoginBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.userName = new System.Windows.Forms.Label();
@@ -223,6 +224,7 @@
             this.ClientSize = new System.Drawing.Size(1269, 643);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(1285, 682);
             this.Name = "AdministratorPanel";

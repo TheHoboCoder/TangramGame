@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClassControl));
             this.StartGame = new System.Windows.Forms.Button();
             this.endClass = new System.Windows.Forms.Button();
             this.selectFigure = new System.Windows.Forms.Button();
@@ -158,6 +159,7 @@
             this.Controls.Add(this.endClass);
             this.Controls.Add(this.StartGame);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ClassControl";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -114,7 +114,8 @@ namespace Tangram.GraphicsElements
             LineEquation result = new LineEquation();
             result.Ax = lineEquation.By;
             result.By = -lineEquation.Ax;
-            result.C = lineEquation.By * -point.X + lineEquation.Ax * point.Y;
+            result.C = lineEquation.By * -point.X + lineEquation.Ax * point.Y;//возможно, неправильно считает
+
             return result;
         }
 
@@ -211,7 +212,7 @@ namespace Tangram.GraphicsElements
 
             bool firstTime = true;
 
-            for (int i = 0, count = testPolygon.Count(); i<count-2; i++)
+            for (int i = 0, count = testPolygon.Count(); i<count-1; i++)
             {
                 LineEquation eq = GetLineEquation(testPolygon[i], testPolygon[i + 1]);
                 LineEquation normal = GetNormal(eq, testPolygon[i]);
@@ -295,7 +296,7 @@ namespace Tangram.GraphicsElements
 
             //firstTime = true;
 
-            for (int i = 0, count = staticPolygon.Count(); i < count - 2; i++)
+            for (int i = 0, count = staticPolygon.Count(); i < count - 1; i++)
             {
                 LineEquation eq = GetLineEquation(staticPolygon[i], staticPolygon[i + 1]);
                 LineEquation normal = GetNormal(eq, staticPolygon[i]);
@@ -398,7 +399,8 @@ namespace Tangram.GraphicsElements
                 if (startPoint.Y < endPoint.Y)
                 {
                     intersection.intersects = true;
-                    intersection.translateVector = new PointF(endPoint.X -startPoint.X, endPoint.Y-startPoint.Y);
+                    //intersection.translateVector = new PointF(endPoint.X -startPoint.X, endPoint.Y-startPoint.Y);
+                    intersection.translateVector = new PointF( startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
                     return intersection;
                 }
             }
@@ -407,7 +409,8 @@ namespace Tangram.GraphicsElements
                 if (startPoint.X < endPoint.X)
                 {
                     intersection.intersects = true;
-                    intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+                    //intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+                    intersection.translateVector = new PointF(startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
                     return intersection;
                 }
             }

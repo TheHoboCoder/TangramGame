@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tangram.Data;
+using Tangram.Data.DataModels;
 
 namespace Tangram.UserInterface
 {
@@ -15,7 +16,6 @@ namespace Tangram.UserInterface
     {
         bool timeSelected = false;
 
-        private G
 
         public ResultsViewer()
         {
@@ -26,23 +26,23 @@ namespace Tangram.UserInterface
         private void ResultsViewer_Load(object sender, EventArgs e)
         {
            
-            
-
-           
-            
-
             periodCombo.SelectedIndex = 0;
-            Database.MetWorkspace.Results.GetInfo();
+            Database.GameRepository.GetInfo();
             if (Database.userRepository.currentUser.UserType == Data.DataModels.User.UserTypes.VOSP)
             {
                 teacherFilterCombo.DisplayMember = "Initials";
                 teacherFilterCombo.ValueMember = "Id";
+                teacherFilterCombo.DataSource = new List<User>() { Database.userRepository.currentUser };
+
                 teacherFilterCombo.SelectedItem = Database.userRepository.currentUser;
+                //teacherFilterCombo.Text = Database.userRepository.currentUser.Initials;
+                //teacherFilterCombo.SelectedValue = Database.userRepository.currentUser.Id;
+                //teacherFilterCombo.SelectedIndex = 0;
                 teacherFilterCombo.Enabled = false;
                 teacherCheckBox.Checked = true;
                 teacherCheckBox.Enabled = false;
-                Database.Teacher_Workspace.gameRepository.FilterByTeacherId(Convert.ToInt32(teacherFilterCombo.SelectedValue));
-                ResultGridView.DataSource = Database.MetWorkspace.Results.filteredTable;
+                Database.GameRepository.FilterByTeacherId(Convert.ToInt32(teacherFilterCombo.SelectedValue));
+                ResultGridView.DataSource = Database.GameRepository.filteredTable;
 
                 childFilterCombo.DisplayMember = "FullName";
                 childFilterCombo.ValueMember = "Id";
@@ -59,7 +59,7 @@ namespace Tangram.UserInterface
                 childFilterCombo.DisplayMember = "childName";
                 childFilterCombo.ValueMember = "id_child";
                 childFilterCombo.DataSource = Database.MetWorkspace.ChildManager.children.Table;
-                ResultGridView.DataSource = Database.MetWorkspace.Results.Table;
+                ResultGridView.DataSource = Database.GameRepository.Table;
             }
         }
 
@@ -67,12 +67,12 @@ namespace Tangram.UserInterface
         {
             if (Database.userRepository.currentUser.UserType == Data.DataModels.User.UserTypes.VOSP)
             {
-                Database.MetWorkspace.Results.FilterByTeacherId(Convert.ToInt32(teacherFilterCombo.SelectedValue));
-                ResultGridView.DataSource = Database.MetWorkspace.Results.filteredTable;
+                Database.GameRepository.FilterByTeacherId(Convert.ToInt32(teacherFilterCombo.SelectedValue));
+                ResultGridView.DataSource = Database.GameRepository.filteredTable;
             }
             else
             {
-                ResultGridView.DataSource = Database.MetWorkspace.Results.Table;
+                ResultGridView.DataSource = Database.GameRepository.Table;
             }
                 
         }
@@ -122,39 +122,39 @@ namespace Tangram.UserInterface
         {
             if(childCheckBox.Checked && teacherCheckBox.Checked && timeSelected)
             {
-                Database.MetWorkspace.Results.Filter(Convert.ToInt32(childFilterCombo.SelectedValue), Convert.ToInt32(teacherFilterCombo.SelectedValue), startDate.Value, endDate.Value);
+                Database.GameRepository.Filter(Convert.ToInt32(childFilterCombo.SelectedValue), Convert.ToInt32(teacherFilterCombo.SelectedValue), startDate.Value, endDate.Value);
             }
 
             if(childCheckBox.Checked && teacherCheckBox.Checked && !timeSelected)
             {
-                Database.MetWorkspace.Results.Filter(Convert.ToInt32(childFilterCombo.SelectedValue), Convert.ToInt32(teacherFilterCombo.SelectedValue));
+                Database.GameRepository.Filter(Convert.ToInt32(childFilterCombo.SelectedValue), Convert.ToInt32(teacherFilterCombo.SelectedValue));
             }
 
             if (!childCheckBox.Checked && teacherCheckBox.Checked && timeSelected)
             {
-                Database.MetWorkspace.Results.FilterTeacher(Convert.ToInt32(teacherFilterCombo.SelectedValue), startDate.Value, endDate.Value);
+                Database.GameRepository.FilterTeacher(Convert.ToInt32(teacherFilterCombo.SelectedValue), startDate.Value, endDate.Value);
             }
 
             if (childCheckBox.Checked && !teacherCheckBox.Checked && timeSelected)
             {
-                Database.MetWorkspace.Results.FilterChild(Convert.ToInt32(childFilterCombo.SelectedValue), startDate.Value, endDate.Value);
+                Database.GameRepository.FilterChild(Convert.ToInt32(childFilterCombo.SelectedValue), startDate.Value, endDate.Value);
             }
 
             if (childCheckBox.Checked && !teacherCheckBox.Checked && !timeSelected)
             {
-                Database.MetWorkspace.Results.FilterByChildId(Convert.ToInt32(childFilterCombo.SelectedValue));
+                Database.GameRepository.FilterByChildId(Convert.ToInt32(childFilterCombo.SelectedValue));
             }
 
             if (!childCheckBox.Checked && teacherCheckBox.Checked && !timeSelected)
             {
-                Database.MetWorkspace.Results.FilterByTeacherId(Convert.ToInt32(teacherFilterCombo.SelectedValue));
+                Database.GameRepository.FilterByTeacherId(Convert.ToInt32(teacherFilterCombo.SelectedValue));
             }
 
             if (!childCheckBox.Checked && !teacherCheckBox.Checked && timeSelected)
             {
-                Database.MetWorkspace.Results.FilterByPeriod(startDate.Value, endDate.Value);
+                Database.GameRepository.FilterByPeriod(startDate.Value, endDate.Value);
             }
-            ResultGridView.DataSource = Database.MetWorkspace.Results.filteredTable;
+            ResultGridView.DataSource = Database.GameRepository.filteredTable;
 
         }
     }

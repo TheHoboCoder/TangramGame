@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.canvasPanel = new System.Windows.Forms.Panel();
             this.figureToolBox1 = new Tangram.GraphicsElements.FigureToolBox();
@@ -56,7 +57,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.figureToolBox1);
             this.splitContainer1.Size = new System.Drawing.Size(919, 419);
-            this.splitContainer1.SplitterDistance = 589;
+            this.splitContainer1.SplitterDistance = 585;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 4;
             // 
@@ -68,7 +69,7 @@
             this.canvasPanel.Location = new System.Drawing.Point(0, 0);
             this.canvasPanel.Margin = new System.Windows.Forms.Padding(4);
             this.canvasPanel.Name = "canvasPanel";
-            this.canvasPanel.Size = new System.Drawing.Size(589, 419);
+            this.canvasPanel.Size = new System.Drawing.Size(585, 419);
             this.canvasPanel.TabIndex = 1;
             this.canvasPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.canvasPanel_Paint);
             // 
@@ -81,7 +82,7 @@
             this.figureToolBox1.Margin = new System.Windows.Forms.Padding(4);
             this.figureToolBox1.Name = "figureToolBox1";
             this.figureToolBox1.Padding = new System.Windows.Forms.Padding(15, 14, 15, 14);
-            this.figureToolBox1.Size = new System.Drawing.Size(324, 419);
+            this.figureToolBox1.Size = new System.Drawing.Size(328, 419);
             this.figureToolBox1.TabIndex = 0;
             // 
             // ChildName
@@ -117,6 +118,7 @@
             this.ClientSize = new System.Drawing.Size(927, 463);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
