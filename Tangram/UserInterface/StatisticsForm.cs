@@ -26,16 +26,15 @@ namespace Tangram.UserInterface
             InitializeComponent();
             maxHeight = diff1_bad_flowchart.Height;
             bottomChartPos = diff1_bad_flowchart.Top + diff1_bad_flowchart.Height;
+            LockDatePickers(true);
         }
 
         private void CreateRepBtn_Click(object sender, EventArgs e)
         {
             if(groupId != -1)
             {
-                st = Database.GetStatistics(groupId, start, end);
+                st = Database.GetStatistics(groupId, startDate.Value, endDate.Value);
                 dataGridView1.DataSource = st.mainResult;
-
-                
 
                 int diff1_total = st.hight_count_diff1 + st.mid_count_diff1 + st.low_count_diff1;
 
@@ -90,12 +89,17 @@ namespace Tangram.UserInterface
                 case 0:
                     end = DateTime.Now;
                     start = new DateTime(end.Year, end.Month, 1);
+                    endDate.Value = end;
+                    UpdateDatePickers();
+                    LockDatePickers(true);
                     break;
                 case 1:
                     DateTime cur = DateTime.Now;
                     DateTime month = new DateTime(cur.Year, cur.Month, 1);
                     start = month.AddMonths(-1);
                     end = month.AddDays(-1);
+                    UpdateDatePickers();
+                    LockDatePickers(true);
                     break;
                 case 2:
 
@@ -108,13 +112,26 @@ namespace Tangram.UserInterface
                     {
                         start = GroupsRepository.GetWorkYearStart((int)yearPicker.Value);
                         end = GroupsRepository.GetWorkYearEnd((int)yearPicker.Value);
-                    } 
-
+                    }
+                    UpdateDatePickers();
+                    LockDatePickers(true);
                     break;
                 case 3:
+                    LockDatePickers(false);
                     break;
             }
 
+        }
+
+        public void UpdateDatePickers()
+        {
+            startDate.Value = start;
+            endDate.Value = end;
+        }
+
+        public void LockDatePickers(bool shouldLock)
+        {
+            startDate.Enabled = endDate.Enabled = !shouldLock;
         }
 
         private void yearPicker_ValueChanged(object sender, EventArgs e)
@@ -148,6 +165,22 @@ namespace Tangram.UserInterface
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if(groupId == -1)
+            {
+                MessageBox.Show("Группа не выбрана");
+                return;
+            }
+            DateTime cur = DateTime.Now;
+            DateTime month = new DateTime(cur.Year, cur.Month, 1);
+
+            Database.Statistics statistics = Database.GetStatistics(groupId, month.AddMonths(-1), month.AddDays(-1));
+
+            if(statistics.attendance.Columns.Count==1 || statistics.attendance.Rows.Count == 0)
+            {
+                MessageBox.Show("Нет информации за данный период");
+                return;
+            }
+
             Excel.Application excelApp = new Excel.Application();
 
             Excel.Workbook workBook = excelApp.Workbooks.Add();
@@ -178,7 +211,7 @@ namespace Tangram.UserInterface
             fullCaptionRange.EntireRow.AutoFit();
 
 
-            workSheet.Cells[4,2] = "за " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(start.Month) + " " + start.Year;
+            workSheet.Cells[4,2] = "за " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month.AddMonths(-1).Month) + " " + month.AddMonths(-1).Year;
 
             Excel.Range Number = workSheet.Range["A6", "A7"].Cells;
             Number.Merge();
@@ -187,7 +220,7 @@ namespace Tangram.UserInterface
             Excel.Range ChildCaption = workSheet.Range["B6", "B7"].Cells;
             ChildCaption.Merge();
             workSheet.Cells[6, 2] = "Имя ребенка";
-            int date_count = st.attendance.Columns.Count - 1;
+            int date_count = statistics.attendance.Columns.Count - 1;
 
             char endCell = (char)((int)'B' + date_count);
 
@@ -197,18 +230,18 @@ namespace Tangram.UserInterface
 
             int start_date_cell = 3;
 
-            for(int i = 1; i <st.attendance.Columns.Count; i++){
-                workSheet.Cells[7, start_date_cell + (i - 1)] = Convert.ToDateTime(st.attendance.Columns[i].ColumnName).ToString("dd");
+            for(int i = 1; i < statistics.attendance.Columns.Count; i++){
+                workSheet.Cells[7, start_date_cell + (i - 1)] = Convert.ToDateTime(statistics.attendance.Columns[i].ColumnName).ToString("dd");
             }
 
             int start_dt_cell = 8;
             int counter = 1;
 
-            foreach (DataRow row in st.attendance.Rows)
+            foreach (DataRow row in statistics.attendance.Rows)
             {
                 workSheet.Cells[start_dt_cell, 1] = counter;
                 workSheet.Cells[start_dt_cell, 2] = row["child_name"];
-                for (int i = 1; i < st.attendance.Columns.Count; i++)
+                for (int i = 1; i < statistics.attendance.Columns.Count; i++)
                 {
                     workSheet.Cells[start_dt_cell, 3 + (i - 1)] = row[i];
                    
@@ -266,6 +299,21 @@ namespace Tangram.UserInterface
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (groupId == -1)
+            {
+                MessageBox.Show("Группа не выбрана");
+                return;
+            }
+
+
+            Database.Statistics statistics = Database.GetStatistics(groupId,  GroupsRepository.GetWorkYearStart((int)yearPicker.Value),
+            GroupsRepository.GetWorkYearEnd((int)yearPicker.Value));
+
+            if (statistics.attendance.Rows.Count == 0)
+            {
+                MessageBox.Show("Нет информации за данный период");
+                return;
+            }
 
             Excel.Application excelApp = new Excel.Application();
 
@@ -275,7 +323,7 @@ namespace Tangram.UserInterface
 
             Excel.Range caption = workSheet.Range["B2", "I2"].Cells;
             caption.Merge();
-            workSheet.Cells[2, 2] = "Диагностическая карта";
+            workSheet.Cells[2, 2] = "Диагностическая карта занятий";
 
             Excel.Range groupName = workSheet.Range["B3", "I3"].Cells;
             groupName.Merge();
@@ -323,7 +371,7 @@ namespace Tangram.UserInterface
             int start_dt_cell = 8;
             int counter = 1;
 
-            foreach (DataRow row in st.mainResult.Rows)
+            foreach (DataRow row in statistics.mainResult.Rows)
             {
                 workSheet.Cells[start_dt_cell, 1] = counter;
                 workSheet.Cells[start_dt_cell, 2] = row["childName"];
@@ -419,6 +467,11 @@ namespace Tangram.UserInterface
             viewer.Show();
         }
 
+        private void startDate_ValueChanged(object sender, EventArgs e)
+        {
+            endDate.MinDate = startDate.Value;
+        }
+
         private void StatisticsForm_Load(object sender, EventArgs e)
         {
             periodCombo.SelectedIndex = 0;
@@ -442,7 +495,7 @@ namespace Tangram.UserInterface
 
                 //groupCombo.DisplayMember = "group_name";
                 //groupCombo.ValueMember = "id_group_h";
-                groupCombo.SelectedIndex = 0;
+                //groupCombo.SelectedIndex = 0;
                 MetPanel.Visible = true;
                 reportViewers.Visible = true;
                 resultsBtn.Visible = false;

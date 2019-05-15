@@ -799,15 +799,15 @@ namespace Tangram.GraphicsElements
             foreach (Figure figure in selectedFigures)
             {
                 float hue = figure.FigureColor.GetHue() + HUE_SHIFT;
-                if(hue > 360)
-                {
-                    hue = figure.FigureColor.GetHue() - HUE_SHIFT;
-                }
-                float brightness = figure.FigureColor.GetBrightness() - BRIGHTNESS_SHIFT;
-                if (brightness < 0)
-                {
-                    brightness = figure.FigureColor.GetBrightness() + BRIGHTNESS_SHIFT;
-                }
+                //if(hue > 360)
+                //{
+                //    hue = figure.FigureColor.GetHue() - HUE_SHIFT;
+                //}
+                //float brightness = figure.FigureColor.GetBrightness() - BRIGHTNESS_SHIFT;
+                //if (brightness < 0)
+                //{
+                //    brightness = figure.FigureColor.GetBrightness() + BRIGHTNESS_SHIFT;
+                //}
                 brush.Color = ColorTools.ColorFromAhsb(255, hue, figure.FigureColor.GetSaturation(),
                     brightness);
                 pen.Brush = brush;

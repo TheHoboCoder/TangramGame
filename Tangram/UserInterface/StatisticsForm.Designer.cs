@@ -69,6 +69,11 @@
             this.MetPanel = new System.Windows.Forms.Panel();
             this.reportViewers = new System.Windows.Forms.Panel();
             this.resultsBtn = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.startDate = new System.Windows.Forms.DateTimePicker();
+            this.label11 = new System.Windows.Forms.Label();
+            this.endDate = new System.Windows.Forms.DateTimePicker();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -76,6 +81,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.yearPicker)).BeginInit();
             this.MetPanel.SuspendLayout();
             this.reportViewers.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -90,7 +96,7 @@
             this.countClasss,
             this.id_child,
             this.count});
-            this.dataGridView1.Location = new System.Drawing.Point(13, 73);
+            this.dataGridView1.Location = new System.Drawing.Point(17, 143);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -156,7 +162,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(650, 73);
+            this.tabControl1.Location = new System.Drawing.Point(645, 143);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -376,7 +382,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(25, 24);
+            this.label4.Location = new System.Drawing.Point(9, 10);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(130, 18);
@@ -392,7 +398,7 @@
             "За последний месяц",
             "Учебный год",
             "Произвольный период"});
-            this.periodCombo.Location = new System.Drawing.Point(174, 24);
+            this.periodCombo.Location = new System.Drawing.Point(150, 10);
             this.periodCombo.Name = "periodCombo";
             this.periodCombo.Size = new System.Drawing.Size(211, 26);
             this.periodCombo.TabIndex = 12;
@@ -400,9 +406,9 @@
             // 
             // CreateRepBtn
             // 
-            this.CreateRepBtn.Location = new System.Drawing.Point(410, 17);
+            this.CreateRepBtn.Location = new System.Drawing.Point(372, 7);
             this.CreateRepBtn.Name = "CreateRepBtn";
-            this.CreateRepBtn.Size = new System.Drawing.Size(217, 34);
+            this.CreateRepBtn.Size = new System.Drawing.Size(197, 57);
             this.CreateRepBtn.TabIndex = 13;
             this.CreateRepBtn.Text = "Сформировать";
             this.CreateRepBtn.UseVisualStyleBackColor = true;
@@ -416,7 +422,7 @@
             "Месяц",
             "Учебный год",
             "Произвольный период"});
-            this.groupCombo.Location = new System.Drawing.Point(68, 3);
+            this.groupCombo.Location = new System.Drawing.Point(111, 3);
             this.groupCombo.Name = "groupCombo";
             this.groupCombo.Size = new System.Drawing.Size(198, 26);
             this.groupCombo.TabIndex = 14;
@@ -435,16 +441,16 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(285, 0);
+            this.label6.Location = new System.Drawing.Point(4, 40);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(34, 18);
+            this.label6.Size = new System.Drawing.Size(100, 18);
             this.label6.TabIndex = 16;
-            this.label6.Text = "Год";
+            this.label6.Text = "Учебный год";
             // 
             // yearPicker
             // 
-            this.yearPicker.Location = new System.Drawing.Point(326, 3);
+            this.yearPicker.Location = new System.Drawing.Point(111, 38);
             this.yearPicker.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -456,7 +462,7 @@
             0,
             0});
             this.yearPicker.Name = "yearPicker";
-            this.yearPicker.Size = new System.Drawing.Size(144, 26);
+            this.yearPicker.Size = new System.Drawing.Size(111, 26);
             this.yearPicker.TabIndex = 17;
             this.yearPicker.Value = new decimal(new int[] {
             1910,
@@ -487,27 +493,28 @@
             // 
             // MetPanel
             // 
+            this.MetPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MetPanel.Controls.Add(this.label5);
             this.MetPanel.Controls.Add(this.groupCombo);
             this.MetPanel.Controls.Add(this.label6);
             this.MetPanel.Controls.Add(this.yearPicker);
-            this.MetPanel.Location = new System.Drawing.Point(650, 17);
+            this.MetPanel.Location = new System.Drawing.Point(593, 12);
             this.MetPanel.Name = "MetPanel";
-            this.MetPanel.Size = new System.Drawing.Size(482, 49);
+            this.MetPanel.Size = new System.Drawing.Size(317, 76);
             this.MetPanel.TabIndex = 20;
             // 
             // reportViewers
             // 
             this.reportViewers.Controls.Add(this.button2);
             this.reportViewers.Controls.Add(this.button3);
-            this.reportViewers.Location = new System.Drawing.Point(12, 493);
+            this.reportViewers.Location = new System.Drawing.Point(12, 542);
             this.reportViewers.Name = "reportViewers";
             this.reportViewers.Size = new System.Drawing.Size(716, 62);
             this.reportViewers.TabIndex = 21;
             // 
             // resultsBtn
             // 
-            this.resultsBtn.Location = new System.Drawing.Point(735, 496);
+            this.resultsBtn.Location = new System.Drawing.Point(742, 545);
             this.resultsBtn.Name = "resultsBtn";
             this.resultsBtn.Size = new System.Drawing.Size(350, 52);
             this.resultsBtn.TabIndex = 20;
@@ -515,17 +522,67 @@
             this.resultsBtn.UseVisualStyleBackColor = true;
             this.resultsBtn.Click += new System.EventHandler(this.resultsBtn_Click);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(9, 83);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(114, 18);
+            this.label10.TabIndex = 45;
+            this.label10.Text = "Конечная дата";
+            // 
+            // startDate
+            // 
+            this.startDate.Enabled = false;
+            this.startDate.Location = new System.Drawing.Point(150, 49);
+            this.startDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.startDate.Name = "startDate";
+            this.startDate.Size = new System.Drawing.Size(211, 26);
+            this.startDate.TabIndex = 42;
+            this.startDate.ValueChanged += new System.EventHandler(this.startDate_ValueChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(9, 49);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(126, 18);
+            this.label11.TabIndex = 44;
+            this.label11.Text = "Начальная дата";
+            // 
+            // endDate
+            // 
+            this.endDate.Enabled = false;
+            this.endDate.Location = new System.Drawing.Point(150, 83);
+            this.endDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.endDate.Name = "endDate";
+            this.endDate.Size = new System.Drawing.Size(211, 26);
+            this.endDate.TabIndex = 43;
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.periodCombo);
+            this.panel1.Controls.Add(this.label10);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.startDate);
+            this.panel1.Controls.Add(this.CreateRepBtn);
+            this.panel1.Controls.Add(this.label11);
+            this.panel1.Controls.Add(this.endDate);
+            this.panel1.Location = new System.Drawing.Point(13, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(574, 124);
+            this.panel1.TabIndex = 46;
+            // 
             // StatisticsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1238, 559);
+            this.ClientSize = new System.Drawing.Size(1238, 599);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.resultsBtn);
             this.Controls.Add(this.reportViewers);
             this.Controls.Add(this.MetPanel);
-            this.Controls.Add(this.CreateRepBtn);
-            this.Controls.Add(this.periodCombo);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -545,8 +602,9 @@
             this.MetPanel.ResumeLayout(false);
             this.MetPanel.PerformLayout();
             this.reportViewers.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -592,5 +650,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn id_child;
         private System.Windows.Forms.DataGridViewTextBoxColumn count;
         private System.Windows.Forms.Button resultsBtn;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.DateTimePicker startDate;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DateTimePicker endDate;
+        private System.Windows.Forms.Panel panel1;
     }
 }
