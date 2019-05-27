@@ -13,7 +13,9 @@ namespace Tangram.Data
     {
         const int START_MONTH = 10;
         const int START_DAY = 1;
-        const int END_MONTH = 5;
+        //TODO: change on release
+        //const int END_MONTH = 5;
+        const int END_MONTH = 7;
         const int END_DAY = 15;
 
         private TableInfo groupInfo;

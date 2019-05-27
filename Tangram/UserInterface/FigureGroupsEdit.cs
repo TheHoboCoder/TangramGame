@@ -36,6 +36,8 @@ namespace Tangram.UserInterface
             editMode = true;
         }
 
+
+        //Обработчик нажатия на кнопку «Сохранить», в зависимости от режима сохраняет либо изменяет группу фигур
         private void LoginBtn_Click(object sender, EventArgs e)
         {
             if (LevelTB.Text == "")
@@ -69,6 +71,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик нажатия на кнопку
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();

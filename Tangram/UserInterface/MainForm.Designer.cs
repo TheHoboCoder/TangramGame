@@ -67,7 +67,7 @@
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 58.7822F));
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.331378F));
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.24927F));
-            this.RootLayout.Size = new System.Drawing.Size(761, 400);
+            this.RootLayout.Size = new System.Drawing.Size(832, 415);
             this.RootLayout.TabIndex = 2;
             this.RootLayout.Paint += new System.Windows.Forms.PaintEventHandler(this.RootLayout_Paint);
             // 
@@ -75,15 +75,14 @@
             // 
             this.FiguresBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.FiguresBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FiguresBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FiguresBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FiguresBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FiguresBtn.Image = global::Tangram.Properties.Resources.shapes;
             this.FiguresBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.FiguresBtn.Location = new System.Drawing.Point(548, 342);
+            this.FiguresBtn.Location = new System.Drawing.Point(597, 354);
             this.FiguresBtn.Margin = new System.Windows.Forms.Padding(5);
             this.FiguresBtn.Name = "FiguresBtn";
-            this.FiguresBtn.Size = new System.Drawing.Size(208, 53);
+            this.FiguresBtn.Size = new System.Drawing.Size(230, 56);
             this.FiguresBtn.TabIndex = 0;
             this.FiguresBtn.Text = "Фигуры";
             this.FiguresBtn.UseVisualStyleBackColor = false;
@@ -93,15 +92,14 @@
             // 
             this.StatisticsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatisticsBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StatisticsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StatisticsBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.StatisticsBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.StatisticsBtn.Image = global::Tangram.Properties.Resources.graph;
             this.StatisticsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.StatisticsBtn.Location = new System.Drawing.Point(5, 342);
+            this.StatisticsBtn.Location = new System.Drawing.Point(5, 354);
             this.StatisticsBtn.Margin = new System.Windows.Forms.Padding(5);
             this.StatisticsBtn.Name = "StatisticsBtn";
-            this.StatisticsBtn.Size = new System.Drawing.Size(230, 53);
+            this.StatisticsBtn.Size = new System.Drawing.Size(252, 56);
             this.StatisticsBtn.TabIndex = 4;
             this.StatisticsBtn.Text = "Статистика";
             this.StatisticsBtn.UseVisualStyleBackColor = false;
@@ -111,14 +109,13 @@
             // 
             this.StartGameBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StartGameBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StartGameBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartGameBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.StartGameBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.StartGameBtn.Image = global::Tangram.Properties.Resources.play_button;
-            this.StartGameBtn.Location = new System.Drawing.Point(271, 77);
+            this.StartGameBtn.Location = new System.Drawing.Point(295, 80);
             this.StartGameBtn.Margin = new System.Windows.Forms.Padding(5);
             this.StartGameBtn.Name = "StartGameBtn";
-            this.StartGameBtn.Size = new System.Drawing.Size(238, 226);
+            this.StartGameBtn.Size = new System.Drawing.Size(261, 234);
             this.StartGameBtn.TabIndex = 3;
             this.StartGameBtn.Text = "Начать занятие";
             this.StartGameBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -129,7 +126,7 @@
             // 
             this.RootLayout.SetColumnSpan(this.UserPanel, 2);
             this.UserPanel.Controls.Add(this.tableLayoutPanel1);
-            this.UserPanel.Location = new System.Drawing.Point(3, 311);
+            this.UserPanel.Location = new System.Drawing.Point(3, 322);
             this.UserPanel.Name = "UserPanel";
             this.UserPanel.Size = new System.Drawing.Size(260, 23);
             this.UserPanel.TabIndex = 4;
@@ -174,7 +171,6 @@
             // userProfile
             // 
             this.userProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.userProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.userProfile.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.userProfile.ForeColor = System.Drawing.SystemColors.ControlText;
             this.userProfile.Image = global::Tangram.Properties.Resources.user_silhouette_small;
@@ -189,7 +185,6 @@
             // Logout
             // 
             this.Logout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.Logout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Logout.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Logout.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Logout.Image = global::Tangram.Properties.Resources.logout;
@@ -206,7 +201,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(761, 400);
+            this.ClientSize = new System.Drawing.Size(832, 415);
             this.Controls.Add(this.RootLayout);
             this.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

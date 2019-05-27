@@ -33,6 +33,8 @@ namespace Tangram.UserInterface
             figurePicture.Width = figurePicture.Width = 250;
         }
 
+        //Обработчик нажатия на кнопку "Завершить занятие"
+        //закрывает данную форму и открывает главную форму приложения
         private void endClass_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Завершить занятие?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
@@ -47,6 +49,8 @@ namespace Tangram.UserInterface
             
         }
 
+        //Обработчик нажатия на кнопку "Начать игру"
+        //Если фигура выбрана, то открывает форму с игрой
         private void StartGame_Click(object sender, EventArgs e)
         {
             if (!figureSelected)
@@ -63,6 +67,8 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик нажатия на кнопку "Выбор фигуры"
+        //Открывает форму для просмотра фигур
         private void selectFigure_Click(object sender, EventArgs e)
         {
             FigureViewer viewer = new FigureViewer(true);
@@ -73,6 +79,7 @@ namespace Tangram.UserInterface
             figureSelected = true;
         }
 
+        //событие при закрытии формы
         private void ClassControl_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(this.DialogResult != DialogResult.OK)

@@ -139,6 +139,12 @@
     <Compile Include="UserInterface\ClassControl.Designer.cs">
       <DependentUpon>ClassControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\DesignerHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\DesignerHelp.Designer.cs">
+      <DependentUpon>DesignerHelp.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\FigureDesigner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,6 +257,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\ClassControl.resx">
       <DependentUpon>ClassControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\DesignerHelp.resx">
+      <DependentUpon>DesignerHelp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\FigureDesigner.resx">
       <DependentUpon>FigureDesigner.cs</DependentUpon>

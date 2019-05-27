@@ -86,6 +86,7 @@ namespace UnitTests
         [TestMethod]
         public void IntersectionTest()
         {
+            //не пересекаются
             PointF[] firstPolygon = new PointF[4] { new PointF(0, 0), new PointF(-2, 2), new PointF(0, 4), new PointF(2, 2) };
             PointF[] secondPolygon = new PointF[3] { new PointF(4, 4), new PointF(1, 4), new PointF(4, 7) };
             //GeometryTools.IntersectionResult result = GeometryTools.PolygonIntersection(fisrt_projection.endPoint, second_projection.startPoint, false, fisrt_projection.endPoints, second_projection.startPoints, 1);
@@ -95,24 +96,37 @@ namespace UnitTests
 
             firstPolygon = new PointF[4] { new PointF(0, 0), new PointF(0, 4), new PointF(3, 4), new PointF(3, 0) };
             secondPolygon = new PointF[4] { new PointF(4, 4), new PointF(4, 7), new PointF(7, 7),  new PointF(7,4) };
-
+            //не пересекаются
             res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
-
-            firstPolygon = new PointF[3] { new PointF(0, 0), new PointF(0, 4), new PointF(5, 0) };
+            //не пересекаются, на линии
+            firstPolygon = new PointF[3] { new PointF(0, 0), new PointF(0, 4), new PointF(4, 0) };
             secondPolygon = new PointF[4] { new PointF(2, 2), new PointF(2, 4), new PointF(4, 4), new PointF(4, 2) };
 
             res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
 
             firstPolygon = new PointF[3] { new PointF(0, 0), new PointF(0, 4), new PointF(5, 0) };
             secondPolygon = new PointF[4] { new PointF(3, 2), new PointF(1, 2), new PointF(1, 4), new PointF(3, 4) };
-
+            //пересекаются
             res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
 
             firstPolygon = new PointF[3] { new PointF(0, 0), new PointF(0, 4), new PointF(6, 0) };
             secondPolygon = new PointF[4] { new PointF(1, 1), new PointF(3, 1), new PointF(3, -2), new PointF(1, -2) };
-
+            //пересекаются
             res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
+
+
+            firstPolygon = new PointF[3] { new PointF(0, 0), new PointF(0, 4), new PointF(6, 0) };
+            secondPolygon = new PointF[4] { new PointF(1, 1), new PointF(3, 1), new PointF(3, -2), new PointF(1, -2) };
+            res = GeometryTools.SAT_intersects(firstPolygon, secondPolygon, 1);
+
         }
 
+        [TestMethod]
+        public void ReverseNormalTest()
+        {
+            GeometryTools.LineEquation eq = GeometryTools.GetLineEquation(new PointF(0,4),new Point(4,0));
+            GeometryTools.LineEquation normal = GeometryTools.GetNormal(eq, new PointF(0, 4));
+            GeometryTools.LineEquation normal_2  = GeometryTools.GetNormal(normal, new PointF(2, 2));
+        }
     }
 }

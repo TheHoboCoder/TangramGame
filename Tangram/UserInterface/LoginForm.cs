@@ -88,7 +88,11 @@ namespace Tangram.UserInterface
         {
             if (!reLog)
             {
-                Database.Open();
+                if (!Database.Open())
+                {
+                    MessageBox.Show("Невозможно подключиться к базе данных.Приложение будет закрыто","Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                }
             }
             
         }

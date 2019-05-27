@@ -14,20 +14,26 @@ namespace Tangram.Data
         private MySqlCommand command = new MySqlCommand();
         private List<TEntity> entities;
 
+        //Начинает транзакцию.
         public void StartTransaction(MySqlTransaction transaction)
         {
             command.Transaction = transaction;
         }
 
+
+        //Завершает транзакцию.
         public void EndTransacation()
         {
             command.Transaction.Dispose();
             command.Transaction = null;
         }
 
+        //Автоматическое обновление таблицы
         protected bool AutoUpload { get; set; }
+        //id последней добавленной или измененной записи
         private int LastId;
 
+        //список  операций
         private enum OPERATIONS {
             UPDATE,
             INSERT,
@@ -35,9 +41,10 @@ namespace Tangram.Data
             NONE
         }
 
+        //последняя выполненная операции
         private OPERATIONS lastOperation = OPERATIONS.NONE;
 
-
+        //Список объектов данных
         public IEnumerable<TEntity> Entities
         {
             get
@@ -45,28 +52,37 @@ namespace Tangram.Data
                 return entities;
             }
         }
-        
 
+        //режим работы класса, если object mode = true,
+        //то данные из таблицы базы данных при загрузке будут сконвертированы в список объектов entities
         private bool objectMode = false;
 
+        //таблица с данными
         public DataTable Table { get; protected set; }
+        //объект DataView для фильтрации таблицы
+        //позволит фильровать таблицу без обращения к базе данных
         public DataView filteredTable { get; private set; }
         
 
-
+        //данные о таблице базы данных
         protected abstract TableInfo  info { get;} 
 
+        //Сообщение при повторениии записи
         public string RepeatErrorMsg { get; set; }
+        //Сообщение ошибки при изменении
         public string UpdateErrorMsg { get; set; }
+        //Сообщение ошибки при удалении
         public string DeleteErrorMsg { get; set; }
+        //Сообщение ошибки при добавлении
         public string InsertErrorMsg { get; set; }
 
+        //Сообщение при удалении, если данная запись используется в другой таблице
         protected virtual string linkedErrorMsg(string table)
         {
             return "Данная запись уже используется в таблице \"" + table + "\"!";
         }
 
-
+        //Включена ли проверка при удалении
         private bool _checkOnDelete;
         public bool CheckOnDelete
         {
@@ -108,6 +124,7 @@ namespace Tangram.Data
           
         }
 
+        //Загружает информацию в таблицу, используя условие отбора строк condition.
         protected bool Upload(string condition = null)
         {
             if (Table == null) Table = new DataTable();
@@ -159,6 +176,8 @@ namespace Tangram.Data
             }
         }
 
+
+        //Инициализирует список параметров объекта MySqlCommand.
         protected void InitCommandParameters()
         {
             if (info.parameters != null)
@@ -171,9 +190,12 @@ namespace Tangram.Data
            
         }
 
+        //Устанавливает значения параметров, используя объект данных c.
         protected abstract void SetCommandParameters(TEntity c,MySqlParameterCollection parameters);
+        //Создает объект данных из строки DataRow.
         protected abstract TEntity MapOut(DataRow row);
 
+        //Загружает строку из таблицы базы данных по идентификатору записи
         private DataRow UploadRow(int id)
         {
             using (DataTable dt = new DataTable())
@@ -188,6 +210,8 @@ namespace Tangram.Data
             }
         }
 
+
+        //Обновляет данные в таблице, в соответствии с последней выполненной операцией (добавление, 
         public void UpdateTable()
         {
             switch (lastOperation) {
@@ -222,7 +246,7 @@ namespace Tangram.Data
         }
 
 
-
+        //Добавляет запись в таблицу базы данных.
         public int Add(TEntity c)
         {
             SetCommandParameters(c,command.Parameters);
@@ -272,6 +296,8 @@ namespace Tangram.Data
 
         }
 
+
+        //Удаляет запись по идентификатору записи.
         public bool Delete(int deleteId)
         {
             try
@@ -344,7 +370,7 @@ namespace Tangram.Data
             return true;
         }
 
-
+        //Возвращает строку таблицы по идентификатору.
         public DataRow GetRowById(int id)
         {
             var result = Table.Select(info.IdName + " = " + id.ToString());
@@ -367,7 +393,7 @@ namespace Tangram.Data
             }
             
         }
-
+        //Обновляет запись в таблице базы данных.
         public bool Update( TEntity c)
         {
             SetCommandParameters(c,command.Parameters);

@@ -110,7 +110,7 @@ namespace Tangram.UserInterface
                               FamTB.Text.Trim(),
                               OtchTB.Text.Trim(),
                               PhoneTB.Text.Trim(),
-                              User.getHash(PasswordTB.Text.Trim()));
+                              !edit ? User.getHash(PasswordTB.Text.Trim()) : PasswordTB.Text.Trim());
         }
 
         private bool isEmpty()

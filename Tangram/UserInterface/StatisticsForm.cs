@@ -89,7 +89,6 @@ namespace Tangram.UserInterface
                 case 0:
                     end = DateTime.Now;
                     start = new DateTime(end.Year, end.Month, 1);
-                    endDate.Value = end;
                     UpdateDatePickers();
                     LockDatePickers(true);
                     break;

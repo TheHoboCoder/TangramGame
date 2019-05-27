@@ -34,7 +34,7 @@ namespace Tangram.GraphicsElements
             }
         }
 
-
+       //создает иконку данной фигуры
         public Bitmap getIcon(int size,Color background)
         {
             Bitmap image = GetImage();
@@ -110,6 +110,7 @@ namespace Tangram.GraphicsElements
 
         public TangramElement() { }
 
+        //сериализация в Json
         public static byte[] Serialize(TangramElement el)
         {
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TangramElement));
@@ -120,6 +121,7 @@ namespace Tangram.GraphicsElements
             }
         }
 
+        //десериализация из Json
         public static TangramElement Deserialize(byte[] data)
         {
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TangramElement));
@@ -134,6 +136,7 @@ namespace Tangram.GraphicsElements
             }
         }
 
+        //Возвращает изображение текущей фигуры
         public Bitmap GetImage()
         {
             Bitmap bitmap = new Bitmap(FigureSize.Width, FigureSize.Height);

@@ -212,9 +212,19 @@ namespace Tangram.GraphicsElements
 
             bool firstTime = true;
 
-            for (int i = 0, count = testPolygon.Count(); i<count-1; i++)
+            for (int i = 0, count = testPolygon.Count(); i<count; i++)
             {
-                LineEquation eq = GetLineEquation(testPolygon[i], testPolygon[i + 1]);
+                LineEquation eq = new LineEquation();
+
+                if (i == count - 1)
+                {
+                    eq = GetLineEquation(testPolygon[i], testPolygon[0]);
+                }
+                else
+                {
+                    eq = GetLineEquation(testPolygon[i], testPolygon[i + 1]);
+                }
+                
                 LineEquation normal = GetNormal(eq, testPolygon[i]);
 
                 PolygonProjection testProjection = GetProjection(testPolygon, normal, i);
@@ -281,24 +291,37 @@ namespace Tangram.GraphicsElements
                 }
                 else
                 {
-                    if(res.snapped && !result.snapped)
+                    if (res.snapped && !result.snapped ||
+                        res.intersects == result.intersects && res.distance < result.distance && res.distance != 0)
                     {
                         result = res;
                     }
 
-                    if(res.snapped && result.snapped && res.distance < result.distance)
-                    {
-                        result = res;
-                    }
+                    
+
+                    //if(res.snapped && result.snapped && res.distance < result.distance)
+                    //{
+                    //    result = res;
+                    //}
                 }
                 
             }
 
             //firstTime = true;
 
-            for (int i = 0, count = staticPolygon.Count(); i < count - 1; i++)
+            for (int i = 0, count = staticPolygon.Count(); i < count; i++)
             {
-                LineEquation eq = GetLineEquation(staticPolygon[i], staticPolygon[i + 1]);
+                LineEquation eq = new LineEquation();
+
+                if (i == count - 1)
+                {
+                    eq = GetLineEquation(staticPolygon[i], staticPolygon[0]);
+                }
+                else
+                {
+                    eq = GetLineEquation(staticPolygon[i], staticPolygon[i + 1]);
+                }
+
                 LineEquation normal = GetNormal(eq, staticPolygon[i]);
 
                 PolygonProjection testProjection = GetProjection(testPolygon, normal);
@@ -323,9 +346,11 @@ namespace Tangram.GraphicsElements
                         res = PolygonIntersection(testProjection.startPoint,
                                                                  staticProjection.endPoint,
                                                                  true,
-                                                                 staticProjection.endPoints,
                                                                  testProjection.startPoints,
+                                                                 staticProjection.endPoints,
                                                                  snapDistance);
+                       // staticProjection.endPoints,
+                       //testProjection.startPoints,
                     }
                 }
                 else
@@ -345,9 +370,11 @@ namespace Tangram.GraphicsElements
                         res = PolygonIntersection(testProjection.startPoint,
                                                                  staticProjection.endPoint,
                                                                  false,
-                                                                 staticProjection.endPoints,
                                                                  testProjection.startPoints,
+                                                                 staticProjection.endPoints,
                                                                  snapDistance);
+                        //staticProjection.endPoints,
+                        // testProjection.startPoints,
                     }
                 }
 
@@ -364,15 +391,20 @@ namespace Tangram.GraphicsElements
                 }
                 else
                 {
-                    if (res.snapped && !result.snapped)
+                    if (res.snapped && !result.snapped ||
+                        res.intersects == result.intersects && res.distance < result.distance && res.distance!=0)
                     {
                         result = res;
                     }
+                    //if (res.snapped && !result.snapped)
+                    //{
+                    //    result = res;
+                    //}
 
-                    if (res.snapped && result.snapped && res.distance < result.distance)
-                    {
-                        result = res;
-                    }
+                    //if (res.snapped && result.snapped && res.distance < result.distance)
+                    //{
+                    //    result = res;
+                    //}
                 }
 
             }
@@ -399,8 +431,8 @@ namespace Tangram.GraphicsElements
                 if (startPoint.Y < endPoint.Y)
                 {
                     intersection.intersects = true;
-                    //intersection.translateVector = new PointF(endPoint.X -startPoint.X, endPoint.Y-startPoint.Y);
-                    intersection.translateVector = new PointF( startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
+                    intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+                    //intersection.translateVector = new PointF( startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
                     return intersection;
                 }
             }
@@ -409,8 +441,8 @@ namespace Tangram.GraphicsElements
                 if (startPoint.X < endPoint.X)
                 {
                     intersection.intersects = true;
-                    //intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
-                    intersection.translateVector = new PointF(startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
+                    intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+                    //intersection.translateVector = new PointF(startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
                     return intersection;
                 }
             }
@@ -442,7 +474,8 @@ namespace Tangram.GraphicsElements
                            point.Y <= Math.Max(testPolygonPoints[0].Y, testPolygonPoints[1].Y))
                         {
                             intersection.snapped = true;
-                            intersection.snapPoint = point;
+                            //intersection.snapPoint = point;
+                            intersection.snapPoint = staticPolygonPoints[0];
                             intersection.translateVector = new PointF(staticPolygonPoints[0].X - point.X,
                                                                       staticPolygonPoints[0].Y - point.Y);
                         }
@@ -464,9 +497,10 @@ namespace Tangram.GraphicsElements
                 }
                 else
                 {
+                    LineEquation eq = GetLineEquation(staticPolygonPoints[0], staticPolygonPoints[1]);
                     for (int i = 0, count = testPolygonPoints.Count(); i < count; i++)
                     {
-                        LineEquation eq = GetLineEquation(staticPolygonPoints[0], staticPolygonPoints[1]);
+                       
                         LineEquation normal = GetNormal(eq, testPolygonPoints[i]);
                         PointF point = Intersection(eq, normal);
 

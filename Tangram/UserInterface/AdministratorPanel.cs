@@ -24,12 +24,13 @@ namespace Tangram.UserInterface
             InitializeComponent();
             
         }
-
+        //Выводит имя и фамилию текущего пользователя в текстовое поле
         private void UpdateName()
         {
             userName.Text = Database.userRepository.currentUser.Name + " " + Database.userRepository.currentUser.Otch;
         }
 
+        //Обработчик загрузки формы
         private void AdministratorPanel_Load(object sender, EventArgs e)
         {
             UpdateName();
@@ -38,6 +39,7 @@ namespace Tangram.UserInterface
             viewer = new ResultsViewer();
         }
 
+        //открывает форму входа
         private void userProfile_Click(object sender, EventArgs e)
         {
             UserEdit users = new UserEdit();
@@ -45,6 +47,7 @@ namespace Tangram.UserInterface
             UpdateName();
         }
 
+        //Обработчик закрытия формы
         private void Logout_Click(object sender, EventArgs e)
         {
             LoginForm form = new LoginForm(true);
@@ -56,6 +59,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик закрытия формы
         private void AdministratorPanel_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (!userClose)
@@ -64,6 +68,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //отображает панель для управления пользователями.
         private void LoginBtn_Click(object sender, EventArgs e)
         {
             control.ReUpdate();
@@ -72,6 +77,7 @@ namespace Tangram.UserInterface
             TablePlace.Controls.Add(control);
         }
 
+        //отображает панель для управления группами и списком детей в группах
         private void button1_Click(object sender, EventArgs e)
         {
             childGroup.Dock = DockStyle.Fill;
@@ -80,6 +86,7 @@ namespace Tangram.UserInterface
             TablePlace.Controls.Add(childGroup);
         }
 
+        //отображает панель для просмотра результатов игр
         private void button2_Click(object sender, EventArgs e)
         {
             viewer.Dock = DockStyle.Fill;
@@ -87,12 +94,14 @@ namespace Tangram.UserInterface
             TablePlace.Controls.Add(viewer);
         }
 
+        //открывает форму для просмотра статистики
         private void StatisticsBtn_Click(object sender, EventArgs e)
         {
             StatisticsForm f = new StatisticsForm();
             f.Show();
         }
 
+        //открывает форму для редактирования типов групп
         private void button3_Click(object sender, EventArgs e)
         {
             UserTypesEdit groupTypes = new UserTypesEdit();

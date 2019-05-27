@@ -23,6 +23,7 @@ namespace Tangram.GraphicsElements
         [DataMember]
         private PointF[] location = new PointF[] { new PointF(0, 0) };
 
+       //Обновляет фигуру и перемещает её в точку pos
         public void Reset(PointF pos)
         {
             if (path == null) path = new GraphicsPath();
@@ -32,23 +33,15 @@ namespace Tangram.GraphicsElements
             this.Location = pos;
         }
 
-
+       
         public void Reset(PointF pos, PointF pivot, float angle)
         {
             if (path == null) path = new GraphicsPath();
             if (transformationMatrix == null) transformationMatrix = new Matrix();
             location[0].X = 0;
             location[0].Y = 0;
-            //transformationMatrix.Reset();
-            //transformationMatrix.RotateAt(-angle, pivot);
-            //PointF[] recoveredPos = new PointF[] { new PointF(0, 0) };
-            //transformationMatrix.TransformPoints(recoveredPos);
-            //transformationMatrix.Reset();
             Init(ref path);
-            //this.Location = recoveredPos[0];
             this.rotationAngle = 0;
-            //this.pivot = pivot;
-            //this.RotationAngle = angle;
 
             float deltaX = pivot.X - pos.X;
             float deltaY = pivot.Y - pos.Y;
@@ -58,7 +51,8 @@ namespace Tangram.GraphicsElements
             this.Location = pos;
         }
 
-
+        //Обновляет фигуру, используя данные для построения GraphicPathDatа,
+        //устанавливает значения положения фигуры, точки поворота и угла поворота.
         public void Reset(GraphicPathData data, PointF pos, PointF pivot, float angle)
         {
             this.graphicPath = data;
@@ -68,6 +62,7 @@ namespace Tangram.GraphicsElements
             this.rotationAngle = angle;
         }
 
+        //Маштабирует фигуру
         public void Scale(int dx, int dy)
         {
             transformationMatrix.Reset();
@@ -77,8 +72,11 @@ namespace Tangram.GraphicsElements
             Location = currentLocation;
         }
 
+        //Определяет построение фигуры
         protected abstract void Init(ref GraphicsPath p);
 
+        //Рисует данную фигуру, используя для заливки цвет fillcolor.
+        //Возвращает изображение фигуры.
         public Bitmap GetImage(Color fillcolor)
         {
             RectangleF bounds = Path.GetBounds();
@@ -90,9 +88,10 @@ namespace Tangram.GraphicsElements
             }
             return bitmap;
         }
-
+        //Создает и возвращает копию данного экземпляра класса Figure
         public abstract Figure Clone();
 
+        //Цвет фигуры
         [DataMember]
         public Color FigureColor { get; set; }
 
@@ -133,6 +132,8 @@ namespace Tangram.GraphicsElements
         //    }
         //}
 
+        //данные для построения фигуры: координаты и типы точек 
+        //нужен для сериализации, т.к класс GraphicPath не поддерживает сериализацию
         [DataContract]
         public class GraphicPathData
         {
@@ -142,7 +143,9 @@ namespace Tangram.GraphicsElements
             public byte[] types;
         }
 
-
+        /// <summary>
+        /// Возвращает или задает данные для построения GraphicPathData
+        /// </summary>
         [DataMember]
         public GraphicPathData graphicPath
         {
@@ -157,16 +160,11 @@ namespace Tangram.GraphicsElements
             private set
             {
                 path = new GraphicsPath(value.pathPoints, value.types);
-                ////TODO:сделать сериализацию положения
-                //if (location == null)
-                //{
-                //    location = new PointF[1];
-                //    location[0] = path.PathPoints[0];
-                //}
                
             }
         }
 
+        //Сама фигура
         [IgnoreDataMember]
         public GraphicsPath Path {
             get { return path; }
@@ -241,6 +239,7 @@ namespace Tangram.GraphicsElements
         /// <param name="angle">Угол поворота</param>
         public void Rotate(float angle)
         {
+            if (transformationMatrix == null) transformationMatrix = new Matrix();
             transformationMatrix.Reset();
             transformationMatrix.RotateAt(angle, pivot);
             rotationAngle = rotationAngle + angle;

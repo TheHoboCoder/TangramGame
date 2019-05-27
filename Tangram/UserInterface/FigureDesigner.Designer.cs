@@ -43,10 +43,10 @@
             this.PickColor = new System.Windows.Forms.ToolStripButton();
             this.InfoButton = new System.Windows.Forms.ToolStripButton();
             this.canvasPanel = new System.Windows.Forms.Panel();
-            this.designerCanvas = new Tangram.GraphicsElements.DesignerCanvas();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.SelectMode = new System.Windows.Forms.ToolStripButton();
             this.PanMode = new System.Windows.Forms.ToolStripButton();
+            this.designerCanvas = new Tangram.GraphicsElements.DesignerCanvas();
             this.figureToolBox1 = new Tangram.GraphicsElements.FigureToolBox();
             this.panel2.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -57,8 +57,8 @@
             this.Designer.SuspendLayout();
             this.MainToolBox.SuspendLayout();
             this.canvasPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).BeginInit();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -85,7 +85,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(5);
-            this.panel2.Size = new System.Drawing.Size(961, 56);
+            this.panel2.Size = new System.Drawing.Size(990, 56);
             this.panel2.TabIndex = 2;
             // 
             // toolStrip2
@@ -161,8 +161,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.figureToolBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(961, 424);
-            this.splitContainer1.SplitterDistance = 615;
+            this.splitContainer1.Size = new System.Drawing.Size(990, 424);
+            this.splitContainer1.SplitterDistance = 633;
             this.splitContainer1.TabIndex = 3;
             // 
             // Designer
@@ -179,7 +179,7 @@
             this.Designer.RowCount = 2;
             this.Designer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.Designer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.Designer.Size = new System.Drawing.Size(615, 424);
+            this.Designer.Size = new System.Drawing.Size(633, 424);
             this.Designer.TabIndex = 2;
             this.Designer.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -191,7 +191,7 @@
             this.InfoButton});
             this.MainToolBox.Location = new System.Drawing.Point(38, 0);
             this.MainToolBox.Name = "MainToolBox";
-            this.MainToolBox.Size = new System.Drawing.Size(577, 32);
+            this.MainToolBox.Size = new System.Drawing.Size(595, 32);
             this.MainToolBox.TabIndex = 0;
             this.MainToolBox.Text = "toolStrip1";
             // 
@@ -215,6 +215,7 @@
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(28, 29);
             this.InfoButton.Text = "Информация";
+            this.InfoButton.Click += new System.EventHandler(this.InfoButton_Click);
             // 
             // canvasPanel
             // 
@@ -224,23 +225,8 @@
             this.canvasPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.canvasPanel.Location = new System.Drawing.Point(41, 35);
             this.canvasPanel.Name = "canvasPanel";
-            this.canvasPanel.Size = new System.Drawing.Size(571, 386);
+            this.canvasPanel.Size = new System.Drawing.Size(589, 386);
             this.canvasPanel.TabIndex = 1;
-            // 
-            // designerCanvas
-            // 
-            this.designerCanvas.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.designerCanvas.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.SELECT;
-            this.designerCanvas.FigureColors = System.Drawing.Color.Orange;
-            this.designerCanvas.GridEnabled = false;
-            this.designerCanvas.GridSnapEnabled = false;
-            this.designerCanvas.Location = new System.Drawing.Point(46, 26);
-            this.designerCanvas.Name = "designerCanvas";
-            this.designerCanvas.Size = new System.Drawing.Size(465, 292);
-            this.designerCanvas.SnapAngle = 45F;
-            this.designerCanvas.SnapDistance = 0F;
-            this.designerCanvas.TabIndex = 0;
-            this.designerCanvas.TabStop = false;
             // 
             // toolStrip1
             // 
@@ -275,6 +261,21 @@
             this.PanMode.Text = "Перемещение";
             this.PanMode.Click += new System.EventHandler(this.PanMode_Click);
             // 
+            // designerCanvas
+            // 
+            this.designerCanvas.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.designerCanvas.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.SELECT;
+            this.designerCanvas.FigureColors = System.Drawing.Color.Orange;
+            this.designerCanvas.GridEnabled = false;
+            this.designerCanvas.GridSnapEnabled = false;
+            this.designerCanvas.Location = new System.Drawing.Point(46, 26);
+            this.designerCanvas.Name = "designerCanvas";
+            this.designerCanvas.Size = new System.Drawing.Size(465, 292);
+            this.designerCanvas.SnapAngle = 45F;
+            this.designerCanvas.SnapDistance = 10F;
+            this.designerCanvas.TabIndex = 0;
+            this.designerCanvas.TabStop = false;
+            // 
             // figureToolBox1
             // 
             this.figureToolBox1.AutoScroll = true;
@@ -283,14 +284,14 @@
             this.figureToolBox1.Location = new System.Drawing.Point(0, 0);
             this.figureToolBox1.Name = "figureToolBox1";
             this.figureToolBox1.Padding = new System.Windows.Forms.Padding(10);
-            this.figureToolBox1.Size = new System.Drawing.Size(342, 424);
+            this.figureToolBox1.Size = new System.Drawing.Size(353, 424);
             this.figureToolBox1.TabIndex = 0;
             // 
             // FigureDesigner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(961, 480);
+            this.ClientSize = new System.Drawing.Size(990, 480);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -314,9 +315,9 @@
             this.MainToolBox.ResumeLayout(false);
             this.MainToolBox.PerformLayout();
             this.canvasPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

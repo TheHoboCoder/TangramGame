@@ -128,6 +128,14 @@ namespace Tangram.GraphicsElements
             return Color.FromArgb( alpha,(byte)(R * 255), (byte)(G * 255), (byte)(B * 255));
         }
 
+        /// <summary>
+        /// Переводит цвет из цветого пространства HSB в RGB
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="h"></param>
+        /// <param name="s"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static Color ColorFromAhsb(int a, float h, float s, float b)
         {
             if (0 > a || 255 < a) { throw new ArgumentOutOfRangeException("a", a,"InvalidAlpha"); }

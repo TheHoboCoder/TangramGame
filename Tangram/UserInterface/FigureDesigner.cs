@@ -40,6 +40,8 @@ namespace Tangram.UserInterface
             figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
             figureTypeCombo.DisplayMember = "Name";
             figureTypeCombo.ValueMember = "Id";
+
+            
         }
 
         public FigureDesigner(Tangram.Data.DataModels.Figure figure)
@@ -86,6 +88,8 @@ namespace Tangram.UserInterface
             draggedFig.Select();
         }
 
+
+        //
         private void DraggedFig_Move(object sender, MouseEventArgs e)
         {
 
@@ -173,10 +177,12 @@ namespace Tangram.UserInterface
 
         private void FigureDesigner_Load(object sender, EventArgs e)
         {
-           
-
+            designerCanvas.GridEnabled = true;
+            designerCanvas.GridSnapEnabled = true;
         }
 
+
+        //Обработчик создания 
         private void button1_Click(object sender, EventArgs e)
         {
           
@@ -327,6 +333,12 @@ namespace Tangram.UserInterface
             //{
             //    designerCanvas.TranslateAll(new PointF(0, -1));
             //}
+        }
+
+        private void InfoButton_Click(object sender, EventArgs e)
+        {
+            DesignerHelp help = new DesignerHelp();
+            help.Show();
         }
     }
 }

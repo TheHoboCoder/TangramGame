@@ -40,8 +40,8 @@ namespace Tangram.Data
             }
         }
 
-       //static public DataTable statistics = new DataTable();
 
+     //jnrhsdftn 
        static public  bool Open()
         {
             try
@@ -87,9 +87,12 @@ namespace Tangram.Data
         }
 
 
+        //статистика
         public struct Statistics {
 
+            
             public DataTable mainResult;
+            //посещаемость
             public DataTable attendance;
 
             public int low_count_diff1;
@@ -102,6 +105,7 @@ namespace Tangram.Data
 
         }
 
+        //возвращает статистику по играм
         public static Statistics GetStatistics(int id_group_h,DateTime start, DateTime end)
         {
             Statistics st = new Statistics();

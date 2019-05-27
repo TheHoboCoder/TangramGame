@@ -15,6 +15,7 @@ namespace Tangram.GraphicsElements
         //сторона прямоугольника, из которого состоят фигуры танграма
         protected const float RECT_WIDTH = 200.0F;
 
+        //типы фигур
         public enum FigureTypes
         {
             BIG_TRIANGLE,
@@ -25,7 +26,10 @@ namespace Tangram.GraphicsElements
         }
 
         bool created = false;
+        //тип текущей фигуры
         private FigureTypes figureType;
+
+        //устанавливает или возвращает тип фигуры, если фигура уже была создана, то она обновляется
         [DataMember]
         public FigureTypes FigureType {
             get
@@ -64,6 +68,7 @@ namespace Tangram.GraphicsElements
             created = true;
         }
 
+        //создает фигуру в зависисмости от текущего типа
         protected override void Init(ref GraphicsPath p)
         {
             //if (p != null)
@@ -162,6 +167,7 @@ namespace Tangram.GraphicsElements
                 }
             }
         }
+
         public override Figure Clone()
         {
             return new TangramFigure(this.graphicPath,this.figureType, this.FigureColor, this.Location, pivot, RotationAngle);

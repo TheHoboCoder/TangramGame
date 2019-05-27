@@ -56,6 +56,7 @@ namespace Tangram.Data
             EXCEPTION
         }
 
+        //авторизация
         public AuthResult Auth(string login, string password)
         {
             string hash = User.getHash(password);
@@ -89,21 +90,22 @@ namespace Tangram.Data
         }
 
 
-       
 
 
+        //возращает воспитателя, который назначен на группу с идентификатором id
         public User getUserByGroupId(int id)
         {
             Table.Select(String.Format("id_group = '{0}'", id));
             return MapOut(Table.Rows[0]);
         }
 
+        //Фильтрует пользователей по типу
         public void FilterUsersByType(User.UserTypes type)
         {
             filteredTable.RowFilter = "role_id = " + (type == User.UserTypes.MET ? 2 : 1).ToString();
         }
 
-
+        //Фильтрует пользователей по фамилии.
         public void FilterUsersByFam(string fam)
         {
             filteredTable.RowFilter = String.Format("fam  like '{0}%'", fam);
