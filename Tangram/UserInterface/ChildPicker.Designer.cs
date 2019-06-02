@@ -40,7 +40,7 @@
             this.childList.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.childList.FormattingEnabled = true;
             this.childList.Location = new System.Drawing.Point(24, 48);
-            this.childList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.childList.Margin = new System.Windows.Forms.Padding(4);
             this.childList.Name = "childList";
             this.childList.ScrollAlwaysVisible = true;
             this.childList.Size = new System.Drawing.Size(263, 193);
@@ -106,7 +106,7 @@
             this.Controls.Add(this.childList);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ChildPicker";

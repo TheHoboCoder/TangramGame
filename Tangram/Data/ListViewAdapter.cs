@@ -163,7 +163,9 @@ namespace Tangram.Data
             {
                 search[0].Text = f.FigureName;
             }
-           
+
+            item.Group = figureGroups.Find(gr => gr.Name == "group_" + f.Group_id.ToString());
+
         }
 
 

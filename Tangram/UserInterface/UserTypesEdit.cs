@@ -24,6 +24,7 @@ namespace Tangram.UserInterface
             GridView.DataSource = Database.MetWorkspace.GroupTypes.Table;
         }
 
+        //Создает объект данных тип группы
         private Group_types GetGroupType()
         {
             return new Group_types()
@@ -33,6 +34,7 @@ namespace Tangram.UserInterface
             };
         }
 
+        //Обработчик нажатия на кнопку "Удалить"
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Удалить тип группы?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -40,8 +42,14 @@ namespace Tangram.UserInterface
             {
                 Database.MetWorkspace.GroupTypes.Delete(Convert.ToInt32(GridView.SelectedRows[0].Cells["id_group_type"].Value));
             }
+
+            if(Database.MetWorkspace.GroupTypes.Table.Rows.Count == 0)
+            {
+                UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+            }
         }
 
+        //Обработчик нажатия на кнопку "Редактировать"
         private void UpdateBtn_Click(object sender, EventArgs e)
         {
             edit = true;
@@ -50,6 +58,7 @@ namespace Tangram.UserInterface
             GroupNameTB.Text = GridView.SelectedRows[0].Cells["group_type"].Value.ToString();
         }
 
+        //Обработчик нажатия на кнопку "Добавить"
         private void AddBtn_Click(object sender, EventArgs e)
         {
             edit = false;
@@ -58,12 +67,13 @@ namespace Tangram.UserInterface
             id = -1;
         }
 
-       
+        //Проверяет на заполнение поле название типа группы
         private bool isEmpty()
         {
             return GroupNameTB.Text == "";
         }
 
+        //Обработчик нажатия на кнопку "Сохранить"
         private void SaveBtn_Click(object sender, EventArgs e)
         {
             if (edit)
@@ -88,6 +98,7 @@ namespace Tangram.UserInterface
                     if (Database.MetWorkspace.GroupTypes.Add(GetGroupType())!=-1)
                     {
                         ControlPanel.Visible = false;
+                        UpdateBtn.Enabled = DeleteBtn.Enabled = true;
                     }
                 }
                 else
@@ -98,6 +109,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик ввода символов в текстовое поле "Название типа группы", блокирует ввод символов, которые не являются буквами
         private void GroupNameTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!Char.IsLetter(e.KeyChar) && e.KeyChar != 8 && e.KeyChar != ' ')
@@ -106,9 +118,18 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик нажатия на кнопку "Отмена"
         private void CancelBtn_Click(object sender, EventArgs e)
         {
             ControlPanel.Visible = false;
+        }
+
+        private void UserTypesEdit_Load(object sender, EventArgs e)
+        {
+            if (Database.MetWorkspace.GroupTypes.Table.Rows.Count == 0)
+            {
+                UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+            }
         }
     }
 }

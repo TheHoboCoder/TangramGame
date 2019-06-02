@@ -14,17 +14,23 @@ namespace Tangram.UserInterface
 {
     public partial class GameForm : Form
     {
+        //холст для отображения фигуры
         private GraphicsElements.GameCanvas gameCanvas;
 
         private int score = 0;
         private int max_score = 0;
 
+        //форма для выбора  баллов
         private ScoreSetter scoreSetter;
 
         Point point = new Point();
+        //панель с фигурой
         PictureBox draggedFig;
+        //показывает, находится ли панель с фигурой над холстом
         bool onCanvas = false;
 
+
+        //конструктор формы
         public GameForm(Figure figure, Child child, Result.DifficultyTypes difficulty, int classId)
         {
             InitializeComponent();
@@ -60,71 +66,10 @@ namespace Tangram.UserInterface
            
         }
 
-        //private void FigureSelected2(Tangram.GraphicsElements.Figure f, Point location)
-        //{
-        //    currentFigure = f;
-        //    this.point = PointToClient(Cursor.Position);
-        //    currentFigure.Translate(point.X - location.X, point.Y - location.Y);
-        //    gameCanvas.Enabled = false;
-        //    //this.Paint += PaintFigure;
-        //    this.MouseMove += Fig_Move;
-        //    draggin = true;
-        //    this.Focus();
-        //    Refresh();
-        //}
-
-        //protected override void OnPaint(PaintEventArgs e)
-        //{
-        //    base.OnPaint(e);
-
-        //    if (draggin)
-        //    {
-        //        using (SolidBrush br = new SolidBrush(Color.FromArgb(120, currentFigure.FigureColor)))
-        //        {
-        //            e.Graphics.FillPath(br, currentFigure.Path);
-        //        }
-        //    }
-
-        //}
-
-        //private void PaintFigure(object sender, PaintEventArgs e)
-        //{
-        //    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-        //    e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-        //    using(SolidBrush br = new SolidBrush(Color.FromArgb(120, currentFigure.FigureColor)))
-        //    {
-        //        e.Graphics.FillPath(br,currentFigure.Path);
-        //    }
-        //}
-
-        //private void Fig_Move(object sender, MouseEventArgs e)
-        //{
-        //    if(e.Button == MouseButtons.Left)
-        //    {
-        //        currentFigure.Translate(e.Location.X - point.X, e.Location.Y - point.Y);
-        //        point.X = e.Location.X;
-        //        point.Y = e.Location.Y;
-        //        Point currentLocation = gameCanvas.PointToClient(Cursor.Position);
-        //        if (!gameCanvas.Bounds.Contains(currentLocation))
-        //        {
-        //           Cursor = Cursors.No;
-        //            onCanvas = false;
-        //        }
-        //        else
-        //        {
-        //            Cursor = Cursors.Default;
-        //            onCanvas = true;
-        //        }
-        //        Refresh();
-        //    }
-        //}
-
-        //private void Fig_Up(object sender, MouseEventArgs e)
-        //{
-        //}
 
 
 
+        //Обработчик выбора фигуры на панели фигур, добавляет панель с изображением фигуры на форму.
         private void FigureSelected(PictureBox box, Point location)
         {
             draggedFig = box;
@@ -147,6 +92,7 @@ namespace Tangram.UserInterface
             draggedFig.Select();
         }
 
+        //Обработчик перемещения панели с фигурой.
         private void DraggedFig_Move(object sender, MouseEventArgs e)
         {
 
@@ -169,6 +115,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик выхода курсора мыши за панель с фигурой.
         private void DraggedFig_MouseLeave(object sender, EventArgs e)
         {
             PictureBox pictureBox = sender as PictureBox;
@@ -185,6 +132,7 @@ namespace Tangram.UserInterface
             //pictureBox = null;
         }
 
+        //Обработчик отпускания клавиши мыши над панелью с фигурой.
         private void DraggedFig_MouseUp(object sender, MouseEventArgs e)
         {
             PictureBox pictureBox = sender as PictureBox;
@@ -203,16 +151,7 @@ namespace Tangram.UserInterface
                 if (gameCanvas.PlaceFigure((GraphicsElements.TangramFigure)fig))
                 {
                     figureToolBox1.Remove(figureToolBox1.SelectedFigure);
-                    if (figureToolBox1.FigureCount == 0)
-                    {
-                        MessageBox.Show("Ураа", "Победа", MessageBoxButtons.OK, MessageBoxIcon.None);
-                        DialogResult res = scoreSetter.ShowDialog();
-                        if(res == DialogResult.OK)
-                        {
-                            this.DialogResult = res;
-                            this.Close();
-                        }
-                    }
+                   
                 }
                 else
                 {
@@ -227,9 +166,21 @@ namespace Tangram.UserInterface
             Controls.Remove(sender as Control);
             pictureBox.Dispose();
             pictureBox = null;
+
+            if (figureToolBox1.FigureCount == 0)
+            {
+                SuccesForm form = new SuccesForm();
+                form.ShowDialog();
+                DialogResult res = scoreSetter.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    this.DialogResult = res;
+                    this.Close();
+                }
+            }
         }
 
-
+        //обработчик закрытия формы
         private void GameForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(this.DialogResult != DialogResult.OK)

@@ -19,6 +19,7 @@ namespace Tangram.UserInterface
             InitializeComponent();
         }
 
+        //Обработчик нажатия на кнопку «Сохранить»
         private void LoginBtn_Click(object sender, EventArgs e)
         {
             if(FamTB.Text=="" ||
@@ -105,6 +106,8 @@ namespace Tangram.UserInterface
             }
         }
 
+
+        //обработчик нажатия на кнопку "Отмена"
         private void button1_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Закрытие", "Закрыть? Изменения не будут сохранены", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -114,6 +117,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик загрузки формы
         private void UserEdit_Load(object sender, EventArgs e)
         {
             FamTB.Text = Database.userRepository.currentUser.Fam;

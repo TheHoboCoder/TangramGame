@@ -102,8 +102,9 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.yearPicker = new System.Windows.Forms.NumericUpDown();
-            this.workYear = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.GroupGridView)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChildGridView)).BeginInit();
@@ -121,6 +122,7 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.yearPicker)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // GroupGridView
@@ -922,8 +924,9 @@
             // 
             this.panel5.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.tableLayoutPanel5.SetColumnSpan(this.panel5, 2);
+            this.panel5.Controls.Add(this.label12);
+            this.panel5.Controls.Add(this.numericUpDown1);
             this.panel5.Controls.Add(this.yearPicker);
-            this.panel5.Controls.Add(this.workYear);
             this.panel5.Controls.Add(this.label9);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(3, 0);
@@ -934,7 +937,7 @@
             // 
             // yearPicker
             // 
-            this.yearPicker.Location = new System.Drawing.Point(122, 7);
+            this.yearPicker.Location = new System.Drawing.Point(109, 9);
             this.yearPicker.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -955,16 +958,6 @@
             0});
             this.yearPicker.ValueChanged += new System.EventHandler(this.yearPicker_ValueChanged);
             // 
-            // workYear
-            // 
-            this.workYear.AutoSize = true;
-            this.workYear.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.workYear.Location = new System.Drawing.Point(235, 9);
-            this.workYear.Name = "workYear";
-            this.workYear.Size = new System.Drawing.Size(96, 16);
-            this.workYear.TabIndex = 1;
-            this.workYear.Text = "Учебный год ";
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -974,6 +967,38 @@
             this.label9.Size = new System.Drawing.Size(96, 16);
             this.label9.TabIndex = 0;
             this.label9.Text = "Учебный год ";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Enabled = false;
+            this.numericUpDown1.Location = new System.Drawing.Point(245, 9);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1910,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(107, 22);
+            this.numericUpDown1.TabIndex = 3;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            1980,
+            0,
+            0,
+            0});
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(222, 11);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(21, 16);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "—";
             // 
             // GroupChildControl
             // 
@@ -1008,6 +1033,7 @@
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.yearPicker)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1064,7 +1090,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label workYear;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.NumericUpDown yearPicker;
         private System.Windows.Forms.DataGridViewTextBoxColumn GroupName;
@@ -1090,5 +1115,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fam;
         private System.Windows.Forms.DataGridViewTextBoxColumn birthday;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label12;
     }
 }

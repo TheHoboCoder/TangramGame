@@ -11,7 +11,7 @@ namespace Tangram.Data
 {
     public abstract class Repository<TEntity>: IDisposable where TEntity:BaseEntity 
     {
-        private MySqlCommand command = new MySqlCommand();
+        protected MySqlCommand command = new MySqlCommand();
         private List<TEntity> entities;
 
         //Начинает транзакцию.
@@ -193,7 +193,7 @@ namespace Tangram.Data
         //Устанавливает значения параметров, используя объект данных c.
         protected abstract void SetCommandParameters(TEntity c,MySqlParameterCollection parameters);
         //Создает объект данных из строки DataRow.
-        protected abstract TEntity MapOut(DataRow row);
+        public abstract TEntity MapOut(DataRow row);
 
         //Загружает строку из таблицы базы данных по идентификатору записи
         private DataRow UploadRow(int id)

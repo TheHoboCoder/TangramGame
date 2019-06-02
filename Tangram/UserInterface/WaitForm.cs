@@ -10,21 +10,11 @@ using System.Windows.Forms;
 
 namespace Tangram.UserInterface
 {
-    public partial class DesignerHelp : Form
+    public partial class WaitForm : Form
     {
-        public DesignerHelp()
+        public WaitForm()
         {
             InitializeComponent();
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

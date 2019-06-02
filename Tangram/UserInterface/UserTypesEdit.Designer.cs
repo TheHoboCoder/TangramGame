@@ -51,13 +51,13 @@
             this.GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Group_type,
             this.Id_group_type});
-            this.GridView.Location = new System.Drawing.Point(13, 13);
+            this.GridView.Location = new System.Drawing.Point(16, 13);
             this.GridView.Margin = new System.Windows.Forms.Padding(4);
             this.GridView.MultiSelect = false;
             this.GridView.Name = "GridView";
             this.GridView.ReadOnly = true;
             this.GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.GridView.Size = new System.Drawing.Size(240, 276);
+            this.GridView.Size = new System.Drawing.Size(177, 276);
             this.GridView.TabIndex = 1;
             // 
             // Group_type
@@ -79,7 +79,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(6, 12);
+            this.label4.Location = new System.Drawing.Point(6, 14);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(145, 16);
@@ -99,10 +99,12 @@
             // AddBtn
             // 
             this.AddBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AddBtn.Location = new System.Drawing.Point(13, 303);
+            this.AddBtn.Image = global::Tangram.Properties.Resources.plus;
+            this.AddBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.AddBtn.Location = new System.Drawing.Point(201, 13);
             this.AddBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.AddBtn.Name = "AddBtn";
-            this.AddBtn.Size = new System.Drawing.Size(226, 51);
+            this.AddBtn.Size = new System.Drawing.Size(169, 51);
             this.AddBtn.TabIndex = 23;
             this.AddBtn.Text = "Добавить";
             this.AddBtn.UseVisualStyleBackColor = true;
@@ -111,10 +113,12 @@
             // UpdateBtn
             // 
             this.UpdateBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.UpdateBtn.Location = new System.Drawing.Point(246, 303);
+            this.UpdateBtn.Image = global::Tangram.Properties.Resources.pencil;
+            this.UpdateBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UpdateBtn.Location = new System.Drawing.Point(201, 70);
             this.UpdateBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.UpdateBtn.Name = "UpdateBtn";
-            this.UpdateBtn.Size = new System.Drawing.Size(226, 51);
+            this.UpdateBtn.Size = new System.Drawing.Size(169, 51);
             this.UpdateBtn.TabIndex = 24;
             this.UpdateBtn.Text = "Редактировать";
             this.UpdateBtn.UseVisualStyleBackColor = true;
@@ -123,10 +127,12 @@
             // DeleteBtn
             // 
             this.DeleteBtn.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.DeleteBtn.Location = new System.Drawing.Point(480, 303);
+            this.DeleteBtn.Image = global::Tangram.Properties.Resources.delete;
+            this.DeleteBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DeleteBtn.Location = new System.Drawing.Point(201, 127);
             this.DeleteBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.DeleteBtn.Name = "DeleteBtn";
-            this.DeleteBtn.Size = new System.Drawing.Size(226, 51);
+            this.DeleteBtn.Size = new System.Drawing.Size(169, 51);
             this.DeleteBtn.TabIndex = 25;
             this.DeleteBtn.Text = "Удалить";
             this.DeleteBtn.UseVisualStyleBackColor = true;
@@ -163,7 +169,7 @@
             this.ControlPanel.Controls.Add(this.CancelBtn);
             this.ControlPanel.Controls.Add(this.GroupNameTB);
             this.ControlPanel.Controls.Add(this.SaveBtn);
-            this.ControlPanel.Location = new System.Drawing.Point(261, 13);
+            this.ControlPanel.Location = new System.Drawing.Point(201, 185);
             this.ControlPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ControlPanel.Name = "ControlPanel";
             this.ControlPanel.Size = new System.Drawing.Size(305, 126);
@@ -174,7 +180,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(714, 363);
+            this.ClientSize = new System.Drawing.Size(510, 322);
             this.Controls.Add(this.ControlPanel);
             this.Controls.Add(this.DeleteBtn);
             this.Controls.Add(this.UpdateBtn);
@@ -188,6 +194,7 @@
             this.Name = "UserTypesEdit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Типы групп";
+            this.Load += new System.EventHandler(this.UserTypesEdit_Load);
             ((System.ComponentModel.ISupportInitialize)(this.GridView)).EndInit();
             this.ControlPanel.ResumeLayout(false);
             this.ControlPanel.PerformLayout();

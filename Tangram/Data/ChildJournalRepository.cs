@@ -33,7 +33,7 @@ namespace Tangram.Data
             Upload();
         }
 
-        protected override Child_Journal MapOut(DataRow row)
+        public override Child_Journal MapOut(DataRow row)
         {
             Child_Journal journal = new Child_Journal();
             journal.Id = Convert.ToInt32(row["id_journal"]);

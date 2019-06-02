@@ -41,7 +41,7 @@ namespace Tangram.Data
             return base.linkedErrorMsg(table);
         }
 
-        protected override FigureGroup MapOut(DataRow row)
+        public override FigureGroup MapOut(DataRow row)
         {
             FigureGroup group = new FigureGroup();
             group.Id = Convert.ToInt32(row["id_group"]);

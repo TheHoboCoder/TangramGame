@@ -43,7 +43,7 @@ namespace Tangram.Data
         }
 
 
-        protected override Figure MapOut(DataRow row)
+        public override Figure MapOut(DataRow row)
         {
             Figure figure = new Figure();
             figure.Id = Convert.ToInt32(row["id_figure"]);

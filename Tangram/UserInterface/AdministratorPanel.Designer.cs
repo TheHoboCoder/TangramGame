@@ -202,7 +202,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(207, 53);
             this.button3.TabIndex = 12;
-            this.button3.Text = "Типы подрупп";
+            this.button3.Text = "Типы групп";
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 

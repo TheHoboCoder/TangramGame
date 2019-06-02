@@ -16,6 +16,8 @@ namespace Tangram.UserInterface
     {
         private bool reLog = false;
 
+
+        //Констуктор формы
         public LoginForm(bool reLog)
         {
             InitializeComponent();
@@ -23,7 +25,7 @@ namespace Tangram.UserInterface
             this.KeyPreview = true;
         }
 
-
+        //Авторизация
         private void Auth()
         {
             if (LoginBtn.Text == "" || passwordTB.Text == "")
@@ -79,11 +81,13 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик нажатия на кнопку "Вход"
         private void LoginBtn_Click(object sender, EventArgs e)
         {
             Auth();
         }
 
+        //обработчик загрузки формы
         private void LoginForm_Load(object sender, EventArgs e)
         {
             if (!reLog)
@@ -97,6 +101,7 @@ namespace Tangram.UserInterface
             
         }
 
+        //обработчик закрытия формы
         private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!reLog)
@@ -106,6 +111,7 @@ namespace Tangram.UserInterface
               
         }
 
+        //Обработчик нажатия клавиши "Enter"
         private void LoginForm_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Enter)

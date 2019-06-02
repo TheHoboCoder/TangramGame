@@ -33,7 +33,7 @@ namespace Tangram.Data
         }
 
 
-        protected override Group_types MapOut(DataRow row)
+        public override Group_types MapOut(DataRow row)
         {
             Group_types group = new Group_types()
             {

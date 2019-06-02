@@ -103,20 +103,20 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(39, 111);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(143, 16);
+            this.label1.Size = new System.Drawing.Size(132, 20);
             this.label1.TabIndex = 22;
             this.label1.Text = "Уровень сложности";
             // 
             // famLabel
             // 
             this.famLabel.AutoSize = true;
-            this.famLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.famLabel.Location = new System.Drawing.Point(39, 52);
+            this.famLabel.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.famLabel.Location = new System.Drawing.Point(39, 48);
             this.famLabel.Name = "famLabel";
-            this.famLabel.Size = new System.Drawing.Size(64, 16);
+            this.famLabel.Size = new System.Drawing.Size(63, 20);
             this.famLabel.TabIndex = 21;
             this.famLabel.Text = "Ребенок";
             // 

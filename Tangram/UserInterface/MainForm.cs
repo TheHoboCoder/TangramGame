@@ -14,25 +14,28 @@ namespace Tangram.UserInterface
 {
     public partial class MainForm : Form
     {
+        //показывает, была ли закрыта форма пользователем
         bool userClose = false;
 
-        private static float BRIGHTNESS_SHIFT = 0.09F;
-
+        //Конструктор формы
         public MainForm()
         {
             InitializeComponent();
         }
 
+        //Обработчик загрузки формы
         private void MainForm_Load(object sender, EventArgs e)
         {
             UpdateName();
         }
 
+        //Обновляет имя и фамилию текущего пользователя
         private void UpdateName()
         {
             userName.Text = Database.userRepository.currentUser.Name + " " + Database.userRepository.currentUser.Otch;
         }
 
+        //Обработчик нажатия на кнопку "Редактировать пользователя", открывает форму для редактирования текущего пользователя
         private void userProfile_Click(object sender, EventArgs e)
         {
             UserEdit users = new UserEdit();
@@ -40,6 +43,7 @@ namespace Tangram.UserInterface
             UpdateName();
         }
 
+        //Обработчик нажатия на кнопку "Начать игру", открывает форму для  для выбора детей для занятия
         private void StartGameBtn_Click(object sender, EventArgs e)
         {
             ChildPicker picker = new ChildPicker();
@@ -51,6 +55,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик закрытия формы.
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (!userClose)
@@ -60,6 +65,8 @@ namespace Tangram.UserInterface
            
         }
 
+
+        //Обработчик нажатия на кнопку «Выход», открывает форму авторизации.
         private void Logout_Click(object sender, EventArgs e)
         {
             LoginForm form = new LoginForm(true);
@@ -71,12 +78,15 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик нажатия на кнопку «Фигуры», открывает форму для просмотра фигур.
         private void FiguresBtn_Click(object sender, EventArgs e)
         {
             FigureViewer viewer = new FigureViewer(false);
             viewer.Show();
         }
 
+
+        //Обработчик нажатия на кнопку «Статистика», открывает форму для просмотра статистики.
         private void StatisticsBtn_Click(object sender, EventArgs e)
         {
             StatisticsForm f = new StatisticsForm();

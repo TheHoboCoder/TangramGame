@@ -15,15 +15,19 @@ namespace Tangram.UserInterface
     public partial class UserTableControl : UserControl
     {
 
+        //режим добавления или изменения
         public bool edit = false;
 
+        private string cur_password = "";
+
+        //идентификатор текущего пользователя
         public int id = -1;
 
         public UserTableControl()
         {
             InitializeComponent();
 
-            Update();
+            ReUpdate();
         }
 
         private void label6_Click(object sender, EventArgs e)
@@ -31,6 +35,7 @@ namespace Tangram.UserInterface
 
         }
 
+        //Обработчик ввода символов в тестовое поле, блокирует ввод символов, не являющихся буквами.
         private void FamTB_KeyPress(object sender, KeyPressEventArgs e)
         {
            if(!Char.IsLetter(e.KeyChar)&&e.KeyChar!=8 && e.KeyChar!=' ')
@@ -39,6 +44,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обновляет панель
         public void ReUpdate()
         {
             rolesFilterCombo.SelectedIndex = 0;
@@ -46,8 +52,15 @@ namespace Tangram.UserInterface
             ControlPanel.Visible = false;
 
             GridView.DataSource = Database.userRepository.Table;
+
+            if(Database.userRepository.Table.Rows.Count == 0)
+            {
+                UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+            }
         }
 
+
+        //Обработчик ввода символов в тестовое поле "Телефон", блокирует ввод символов, не являющихся цифрами.
         private void PhoneTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!Char.IsNumber(e.KeyChar) && e.KeyChar != 8)
@@ -61,6 +74,7 @@ namespace Tangram.UserInterface
 
         }
 
+        //Обработчик нажатия на кнопку "Добавить", очищает поля ввода и выводит панель для добавления
         private void AddBtn_Click(object sender, EventArgs e)
         {
             ControlPanel.Visible = true;
@@ -75,9 +89,11 @@ namespace Tangram.UserInterface
             PasswordTB.Visible = passwordLabel.Visible = true;
         }
 
+        //Обработчик нажатия на кнопку "Изменить", заполняет поля ввода и выводит панель для редактирования
         private void UpdateBtn_Click(object sender, EventArgs e)
         {
             edit = true;
+            PasswordHint.Visible = true;
             ControlPanel.Visible = true;
 
             LoginTB.Text = GridView.SelectedRows[0].Cells["login"].Value.ToString();
@@ -85,7 +101,8 @@ namespace Tangram.UserInterface
             FamTB.Text = GridView.SelectedRows[0].Cells["fam"].Value.ToString();
             OtchTB.Text = GridView.SelectedRows[0].Cells["otch"].Value.ToString();
             PhoneTB.Text = GridView.SelectedRows[0].Cells["phone"].Value.ToString();
-            PasswordTB.Text = GridView.SelectedRows[0].Cells["password"].Value.ToString();
+            cur_password = GridView.SelectedRows[0].Cells["password"].Value.ToString();
+            PasswordTB.Text = "";
             id = Convert.ToInt32(GridView.SelectedRows[0].Cells["id_user"].Value);
 
             if(Convert.ToInt32(GridView.SelectedRows[0].Cells["role_id"].Value)==1){
@@ -96,10 +113,9 @@ namespace Tangram.UserInterface
                 rolesCombo.SelectedIndex = 1;
             }
 
-            PasswordTB.Visible = passwordLabel.Visible = false;
         }
 
-
+        //создает объект данных Пользователь
         private User GetUser()
         {
            
@@ -110,20 +126,21 @@ namespace Tangram.UserInterface
                               FamTB.Text.Trim(),
                               OtchTB.Text.Trim(),
                               PhoneTB.Text.Trim(),
-                              !edit ? User.getHash(PasswordTB.Text.Trim()) : PasswordTB.Text.Trim());
+                              !edit || PasswordTB.Text!="" ? User.getHash(PasswordTB.Text.Trim()) : cur_password);
         }
 
+        //Проверяет поля на пустоту
         private bool isEmpty()
         {
             return LoginTB.Text == "" ||
                    NameTB.Text == "" ||
                    FamTB.Text == "" ||
                    OtchTB.Text == "" ||
-                   PhoneTB.Text == "" ||
-                   PasswordTB.Text == "";
+                   PhoneTB.Text == "";
+                  
         }
 
-
+        //обработчик нажатия на кнопку "Сохранить"
         private void LoginBtn_Click(object sender, EventArgs e)
         {
           
@@ -134,37 +151,42 @@ namespace Tangram.UserInterface
                     if (Database.userRepository.Update(GetUser()))
                     {
                         ControlPanel.Visible = false;
+                        PasswordHint.Visible = false;
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Ошибка", "Заполните поля", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show( "Заполните поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
              
             }
             else
             {
-                if (!isEmpty())
+                if (!isEmpty() && PasswordTB.Text!="")
                 {
                     if (Database.userRepository.Add(GetUser())!=-1)
                     {
                         ControlPanel.Visible = false;
+                        UpdateBtn.Enabled = DeleteBtn.Enabled = true;
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Ошибка", "Заполните поля", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show( "Заполните поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                    
             }
 
         }
 
+        //обработчик нажатия на кнопку "Отмена"
         private void CancelBtn_Click(object sender, EventArgs e)
         {
             ControlPanel.Visible = false;
         }
 
+
+        //обработчик закрытия выпадающего списка "Фильтр по роли пользователя"
         private void rolesFilterCombo_DropDownClosed(object sender, EventArgs e)
         {
             switch (rolesFilterCombo.SelectedIndex) {
@@ -183,6 +205,7 @@ namespace Tangram.UserInterface
 
         }
 
+        //обработчик изменения текста в поле "Фильтр по фамилии"
         private void famFilter_TextChanged(object sender, EventArgs e)
         {
             if(famFilter.Text != "")
@@ -197,12 +220,17 @@ namespace Tangram.UserInterface
             }
         }
 
+        //обработчик нажатия на кнопку удалить 
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Удалить пользователя?","Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (res == DialogResult.Yes)
             {
                 Database.userRepository.Delete(Convert.ToInt32(GridView.SelectedRows[0].Cells["id_user"].Value));
+                if (Database.userRepository.Table.Rows.Count == 0)
+                {
+                    UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+                }
             }
         }
 

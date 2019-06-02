@@ -56,6 +56,25 @@ namespace Tangram.Data
             Upload();
         }
 
+        public List<Child> getDistinctChildren() {
+
+            command.CommandText = "select id_child, name, fam from childs";
+            List<Child> list = new List<Child>();
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Child ch = new Child();
+                    ch.Id = reader.GetInt32(0);
+                    ch.Name = reader.GetString(1);
+                    ch.Fam = reader.GetString(2);
+                    list.Add(ch);
+                }
+            }
+            return list;
+        }
+
+
         public ChildrenRepository(MySqlConnection connection, int groupId) : base(connection, true)
         {
             childInfo = new TableInfo();
@@ -85,7 +104,7 @@ namespace Tangram.Data
 
       
 
-        protected override Child MapOut(DataRow row)
+        public override Child MapOut(DataRow row)
         {
             Child child = new Child()
             {

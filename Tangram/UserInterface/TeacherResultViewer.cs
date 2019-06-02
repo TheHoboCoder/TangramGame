@@ -17,11 +17,15 @@ namespace Tangram.UserInterface
             InitializeComponent();
         }
 
+        //Обработчик загрузки формы
         private void TeacherResultViewer_Load(object sender, EventArgs e)
         {
+           
             ResultsViewer viewer = new ResultsViewer();
+            this.Size = viewer.MinimumSize;
             viewer.Dock = DockStyle.Fill;
             Controls.Add(viewer);
+
         }
     }
 }

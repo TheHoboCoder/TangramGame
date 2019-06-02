@@ -229,10 +229,52 @@ namespace Tangram.GraphicsElements
         public void AddFigure(Figure f)
         {
             int count = 0;
+            bool sizeChanged = false;
             do
             {
+                Rectangle figureBounds = Rectangle.Ceiling(f.Path.GetBounds());
+
+                Point translateVector = new Point(0, 0);
+                if (figureBounds.X < 0)
+                {
+                    this.Width -= figureBounds.X;
+                    sizeChanged = true;
+                    translateVector.X = -figureBounds.X;
+                }
+                if (figureBounds.Y < 0)
+                {
+                    this.Height -= figureBounds.Y;
+                    sizeChanged = true;
+                    //this.Top += topLeft.Y;
+                    translateVector.Y = -figureBounds.Y;
+                }
+
+                if (translateVector.X != 0 ||
+                   translateVector.Y != 0)
+                {
+                    MoveFigures(translateVector.X, translateVector.Y, figures);
+                }
+
+                float deltaW = this.Width - figureBounds.X - figureBounds.Width;
+                if (deltaW < 0)
+                {
+                    sizeChanged = true;
+                    this.Width += (int)Math.Round(-deltaW);
+                }
+
+                float deltaH = this.Height - figureBounds.Y - figureBounds.Height;
+                if (deltaH < 0)
+                {
+                    sizeChanged = true;
+                    this.Height += (int)Math.Round(-deltaW);
+                }
+
+               
+
                 var intersections = figures.Where(fig => fig.Path.GetBounds().IntersectsWith(f.Path.GetBounds()));
                 count = intersections.Count();
+
+                
                 if (count != 0)
                 {
                     intersections.OrderBy(fig => fig.Path.GetBounds().X);
@@ -243,17 +285,17 @@ namespace Tangram.GraphicsElements
                     break;
                 }
 
-                float delta = this.Width - f.Path.GetBounds().X - f.Path.GetBounds().Width;
-                if (delta < 0)
-                {
-                    this.Width +=(int)Math.Round(-delta);
-                }
+                
 
             }
             while (count != 0);
-
+            
             figures.Add(f);
             figures.OrderBy(cur => cur.Path.GetBounds().Y);
+            if (sizeChanged)
+            {
+                if (GridEnabled) UpdateGrid();
+            }
             Refresh();
         }
 
@@ -336,24 +378,54 @@ namespace Tangram.GraphicsElements
         private bool MoveFigures(float dx, float dy, IEnumerable<Figure> figures)
         {
 
-            if (GridSnapEnabled)
-            {
-                float new_dx = (float)Math.Round((float)(dx +figures.First().Location.X)/ GridCellSize) * GridCellSize - figures.First().Location.X;
-                float new_dy = (float)Math.Round((float)(dy + figures.First().Location.Y) / GridCellSize) * GridCellSize - figures.First().Location.Y;
-                
-                if(new_dx != 0 || new_dy != 0)
-                {
-                    selectedPoint.X += dx;
-                    selectedPoint.Y += dy;
-                    //Cursor.Position = this.PointToScreen(Point.Ceiling(selectedPoint));
+            //if (GridSnapEnabled)
+            //{
+            //    //float new_dx = (float)Math.Round((float)(dx + figures.First().Location.X) / GridCellSize) * GridCellSize - figures.First().Location.X;
+            //    //float new_dy = (float)Math.Round((float)(dy + figures.First().Location.Y) / GridCellSize) * GridCellSize - figures.First().Location.Y;
+            //    Figure first = figures.First();
 
-                }
-                dx = new_dx;
-                dy = new_dy;
+            //    float new_dx = 0, new_dy = 0;
+            //    bool fisrtTime = true;
+            //    foreach (PointF point in first.Path.PathPoints)
+            //    {
+            //        float dx_dx = (float)Math.Round((float)(dx + point.X) / GridCellSize) * GridCellSize - point.X;
+            //        float dy_dy = (float)Math.Round((float)(dy + point.Y) / GridCellSize) * GridCellSize - point.Y;
+
+            //        if (fisrtTime)
+            //        {
+            //            new_dx = dx_dx;
+            //            new_dy = dy_dy;
+            //            fisrtTime = false;
+            //        }
+            //        else
+            //        {
+            //            if (dx_dx < new_dx && dx_dx != 0)
+            //            {
+            //                new_dx = dx_dx;
+            //            }
+
+            //            if (dy_dy < new_dy && dy_dy != 0)
+            //            {
+            //                new_dy = dy_dy;
+            //            }
+            //        }
+
+
+            //    }
+
+            //    if (new_dx != 0 || new_dy != 0)
+            //    {
+            //        selectedPoint.X += dx;
+            //        selectedPoint.Y += dy;
+            //        //Cursor.Position = this.PointToScreen(Point.Ceiling(selectedPoint));
+
+            //    }
+            //    dx = new_dx;
+            //    dy = new_dy;
 
                
 
-            }
+            //}
 
 
             foreach (Figure f in figures)

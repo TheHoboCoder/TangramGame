@@ -14,16 +14,24 @@ namespace Tangram.UserInterface
 {
     public partial class GroupChildControl : UserControl
     {
+        //режим добавления или изменения групп
         bool groupEdit = false;
 
-        int groupId = -1;
+        //идентификатор группы
+        int groupId = -1; 
+        //идентификатор воспитанника
         int childId = -1;
+        //идентификатор группы в истории групп
         int group_hId = -1;
+        //идентификатор воспитанника в журнале 
         int childJournalId = -1;
+        //идентификатор пользователя
         int userId = -1;
 
+        //режим добавления или изменения детей
         bool childEdit = false;
 
+        //текущий учебный год
         int currentYear = 0;
 
         public GroupChildControl()
@@ -33,7 +41,7 @@ namespace Tangram.UserInterface
 
         }
 
-
+        //Обновляет панель
         public void ReUpdate()
         {
             yearPicker.Value = GroupsRepository.GetWorkYear(DateTime.Now);
@@ -43,12 +51,12 @@ namespace Tangram.UserInterface
             teacherCombo.DataSource = Database.userRepository.filteredTable;
             teacherCombo.ValueMember = "id_user";
             teacherCombo.DisplayMember = "usersInitials";
-            teacherCombo.SelectedIndex = 0;
+            //teacherCombo.SelectedIndex = 0;
 
             groupTypeCombo.DataSource = Database.MetWorkspace.GroupTypes.Table;
             groupTypeCombo.ValueMember = "group_type_id";
             groupTypeCombo.DisplayMember = "group_type_name";
-            groupTypeCombo.SelectedIndex = 0;
+            //groupTypeCombo.SelectedIndex = 0;
 
            
             GroupsCombo.ValueMember = "id_group_h";
@@ -60,7 +68,7 @@ namespace Tangram.UserInterface
             groupTypeFilter.DataSource = Database.MetWorkspace.GroupTypes.Table;
             groupTypeFilter.ValueMember = "group_type_id";
             groupTypeFilter.DisplayMember = "group_type_name";
-            groupTypeFilter.SelectedIndex = 0;
+            //groupTypeFilter.SelectedIndex = 0;
 
             //groupTypeFilter.Items.Insert(0, "<Не выбрано>");
 
@@ -78,21 +86,28 @@ namespace Tangram.UserInterface
                 }
 
             }
+            else
+            {
+                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = false;
+                AddChildBtn.Enabled = false;
+                filterTable(-1);
+            }
 
-            ChildBirthDay.MaxDate = DateTime.Now.AddYears(-7);
+            ChildBirthDay.MinDate = DateTime.Now.AddYears(-7);
         }
 
+        //Фильтрует группы по году 
         private void UpdateCurrentYear(int year)
         {
             currentYear = year;
-            workYear.Text = " - " + (year+1);
+            numericUpDown1.Value = currentYear+1;
             Database.MetWorkspace.GroupManager.groups.FilterByYear(currentYear);
             GroupsCombo.ValueMember = "id_group_h";
             GroupsCombo.DisplayMember = "group_name";
             GroupsCombo.DataSource = Database.MetWorkspace.GroupManager.groups.PureGroups;
         }
 
-
+        //Обработчик смены года в поле "учебный год"
         private void yearPicker_ValueChanged(object sender, EventArgs e)
         {
             UpdateCurrentYear((int)yearPicker.Value);
@@ -116,7 +131,7 @@ namespace Tangram.UserInterface
         }
 
 
-
+        //Фильтрует записи в таблице "Воспитанники" по идентификатору группы
         private void filterTable(int id)
         { 
 
@@ -140,17 +155,18 @@ namespace Tangram.UserInterface
         }
 
 
+        //Создает объект данных "Группа"
         public Garden_groups getGroup() {
             return new Garden_groups()
             {
                 Id = groupId,
                 Group_Name = GroupNameTB.Text.Trim(),
                 GroupTypeId = Convert.ToInt32(groupTypeCombo.SelectedValue),
-                //TeacherId = Convert.ToInt32(teacherCombo.SelectedValue),
-                //childCount = ChildCount
+
             };
         }
 
+        //Создает объект данных "Группа в истории"
         public History_group GetHistory_Group()
         {
             return new History_group() {
@@ -161,12 +177,11 @@ namespace Tangram.UserInterface
             };
         }
 
+        //Создает объект данных "Воспитанник"
         public Child getChild()
         {
             return new Child() {
                 Id = childId,
-                //GroupId = Convert.ToInt32(GroupsCombo.SelectedValue),
-                //SubGroup = subGroupFilter.SelectedIndex + 1,
                 Fam = FamTB.Text.Trim(),
                 Name = NameTB.Text.Trim(),
                 gender = genderBox.SelectedIndex == 0,
@@ -175,6 +190,7 @@ namespace Tangram.UserInterface
 
         }
 
+        //Создает объект данных "Журнал детей"
         public Child_Journal GetChild_Journal()
         {
             return new Child_Journal() {
@@ -186,6 +202,7 @@ namespace Tangram.UserInterface
         }
 
 
+        //Обработчик нажатия на кнопку "Добавить группу", открывает панель для добавления группы
         private void AddGroupBtn_Click(object sender, EventArgs e)
         {
             GroupControlPanel.Visible = true;
@@ -199,6 +216,7 @@ namespace Tangram.UserInterface
 
         }
 
+        //Обработчик нажатия на кнопку "Редактировать группу", открывает панель для редактирования группы
         private void UpdateGroupBtn_Click(object sender, EventArgs e)
         {
             groupId = Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["Id"].Value);
@@ -222,6 +240,7 @@ namespace Tangram.UserInterface
             groupEdit = true;
         }
 
+        //Обработчик нажатия на кнопку "Удалить группу", удаляет выбранную группу
         private void DeleteGroupBtn_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Удалить группу?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -239,11 +258,13 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик нажатия на кнопку "Отменить" на панели редактирования групп, закрывает панель
         private void CancelGroupBtn_Click(object sender, EventArgs e)
         {
             GroupControlPanel.Visible = false;
         }
 
+        //Обработчик нажатия на кнопку "Сохранить" на панели редактирования групп, сохраняет изменения
         private void SaveGroupBtn_Click(object sender, EventArgs e)
         {
             if (groupEdit)
@@ -327,7 +348,7 @@ namespace Tangram.UserInterface
                 }
                 else
                 {
-                    MessageBox.Show("Ошибка", "Заполните поля", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show( "Заполните поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             else
@@ -375,12 +396,13 @@ namespace Tangram.UserInterface
                 }
                 else
                 {
-                    MessageBox.Show("Ошибка", "Заполните поля", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show( "Заполните поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
            
         }
 
+        //обработчик нажатия на кнопку "Удалить ребенка", удаляет выбранного ребенка
         private void DeleteChildBtn_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Удалить ребенка?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -398,6 +420,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //обработчик нажатия на кнопку "Добавить ребенка", открывает панель для добавления ребенка
         private void AddChildBtn_Click(object sender, EventArgs e)
         {
             panel1.Visible = true;
@@ -412,6 +435,8 @@ namespace Tangram.UserInterface
 
         }
 
+
+        //обработчик нажатия на кнопку "Редактирование ребенка", открывает панель для редактирования ребенка
         private void EditChildBtn_Click(object sender, EventArgs e)
         {
             panel1.Visible = true;
@@ -436,6 +461,8 @@ namespace Tangram.UserInterface
             childEdit = true;
         }
 
+
+        //обработчик нажатия на кнопку "Сохранить" на панели редактирования ребенка, сохраняет изменения
         private void SaveChildButton_Click(object sender, EventArgs e)
         {
             if (childEdit)
@@ -477,11 +504,14 @@ namespace Tangram.UserInterface
             }
         }
 
+        //обработчик нажатия на кнопку "Отмена" на панели редактирования ребенка,  закрывает панель
         private void CancelChildBtn_Click(object sender, EventArgs e)
         {
             panel1.Visible = false;
         }
 
+
+        //обработчик щелчка мышью по таблице "Группы", фильтрует таблицу воспитанники по выбранной группе
         private void GroupGridView_Click(object sender, EventArgs e)
         {
             if (GroupGridView.SelectedRows.Count != 0 &&
@@ -498,18 +528,27 @@ namespace Tangram.UserInterface
             }
         }
 
+
+        //обработчик нажатия на кнопку "Фильтровать", фильтрует группы по типу
         private void filterBtn_Click(object sender, EventArgs e)
         {
             Database.MetWorkspace.GroupManager.groups.FilterGroupsByType(Convert.ToInt32(groupTypeFilter.SelectedValue));
             GroupGridView.DataSource = Database.MetWorkspace.GroupManager.groups.filteredTable;
 
             //filterTable(Convert.ToInt32(groupTypeFilter.SelectedValue));
-
-            if (GroupGridView.Rows.Count > 0 && GroupGridView.SelectedRows.Count>0 &&
-                GroupGridView.SelectedRows[0].Cells["id_group_h"].Value != DBNull.Value)
+           
+            if (GroupGridView.Rows.Count > 0 && GroupGridView.SelectedRows.Count>0)
             {
                 UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = true;
-                filterTable(Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["id_group_h"].Value));   
+                if (GroupGridView.SelectedRows[0].Cells["id_group_h"].Value != DBNull.Value)
+                {
+                    filterTable(Convert.ToInt32(GroupGridView.SelectedRows[0].Cells["id_group_h"].Value));
+                }
+                else
+                {
+                    filterTable(-1);
+                }
+               
             }
             else
             {
@@ -517,17 +556,25 @@ namespace Tangram.UserInterface
                 UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = false;
             }
 
-
         }
 
+        //обработчик нажатия на кнопку "Отмена", отменяет фильтр
         private void CancelBtn_Click(object sender, EventArgs e)
         {
+            if (Database.MetWorkspace.GroupManager.groups.Table.Rows.Count == 0) return;
             UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = true;
             GroupGridView.DataSource = Database.MetWorkspace.GroupManager.groups.Table;
 
-            if (Database.MetWorkspace.GroupManager.groups.Table.Rows.Count > 0 &&
-                Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"] != DBNull.Value)
+            if (Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"] != DBNull.Value)
             {
+                if(Database.MetWorkspace.GroupManager.groups.Table.Rows.Count > 0)
+                {
+                    UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = true;
+                }
+                else
+                {
+                    UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = false;
+                }
 
                 filterTable(Convert.ToInt32(Database.MetWorkspace.GroupManager.groups.Table.Rows[0]["id_group_h"]));
                 AddChildBtn.Enabled = true;
@@ -536,10 +583,12 @@ namespace Tangram.UserInterface
             {
                 filterTable(-1);
                 AddChildBtn.Enabled = false;
-                UpdateGroupBtn.Enabled = DeleteGroupBtn.Enabled = false;
+               
             }
+
         }
 
+        //обработчик нажатия на кнопку "Добавить тип группы", открывает форму для добавления тип группы
         private void EditGroupTypes_Click(object sender, EventArgs e)
         {
             UserTypesEdit groupTypes = new UserTypesEdit();
@@ -556,10 +605,13 @@ namespace Tangram.UserInterface
 
         }
 
+        //обработчик нажатия на кнопку "Управление детьми в группе", открывает форму для добавления тип группы
         private void button1_Click(object sender, EventArgs e)
         {
             ChangeChildGroupForm form = new ChangeChildGroupForm();
             form.ShowDialog();
+
+            ReUpdate();
         }
     }
 }

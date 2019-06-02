@@ -14,15 +14,19 @@ namespace Tangram.UserInterface
 {
     public partial class FigureGroupsEdit : Form
     {
+        //режим формы
         private bool editMode= false;
+        //текущая группа
         public FigureGroup group { get; private set;  }
 
+        //конструктор для открытия формы в режиме добавления
         public FigureGroupsEdit()
         {
             InitializeComponent();
             editMode = false;
         }
 
+        //конструктор для открытия формы в режиме редактирования
         public FigureGroupsEdit(FigureGroup currentGroup)
         {
             InitializeComponent();

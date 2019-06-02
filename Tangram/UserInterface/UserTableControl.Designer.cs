@@ -66,6 +66,7 @@
             this.DeleteBtn = new System.Windows.Forms.Button();
             this.UpdateBtn = new System.Windows.Forms.Button();
             this.AddBtn = new System.Windows.Forms.Button();
+            this.PasswordHint = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.GridView)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -179,7 +180,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(614, 8);
+            this.label1.Location = new System.Drawing.Point(637, 8);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(137, 16);
@@ -215,10 +216,10 @@
             // 
             // famFilter
             // 
-            this.famFilter.Location = new System.Drawing.Point(168, 5);
+            this.famFilter.Location = new System.Drawing.Point(132, 8);
             this.famFilter.Margin = new System.Windows.Forms.Padding(4);
             this.famFilter.Name = "famFilter";
-            this.famFilter.Size = new System.Drawing.Size(268, 22);
+            this.famFilter.Size = new System.Drawing.Size(256, 22);
             this.famFilter.TabIndex = 4;
             this.famFilter.TextChanged += new System.EventHandler(this.famFilter_TextChanged);
             // 
@@ -342,7 +343,7 @@
             // 
             // CancelBtn
             // 
-            this.CancelBtn.Location = new System.Drawing.Point(783, 62);
+            this.CancelBtn.Location = new System.Drawing.Point(692, 69);
             this.CancelBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CancelBtn.Name = "CancelBtn";
             this.CancelBtn.Size = new System.Drawing.Size(221, 51);
@@ -353,7 +354,7 @@
             // 
             // LoginBtn
             // 
-            this.LoginBtn.Location = new System.Drawing.Point(783, 5);
+            this.LoginBtn.Location = new System.Drawing.Point(693, 8);
             this.LoginBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.LoginBtn.Name = "LoginBtn";
             this.LoginBtn.Size = new System.Drawing.Size(220, 51);
@@ -380,6 +381,7 @@
             this.PasswordTB.PasswordChar = '*';
             this.PasswordTB.Size = new System.Drawing.Size(203, 22);
             this.PasswordTB.TabIndex = 22;
+            this.PasswordTB.UseSystemPasswordChar = true;
             // 
             // tableLayoutPanel1
             // 
@@ -421,6 +423,7 @@
             // ControlPanel
             // 
             this.ControlPanel.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ControlPanel.Controls.Add(this.PasswordHint);
             this.ControlPanel.Controls.Add(this.CancelBtn);
             this.ControlPanel.Controls.Add(this.LoginBtn);
             this.ControlPanel.Controls.Add(this.rolesCombo);
@@ -505,6 +508,18 @@
             this.AddBtn.UseVisualStyleBackColor = true;
             this.AddBtn.Click += new System.EventHandler(this.AddBtn_Click);
             // 
+            // PasswordHint
+            // 
+            this.PasswordHint.AutoSize = true;
+            this.PasswordHint.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.PasswordHint.Location = new System.Drawing.Point(4, 106);
+            this.PasswordHint.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.PasswordHint.Name = "PasswordHint";
+            this.PasswordHint.Size = new System.Drawing.Size(200, 26);
+            this.PasswordHint.TabIndex = 23;
+            this.PasswordHint.Text = "Оставьте поле  незаполненным, \r\nесли не хотите изменять пароль";
+            this.PasswordHint.Visible = false;
+            // 
             // UserTableControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -565,5 +580,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Role;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel ControlPanel;
+        private System.Windows.Forms.Label PasswordHint;
     }
 }

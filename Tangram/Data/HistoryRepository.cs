@@ -36,7 +36,7 @@ namespace Tangram.Data
 
         
 
-        protected override History_group MapOut(DataRow row)
+        public override History_group MapOut(DataRow row)
         {
             return new History_group() {
                 Id = Convert.ToInt32(row["id_group_h"]),

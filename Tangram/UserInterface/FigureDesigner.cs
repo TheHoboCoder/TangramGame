@@ -37,6 +37,7 @@ namespace Tangram.UserInterface
             //designerCanvas.DragEnter += Canvas_DragEnter;
             //designerCanvas.DragDrop += Canvas_DragDrop;
             figureToolBox1.OnFigureSelect += FigureSelected;
+           
             figureTypeCombo.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
             figureTypeCombo.DisplayMember = "Name";
             figureTypeCombo.ValueMember = "Id";
@@ -99,15 +100,17 @@ namespace Tangram.UserInterface
                 draggedFig.Left += e.X - point.X;
                 draggedFig.Top += e.Y - point.Y;
                 Point currentLocation = designerCanvas.PointToClient(Cursor.Position);
-                if (!designerCanvas.Bounds.Contains(currentLocation))
-                {
-                    pictureBox.Cursor = Cursors.No;
-                    onCanvas = false;
-                }
-                else
+                if (currentLocation.X >= 0  && currentLocation.X<= designerCanvas.Width &&
+                    currentLocation.Y >=0 && currentLocation.Y <= designerCanvas.Height)
                 {
                     pictureBox.Cursor = Cursors.Default;
                     onCanvas = true;
+                }
+                else
+                {
+                    
+                    pictureBox.Cursor = Cursors.No;
+                    onCanvas = false;
                 }
             }
         }
@@ -178,7 +181,7 @@ namespace Tangram.UserInterface
         private void FigureDesigner_Load(object sender, EventArgs e)
         {
             designerCanvas.GridEnabled = true;
-            designerCanvas.GridSnapEnabled = true;
+            designerCanvas.GridSnapEnabled = false;
         }
 
 
@@ -193,6 +196,12 @@ namespace Tangram.UserInterface
             }
             else
             {
+                if(figureTypeCombo.SelectedValue == null)
+                {
+                    MessageBox.Show("Добавьте тип фигуры", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 Size size = new Size();
                 List<Figure> f = designerCanvas.packFigures(out size);
                 if (f.Count() == 0)

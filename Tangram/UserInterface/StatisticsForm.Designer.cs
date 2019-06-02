@@ -74,6 +74,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.endDate = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -462,7 +464,7 @@
             0,
             0});
             this.yearPicker.Name = "yearPicker";
-            this.yearPicker.Size = new System.Drawing.Size(111, 26);
+            this.yearPicker.Size = new System.Drawing.Size(76, 26);
             this.yearPicker.TabIndex = 17;
             this.yearPicker.Value = new decimal(new int[] {
             1910,
@@ -483,7 +485,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(363, 3);
+            this.button3.Location = new System.Drawing.Point(363, 5);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(353, 52);
             this.button3.TabIndex = 19;
@@ -494,6 +496,8 @@
             // MetPanel
             // 
             this.MetPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.MetPanel.Controls.Add(this.textBox1);
+            this.MetPanel.Controls.Add(this.label12);
             this.MetPanel.Controls.Add(this.label5);
             this.MetPanel.Controls.Add(this.groupCombo);
             this.MetPanel.Controls.Add(this.label6);
@@ -507,14 +511,14 @@
             // 
             this.reportViewers.Controls.Add(this.button2);
             this.reportViewers.Controls.Add(this.button3);
-            this.reportViewers.Location = new System.Drawing.Point(12, 542);
+            this.reportViewers.Location = new System.Drawing.Point(12, 546);
             this.reportViewers.Name = "reportViewers";
-            this.reportViewers.Size = new System.Drawing.Size(716, 62);
+            this.reportViewers.Size = new System.Drawing.Size(719, 62);
             this.reportViewers.TabIndex = 21;
             // 
             // resultsBtn
             // 
-            this.resultsBtn.Location = new System.Drawing.Point(742, 545);
+            this.resultsBtn.Location = new System.Drawing.Point(783, 542);
             this.resultsBtn.Name = "resultsBtn";
             this.resultsBtn.Size = new System.Drawing.Size(350, 52);
             this.resultsBtn.TabIndex = 20;
@@ -574,11 +578,28 @@
             this.panel1.Size = new System.Drawing.Size(574, 124);
             this.panel1.TabIndex = 46;
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(193, 41);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(24, 18);
+            this.label12.TabIndex = 19;
+            this.label12.Text = "—";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(223, 38);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(63, 26);
+            this.textBox1.TabIndex = 20;
+            // 
             // StatisticsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1238, 599);
+            this.ClientSize = new System.Drawing.Size(1238, 615);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.resultsBtn);
             this.Controls.Add(this.reportViewers);
@@ -655,5 +676,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.DateTimePicker endDate;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label12;
     }
 }

@@ -33,15 +33,16 @@
             this.FiguresBtn = new System.Windows.Forms.Button();
             this.StatisticsBtn = new System.Windows.Forms.Button();
             this.StartGameBtn = new System.Windows.Forms.Button();
-            this.UserPanel = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.userName = new System.Windows.Forms.Label();
             this.userProfile = new System.Windows.Forms.Button();
             this.Logout = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.RootLayout.SuspendLayout();
-            this.UserPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // RootLayout
@@ -55,8 +56,9 @@
             this.RootLayout.Controls.Add(this.FiguresBtn, 4, 4);
             this.RootLayout.Controls.Add(this.StatisticsBtn, 0, 4);
             this.RootLayout.Controls.Add(this.StartGameBtn, 2, 2);
-            this.RootLayout.Controls.Add(this.UserPanel, 4, 2);
             this.RootLayout.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.RootLayout.Controls.Add(this.pictureBox1, 4, 2);
+            this.RootLayout.Controls.Add(this.pictureBox2, 0, 2);
             this.RootLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RootLayout.Location = new System.Drawing.Point(0, 0);
             this.RootLayout.Margin = new System.Windows.Forms.Padding(5);
@@ -67,7 +69,8 @@
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 58.7822F));
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.331378F));
             this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.24927F));
-            this.RootLayout.Size = new System.Drawing.Size(832, 415);
+            this.RootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.RootLayout.Size = new System.Drawing.Size(954, 506);
             this.RootLayout.TabIndex = 2;
             this.RootLayout.Paint += new System.Windows.Forms.PaintEventHandler(this.RootLayout_Paint);
             // 
@@ -79,10 +82,10 @@
             this.FiguresBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FiguresBtn.Image = global::Tangram.Properties.Resources.shapes;
             this.FiguresBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.FiguresBtn.Location = new System.Drawing.Point(597, 354);
+            this.FiguresBtn.Location = new System.Drawing.Point(685, 432);
             this.FiguresBtn.Margin = new System.Windows.Forms.Padding(5);
             this.FiguresBtn.Name = "FiguresBtn";
-            this.FiguresBtn.Size = new System.Drawing.Size(230, 56);
+            this.FiguresBtn.Size = new System.Drawing.Size(264, 69);
             this.FiguresBtn.TabIndex = 0;
             this.FiguresBtn.Text = "Фигуры";
             this.FiguresBtn.UseVisualStyleBackColor = false;
@@ -96,10 +99,10 @@
             this.StatisticsBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.StatisticsBtn.Image = global::Tangram.Properties.Resources.graph;
             this.StatisticsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.StatisticsBtn.Location = new System.Drawing.Point(5, 354);
+            this.StatisticsBtn.Location = new System.Drawing.Point(5, 432);
             this.StatisticsBtn.Margin = new System.Windows.Forms.Padding(5);
             this.StatisticsBtn.Name = "StatisticsBtn";
-            this.StatisticsBtn.Size = new System.Drawing.Size(252, 56);
+            this.StatisticsBtn.Size = new System.Drawing.Size(291, 69);
             this.StatisticsBtn.TabIndex = 4;
             this.StatisticsBtn.Text = "Статистика";
             this.StatisticsBtn.UseVisualStyleBackColor = false;
@@ -112,38 +115,15 @@
             this.StartGameBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.StartGameBtn.ForeColor = System.Drawing.SystemColors.ControlText;
             this.StartGameBtn.Image = global::Tangram.Properties.Resources.play_button;
-            this.StartGameBtn.Location = new System.Drawing.Point(295, 80);
+            this.StartGameBtn.Location = new System.Drawing.Point(338, 97);
             this.StartGameBtn.Margin = new System.Windows.Forms.Padding(5);
             this.StartGameBtn.Name = "StartGameBtn";
-            this.StartGameBtn.Size = new System.Drawing.Size(261, 234);
+            this.StartGameBtn.Size = new System.Drawing.Size(301, 288);
             this.StartGameBtn.TabIndex = 3;
             this.StartGameBtn.Text = "Начать занятие";
             this.StartGameBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.StartGameBtn.UseVisualStyleBackColor = false;
             this.StartGameBtn.Click += new System.EventHandler(this.StartGameBtn_Click);
-            // 
-            // UserPanel
-            // 
-            this.RootLayout.SetColumnSpan(this.UserPanel, 2);
-            this.UserPanel.Controls.Add(this.tableLayoutPanel1);
-            this.UserPanel.Location = new System.Drawing.Point(3, 322);
-            this.UserPanel.Name = "UserPanel";
-            this.UserPanel.Size = new System.Drawing.Size(260, 23);
-            this.UserPanel.TabIndex = 4;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(152, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(108, 23);
-            this.tableLayoutPanel1.TabIndex = 5;
             // 
             // flowLayoutPanel1
             // 
@@ -196,12 +176,38 @@
             this.Logout.UseVisualStyleBackColor = false;
             this.Logout.Click += new System.EventHandler(this.Logout_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pictureBox1.ErrorImage = null;
+            this.pictureBox1.Image = global::Tangram.Properties.Resources.Ресурс_1;
+            this.pictureBox1.Location = new System.Drawing.Point(683, 95);
+            this.pictureBox1.Name = "pictureBox1";
+            this.RootLayout.SetRowSpan(this.pictureBox1, 2);
+            this.pictureBox1.Size = new System.Drawing.Size(268, 243);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pictureBox2.ErrorImage = null;
+            this.pictureBox2.Image = global::Tangram.Properties.Resources.Ресурс_4;
+            this.pictureBox2.Location = new System.Drawing.Point(3, 95);
+            this.pictureBox2.Name = "pictureBox2";
+            this.RootLayout.SetRowSpan(this.pictureBox2, 2);
+            this.pictureBox2.Size = new System.Drawing.Size(295, 243);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 17;
+            this.pictureBox2.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(832, 415);
+            this.ClientSize = new System.Drawing.Size(954, 506);
             this.Controls.Add(this.RootLayout);
             this.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -213,9 +219,10 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.RootLayout.ResumeLayout(false);
-            this.UserPanel.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -224,13 +231,13 @@
 
         private System.Windows.Forms.Button FiguresBtn;
         private System.Windows.Forms.TableLayoutPanel RootLayout;
-        private System.Windows.Forms.Panel UserPanel;
         private System.Windows.Forms.Label userName;
         private System.Windows.Forms.Button Logout;
         private System.Windows.Forms.Button StatisticsBtn;
         private System.Windows.Forms.Button StartGameBtn;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button userProfile;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

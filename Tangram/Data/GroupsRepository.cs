@@ -11,12 +11,12 @@ namespace Tangram.Data
 {
     public class GroupsRepository : Repository<Garden_groups>
     {
-        const int START_MONTH = 10;
-        const int START_DAY = 1;
+        static readonly int START_MONTH = 10;
+        static readonly int START_DAY = 1;
         //TODO: change on release
         //const int END_MONTH = 5;
-        const int END_MONTH = 7;
-        const int END_DAY = 15;
+        public static readonly int END_MONTH = 7;
+        public static readonly int END_DAY = 15;
 
         private TableInfo groupInfo;
         public DataView PureGroups { get; private set; }
@@ -120,7 +120,7 @@ namespace Tangram.Data
             UpdatePureGroups();
         }
 
-        protected override Garden_groups MapOut(DataRow row)
+        public override Garden_groups MapOut(DataRow row)
         {
             Garden_groups groups = new Garden_groups()
             {

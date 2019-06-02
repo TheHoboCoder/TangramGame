@@ -16,9 +16,12 @@ namespace Tangram.UserInterface
     {
         BindingSource source;
         bool filteredGroup = false;
+        //режим - выбор фигуры или просмотр фигуры
         bool mode;
+        //выбранная фигура
         public Figure SelectedFigure { get; private set; }
 
+        //конструктор формы
         public FigureViewer(bool selectMode)
         {
             InitializeComponent();
@@ -34,26 +37,30 @@ namespace Tangram.UserInterface
 
         }
 
+        //обработчик нажатия на кнопку "добавить фигуру", открывает форму для создания фигур
         private void AddFigure_Click(object sender, EventArgs e)
         {
             FigureDesigner designer= new FigureDesigner();
             designer.ShowDialog();
-
-            if (designer.currentFigure != null)
-            {
-                Database.Teacher_Workspace.ViewAdapter.AddFigure(designer.currentFigure);
-            }
 
             if (designer.AddedGroup != null)
             {
                 Database.Teacher_Workspace.ViewAdapter.AddGroup(designer.AddedGroup);
             }
 
+
+            if (designer.currentFigure != null)
+            {
+                Database.Teacher_Workspace.ViewAdapter.AddFigure(designer.currentFigure);
+            }
+
+           
             source.ResetBindings(false);
 
             designer.Dispose();
         }
 
+        //обработчик загрузки формы
         private void FigureViewer_Load(object sender, EventArgs e)
         {
             source = new BindingSource();
@@ -66,6 +73,7 @@ namespace Tangram.UserInterface
             this.GroupList.SelectedValueChanged += new System.EventHandler(this.GroupList_SelectedValueChanged);
         }
 
+        //обработчик нажатия на кнопку "Удалить группу"
         private void DeleteGroup_Click(object sender, EventArgs e)
         {
             DialogResult res = MessageBox.Show("Удалить групу?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -82,6 +90,7 @@ namespace Tangram.UserInterface
             //GroupList.
         }
 
+        //обработчик нажатия на кнопку "Добавить группу", открывает форму для редактирования групп фигур
         private void AddGroup_Click(object sender, EventArgs e)
         {
             FigureGroupsEdit groupsEdit = new FigureGroupsEdit();
@@ -96,6 +105,7 @@ namespace Tangram.UserInterface
             //GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
         }
 
+        //обработчик нажатия на кнопку "Редактировать группу", открывает форму для редактирования групп фигур
         private void EditGroup_Click(object sender, EventArgs e)
         {
             FigureGroupsEdit groupsEdit = new FigureGroupsEdit(GroupList.SelectedItem as FigureGroup);
@@ -106,6 +116,8 @@ namespace Tangram.UserInterface
             //GroupList.DataSource = Database.Teacher_Workspace.figureGroups.Entities;
         }
 
+
+        //обработчик нажатия на кнопку "Удалить фигуру"
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
             if (figureView.SelectedItems.Count > 0)
@@ -130,9 +142,9 @@ namespace Tangram.UserInterface
                 }
             }
          
-
         }
 
+        //обработчик нажатия на кнопку "Редактировать фигуру", открывает форму для редактирования фигур
         private void editFigure_Click(object sender, EventArgs e)
         {
             if (figureView.SelectedItems.Count > 0)
@@ -148,14 +160,17 @@ namespace Tangram.UserInterface
                     Figure f = Database.Teacher_Workspace.Figures.Entities.Where(ent => ent.Id == index).First();
                     FigureDesigner designer = new FigureDesigner(f);
                     designer.ShowDialog();
-                    if (designer.currentFigure != null)
-                    {
-                        Database.Teacher_Workspace.ViewAdapter.UpdateFigure(designer.currentFigure);
-                    }
+
                     if (designer.AddedGroup != null)
                     {
                         Database.Teacher_Workspace.ViewAdapter.AddGroup(designer.AddedGroup);
                     }
+
+                    if (designer.currentFigure != null)
+                    {
+                        Database.Teacher_Workspace.ViewAdapter.UpdateFigure(designer.currentFigure);
+                    }
+                   
 
                     source.ResetBindings(false);
                     designer.Dispose();
@@ -163,6 +178,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //Обработчик изменения выбранного пункта списка "Отбор", фильтрует список фигур по автору, либо отменяет фильтр
         private void userFilterCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (userFilterCombo.SelectedIndex) {
@@ -200,6 +216,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //обработчик выбора группы фигуры в списке, фильтрует фигуры по группе.
         private void GroupList_SelectedValueChanged(object sender, EventArgs e)
         {
             if (GroupList.SelectedValue != null)
@@ -242,6 +259,7 @@ namespace Tangram.UserInterface
             }
         }
 
+        //обработчик нажатия на кнопку "Показать все"
         private void showAllBtn_Click(object sender, EventArgs e)
         {
             filteredGroup = false;
@@ -249,6 +267,7 @@ namespace Tangram.UserInterface
             Database.Teacher_Workspace.ViewAdapter.ShowAll();
         }
 
+        //обработчик двойного щелчка мышью по фигуре, выбирает фигуру
         private void figureView_DoubleClick(object sender, EventArgs e)
         {
             if (figureView.SelectedItems.Count > 0)
@@ -260,11 +279,12 @@ namespace Tangram.UserInterface
             }
         }
 
+        //обработчик закрытия формы
         private void FigureViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(mode  && SelectedFigure == null)
             {
-                MessageBox.Show("Выберите фигуру", "Ошибка", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                MessageBox.Show("Выберите фигуру", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
             }
         }

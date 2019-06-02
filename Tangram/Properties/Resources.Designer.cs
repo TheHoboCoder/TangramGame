@@ -203,9 +203,29 @@ namespace Tangram.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap sand_clock {
+            get {
+                object obj = ResourceManager.GetObject("sand-clock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap shapes {
             get {
                 object obj = ResourceManager.GetObject("shapes", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sun_with_face_1f31e {
+            get {
+                object obj = ResourceManager.GetObject("sun-with-face_1f31e", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -226,6 +246,36 @@ namespace Tangram.Properties {
         internal static System.Drawing.Bitmap user_silhouette_small {
             get {
                 object obj = ResourceManager.GetObject("user-silhouette-small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Ресурс_1 {
+            get {
+                object obj = ResourceManager.GetObject("Ресурс 1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Ресурс_2 {
+            get {
+                object obj = ResourceManager.GetObject("Ресурс 2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Ресурс_4 {
+            get {
+                object obj = ResourceManager.GetObject("Ресурс 4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

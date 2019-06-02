@@ -130,7 +130,7 @@ namespace Tangram.Data
 
 
 
-        protected override User MapOut(DataRow row)
+        public override User MapOut(DataRow row)
         {
             return new User(Convert.ToInt32(row["id_user"]),
                                  Convert.ToInt32(row["role_id"]) == 2 ? User.UserTypes.MET : User.UserTypes.VOSP,

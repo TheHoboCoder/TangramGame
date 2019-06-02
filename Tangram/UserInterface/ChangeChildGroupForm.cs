@@ -149,11 +149,8 @@ namespace Tangram.UserInterface
 
                 }
             }
-
-
-           
             Database.MetWorkspace.ChildManager.children.GetData();
-
+            UpdateChilds(childs, list, groupId);
         }
 
 
@@ -168,7 +165,7 @@ namespace Tangram.UserInterface
             int groupId = endGroupIndexies[endGroupCombo.SelectedIndex];
             ChangeGroup(childs, groupId, endChilds,endChildList);
 
-            UpdateList((int)endYear.Value, endChildList, endGroupCombo, endGroupIndexies, endChilds);
+            //UpdateList((int)endYear.Value, endChildList, endGroupCombo, endGroupIndexies, endChilds);
 
 
         }
@@ -182,7 +179,8 @@ namespace Tangram.UserInterface
             }
             int groupId = startGroupIndexies[startGroupCombo.SelectedIndex];
             ChangeGroup(childs, groupId, startChilds, ChildList);
-            UpdateList((int)startYear.Value, ChildList, startGroupCombo, startGroupIndexies, startChilds);
+           
+            //UpdateList((int)startYear.Value, ChildList, startGroupCombo, startGroupIndexies, startChilds);
         }
 
         private void SelectAllStart_Click(object sender, EventArgs e)
@@ -207,12 +205,31 @@ namespace Tangram.UserInterface
 
         private void EndYearChanged(object sender, EventArgs e)
         {
+           
             UpdateList((int)endYear.Value, endChildList, endGroupCombo, endGroupIndexies, endChilds);
+
+            if (startYear.Value == endYear.Value)
+            {
+                AddToGroupBtn.Enabled = RemoveFromBtn.Enabled = false;
+            }
+            else
+            {
+                AddToGroupBtn.Enabled = RemoveFromBtn.Enabled = true;
+            }
         }
 
         private void StartYearChanged(object sender, EventArgs e)
         {
+           
             UpdateList((int)startYear.Value, ChildList, startGroupCombo, startGroupIndexies, startChilds);
+            if (startYear.Value == endYear.Value)
+            {
+                AddToGroupBtn.Enabled = RemoveFromBtn.Enabled = false;
+            }
+            else
+            {
+                AddToGroupBtn.Enabled = RemoveFromBtn.Enabled = true;
+            }
         }
 
         private void startGroupCombo_DropDownClosed(object sender, EventArgs e)
@@ -227,7 +244,13 @@ namespace Tangram.UserInterface
 
         private void RemoveFromEndGroup_Click(object sender, EventArgs e)
         {
-            if(DialogResult.Yes == MessageBox.Show("Исключить выбранных детей из группы?","Предупреждение",MessageBoxButtons.YesNo, MessageBoxIcon.Warning)){
+            if (endChildList.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Выберите детей", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (DialogResult.Yes == MessageBox.Show("Исключить выбранных детей из группы?","Предупреждение",MessageBoxButtons.YesNo, MessageBoxIcon.Warning)){
 
                 foreach (int index in endChildList.SelectedIndices)
                 {
@@ -250,6 +273,12 @@ namespace Tangram.UserInterface
 
         private void RemoveFromStartGroup_Click(object sender, EventArgs e)
         {
+            if (ChildList.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Выберите детей", "Предупреждение" ,MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (DialogResult.Yes == MessageBox.Show("Исключить выбранных детей из группы?", "Предупреждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
             {
 

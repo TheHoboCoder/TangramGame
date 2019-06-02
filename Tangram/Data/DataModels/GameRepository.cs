@@ -29,7 +29,8 @@ namespace Tangram.Data.DataModels
 
             resultInfo.GenerateStatements();
 
-            resultInfo.SelectStatement = @"select  concat(childs.name, ' ', childs.fam) as 'childName', 
+            resultInfo.SelectStatement = @"select  results.id_result,
+                                                   concat(childs.name, ' ', childs.fam) as 'childName', 
                                                    childs.id_child,
                                                    CONCAT(`users`.`fam`,
                                                           ' ',
@@ -37,8 +38,12 @@ namespace Tangram.Data.DataModels
                                                           '.',
                                                           UPPER(LEFT(`users`.`otch`, 1))) as 'fam', 
                                                    users.id_user,
+                                                   results.id_group_h,
                                                    garden_groups.group_name,
                                                    classes.class_date,
+                                                   results.id_class,
+                                                   results.id_level,
+                                                   results.id_figure,
                                                    results.score,
                                                    difficulty_levels.level_name
                                           from results
@@ -96,12 +101,25 @@ namespace Tangram.Data.DataModels
         }
 
 
-
-
-
-        protected override Result MapOut(DataRow row)
+        public void UpdateRelatedClasses()
         {
-            throw new NotImplementedException();
+            command.CommandText = "delete from classes where id_class not in (select id_class from results)";
+            command.ExecuteNonQuery();
+        }
+
+
+        public override Result MapOut(DataRow row)
+        {
+            return new Result()
+            {
+                Id  = Convert.ToInt32(row["id_result"]),
+                ChildId = Convert.ToInt32(row["id_child"]),
+                DifficultyType = (Result.DifficultyTypes)(Convert.ToInt32(row["id_level"])-1),
+                GroupId = Convert.ToInt32(row["id_group_h"]),
+                ClassId = Convert.ToInt32(row["id_class"]),
+                Score = Convert.ToInt32(row["score"]),
+                FigureId = Convert.ToInt32(row["id_figure"])
+            };
         }
 
         protected override void SetCommandParameters(Result c, MySqlParameterCollection parameters)
