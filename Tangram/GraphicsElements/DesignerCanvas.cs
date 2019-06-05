@@ -230,48 +230,11 @@ namespace Tangram.GraphicsElements
         {
             int count = 0;
             bool sizeChanged = false;
+            Rectangle figureBounds = Rectangle.Ceiling(f.Path.GetBounds());
             do
             {
-                Rectangle figureBounds = Rectangle.Ceiling(f.Path.GetBounds());
-
-                Point translateVector = new Point(0, 0);
-                if (figureBounds.X < 0)
-                {
-                    this.Width -= figureBounds.X;
-                    sizeChanged = true;
-                    translateVector.X = -figureBounds.X;
-                }
-                if (figureBounds.Y < 0)
-                {
-                    this.Height -= figureBounds.Y;
-                    sizeChanged = true;
-                    //this.Top += topLeft.Y;
-                    translateVector.Y = -figureBounds.Y;
-                }
-
-                if (translateVector.X != 0 ||
-                   translateVector.Y != 0)
-                {
-                    MoveFigures(translateVector.X, translateVector.Y, figures);
-                }
-
-                float deltaW = this.Width - figureBounds.X - figureBounds.Width;
-                if (deltaW < 0)
-                {
-                    sizeChanged = true;
-                    this.Width += (int)Math.Round(-deltaW);
-                }
-
-                float deltaH = this.Height - figureBounds.Y - figureBounds.Height;
-                if (deltaH < 0)
-                {
-                    sizeChanged = true;
-                    this.Height += (int)Math.Round(-deltaW);
-                }
-
-               
-
-                var intersections = figures.Where(fig => fig.Path.GetBounds().IntersectsWith(f.Path.GetBounds()));
+                
+                var intersections = figures.Where(fig => fig.Path.GetBounds().IntersectsWith(figureBounds));
                 count = intersections.Count();
 
                 
@@ -279,6 +242,7 @@ namespace Tangram.GraphicsElements
                 {
                     intersections.OrderBy(fig => fig.Path.GetBounds().X);
                     f.Location = new PointF(intersections.Last().Path.GetBounds().X + intersections.Last().Path.GetBounds().Width, f.Location.Y);
+                    figureBounds = Rectangle.Ceiling(f.Path.GetBounds());
                 }
                 else
                 {
@@ -291,7 +255,46 @@ namespace Tangram.GraphicsElements
             while (count != 0);
             
             figures.Add(f);
+
+            figureBounds = Rectangle.Ceiling(f.Path.GetBounds());
+
+            Point translateVector = new Point(0, 0);
+            if (figureBounds.X < 0)
+            {
+                this.Width -= figureBounds.X;
+                sizeChanged = true;
+                translateVector.X = -figureBounds.X;
+            }
+            if (figureBounds.Y < 0)
+            {
+                this.Height -= figureBounds.Y;
+                sizeChanged = true;
+                //this.Top += topLeft.Y;
+                translateVector.Y = -figureBounds.Y;
+            }
+
+            if (translateVector.X != 0 ||
+               translateVector.Y != 0)
+            {
+                MoveFigures(translateVector.X, translateVector.Y, figures);
+            }
+
+            float deltaW = this.Width - figureBounds.X - figureBounds.Width;
+            if (deltaW < 0)
+            {
+                sizeChanged = true;
+                this.Width += (int)Math.Round(-deltaW);
+            }
+
+            float deltaH = this.Height - figureBounds.Y - figureBounds.Height;
+            if (deltaH < 0)
+            {
+                sizeChanged = true;
+                this.Height += (int)Math.Round(-deltaW);
+            }
+
             figures.OrderBy(cur => cur.Path.GetBounds().Y);
+
             if (sizeChanged)
             {
                 if (GridEnabled) UpdateGrid();

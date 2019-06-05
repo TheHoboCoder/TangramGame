@@ -35,13 +35,14 @@
             this.resultBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.StatisticsBtn = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.Logout = new System.Windows.Forms.Button();
-            this.userProfile = new System.Windows.Forms.Button();
             this.ButtonPanel = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.TablePlace = new System.Windows.Forms.Panel();
+            this.StatisticsBtn = new System.Windows.Forms.Button();
+            this.Logout = new System.Windows.Forms.Button();
+            this.userProfile = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -117,30 +118,12 @@
             this.tableLayoutPanel1.SetColumnSpan(this.panel1, 2);
             this.panel1.Controls.Add(this.StatisticsBtn);
             this.panel1.Controls.Add(this.flowLayoutPanel1);
+            this.panel1.Controls.Add(this.button2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1263, 55);
             this.panel1.TabIndex = 15;
-            // 
-            // StatisticsBtn
-            // 
-            this.StatisticsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.StatisticsBtn.Dock = System.Windows.Forms.DockStyle.Right;
-            this.StatisticsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.StatisticsBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.StatisticsBtn.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.StatisticsBtn.Image = global::Tangram.Properties.Resources.graph;
-            this.StatisticsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.StatisticsBtn.Location = new System.Drawing.Point(1029, 0);
-            this.StatisticsBtn.Margin = new System.Windows.Forms.Padding(10);
-            this.StatisticsBtn.Name = "StatisticsBtn";
-            this.StatisticsBtn.Padding = new System.Windows.Forms.Padding(3);
-            this.StatisticsBtn.Size = new System.Drawing.Size(234, 55);
-            this.StatisticsBtn.TabIndex = 16;
-            this.StatisticsBtn.Text = "Статистика";
-            this.StatisticsBtn.UseVisualStyleBackColor = false;
-            this.StatisticsBtn.Click += new System.EventHandler(this.StatisticsBtn_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -152,34 +135,6 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(404, 55);
             this.flowLayoutPanel1.TabIndex = 14;
-            // 
-            // Logout
-            // 
-            this.Logout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.Logout.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Logout.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Logout.Image = global::Tangram.Properties.Resources.logout;
-            this.Logout.Location = new System.Drawing.Point(110, 0);
-            this.Logout.Margin = new System.Windows.Forms.Padding(0);
-            this.Logout.Name = "Logout";
-            this.Logout.Size = new System.Drawing.Size(61, 38);
-            this.Logout.TabIndex = 9;
-            this.Logout.UseVisualStyleBackColor = false;
-            this.Logout.Click += new System.EventHandler(this.Logout_Click);
-            // 
-            // userProfile
-            // 
-            this.userProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.userProfile.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.userProfile.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.userProfile.Image = global::Tangram.Properties.Resources.user_silhouette_small;
-            this.userProfile.Location = new System.Drawing.Point(171, 0);
-            this.userProfile.Margin = new System.Windows.Forms.Padding(0);
-            this.userProfile.Name = "userProfile";
-            this.userProfile.Size = new System.Drawing.Size(63, 38);
-            this.userProfile.TabIndex = 8;
-            this.userProfile.UseVisualStyleBackColor = false;
-            this.userProfile.Click += new System.EventHandler(this.userProfile_Click);
             // 
             // ButtonPanel
             // 
@@ -216,6 +171,68 @@
             this.TablePlace.Name = "TablePlace";
             this.TablePlace.Size = new System.Drawing.Size(1021, 574);
             this.TablePlace.TabIndex = 10;
+            // 
+            // StatisticsBtn
+            // 
+            this.StatisticsBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.StatisticsBtn.Dock = System.Windows.Forms.DockStyle.Right;
+            this.StatisticsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.StatisticsBtn.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.StatisticsBtn.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.StatisticsBtn.Image = global::Tangram.Properties.Resources.graph;
+            this.StatisticsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.StatisticsBtn.Location = new System.Drawing.Point(1029, 0);
+            this.StatisticsBtn.Margin = new System.Windows.Forms.Padding(10);
+            this.StatisticsBtn.Name = "StatisticsBtn";
+            this.StatisticsBtn.Padding = new System.Windows.Forms.Padding(3);
+            this.StatisticsBtn.Size = new System.Drawing.Size(234, 55);
+            this.StatisticsBtn.TabIndex = 16;
+            this.StatisticsBtn.Text = "Статистика";
+            this.StatisticsBtn.UseVisualStyleBackColor = false;
+            this.StatisticsBtn.Click += new System.EventHandler(this.StatisticsBtn_Click);
+            // 
+            // Logout
+            // 
+            this.Logout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.Logout.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Logout.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Logout.Image = global::Tangram.Properties.Resources.logout;
+            this.Logout.Location = new System.Drawing.Point(110, 0);
+            this.Logout.Margin = new System.Windows.Forms.Padding(0);
+            this.Logout.Name = "Logout";
+            this.Logout.Size = new System.Drawing.Size(61, 38);
+            this.Logout.TabIndex = 9;
+            this.Logout.UseVisualStyleBackColor = false;
+            this.Logout.Click += new System.EventHandler(this.Logout_Click);
+            // 
+            // userProfile
+            // 
+            this.userProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.userProfile.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.userProfile.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.userProfile.Image = global::Tangram.Properties.Resources.user_silhouette_small;
+            this.userProfile.Location = new System.Drawing.Point(171, 0);
+            this.userProfile.Margin = new System.Windows.Forms.Padding(0);
+            this.userProfile.Name = "userProfile";
+            this.userProfile.Size = new System.Drawing.Size(63, 38);
+            this.userProfile.TabIndex = 8;
+            this.userProfile.UseVisualStyleBackColor = false;
+            this.userProfile.Click += new System.EventHandler(this.userProfile_Click);
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.button2.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button2.Image = global::Tangram.Properties.Resources.settings;
+            this.button2.Location = new System.Drawing.Point(947, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(72, 48);
+            this.button2.TabIndex = 10;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // AdministratorPanel
             // 
@@ -256,5 +273,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button StatisticsBtn;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
     }
 }

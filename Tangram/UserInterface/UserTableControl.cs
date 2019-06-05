@@ -92,9 +92,17 @@ namespace Tangram.UserInterface
         //Обработчик нажатия на кнопку "Изменить", заполняет поля ввода и выводит панель для редактирования
         private void UpdateBtn_Click(object sender, EventArgs e)
         {
+            if(GridView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите запись для редактирования", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             edit = true;
             PasswordHint.Visible = true;
             ControlPanel.Visible = true;
+
+            
 
             LoginTB.Text = GridView.SelectedRows[0].Cells["login"].Value.ToString();
             NameTB.Text = GridView.SelectedRows[0].Cells["name"].Value.ToString();
@@ -192,14 +200,38 @@ namespace Tangram.UserInterface
             switch (rolesFilterCombo.SelectedIndex) {
                 case 0:
                     GridView.DataSource = Database.userRepository.Table;
+                    if (Database.userRepository.Table.Rows.Count == 0)
+                    {
+                        UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+                    }
+                    else
+                    {
+                        UpdateBtn.Enabled = DeleteBtn.Enabled = true;
+                    }
                     break;
                 case 1:
                     Database.userRepository.FilterUsersByType(User.UserTypes.VOSP);
                     GridView.DataSource = Database.userRepository.filteredTable;
+                    if (Database.userRepository.filteredTable.Count == 0)
+                    {
+                        UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+                    }
+                    else
+                    {
+                        UpdateBtn.Enabled = DeleteBtn.Enabled = true;
+                    }
                     break;
                 case 2:
                     Database.userRepository.FilterUsersByType(User.UserTypes.MET);
                     GridView.DataSource = Database.userRepository.filteredTable;
+                    if (Database.userRepository.filteredTable.Count == 0)
+                    {
+                        UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+                    }
+                    else
+                    {
+                        UpdateBtn.Enabled = DeleteBtn.Enabled = true;
+                    }
                     break;
             }
 
@@ -212,17 +244,41 @@ namespace Tangram.UserInterface
             {
                 Database.userRepository.FilterUsersByFam(famFilter.Text.Trim());
                 GridView.DataSource = Database.userRepository.filteredTable;
+
+                if(Database.userRepository.filteredTable.Count == 0)
+                {
+                   UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+                }
+                else
+                {
+                    UpdateBtn.Enabled = DeleteBtn.Enabled = true;
+                }
             }
             else
             {
 
                 GridView.DataSource = Database.userRepository.Table;
+
+                if (Database.userRepository.Table.Rows.Count == 0)
+                {
+                    UpdateBtn.Enabled = DeleteBtn.Enabled = false;
+                }
+                else
+                {
+                    UpdateBtn.Enabled = DeleteBtn.Enabled = true;
+                }
             }
         }
 
         //обработчик нажатия на кнопку удалить 
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
+            if (GridView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите запись для удаления", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             DialogResult res = MessageBox.Show("Удалить пользователя?","Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (res == DialogResult.Yes)
             {

@@ -121,6 +121,12 @@
     <Compile Include="UserInterface\AdministratorPanel.Designer.cs">
       <DependentUpon>AdministratorPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\BDSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\BDSettings.Designer.cs">
+      <DependentUpon>BDSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\ChangeChildGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -279,6 +285,9 @@
     <EmbeddedResource Include="UserInterface\AdministratorPanel.resx">
       <DependentUpon>AdministratorPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\BDSettings.resx">
+      <DependentUpon>BDSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\ChangeChildGroupForm.resx">
       <DependentUpon>ChangeChildGroupForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -426,6 +435,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sand-clock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

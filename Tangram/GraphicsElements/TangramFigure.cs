@@ -127,7 +127,9 @@ namespace Tangram.GraphicsElements
                     side = 0.5F * RECT_WIDTH;
                     int angle = 45;
                     float smallSide = (float)((Math.Sqrt(2) / 4) * RECT_WIDTH);
-                    float gap = (float)(Math.Cos(angle) * smallSide);
+                    //float gap = (float)(Math.Cos(angle) * smallSide);
+                    float rectSide = (float)((Math.Sqrt(2) / 4) * RECT_WIDTH);
+                    float gap = (float)(rectSide / Math.Sqrt(2));
 
                     p.StartFigure();
                     p.AddLine(0, gap, gap, 0);

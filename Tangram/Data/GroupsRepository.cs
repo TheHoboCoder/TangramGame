@@ -13,9 +13,8 @@ namespace Tangram.Data
     {
         static readonly int START_MONTH = 10;
         static readonly int START_DAY = 1;
-        //TODO: change on release
-        //const int END_MONTH = 5;
-        public static readonly int END_MONTH = 7;
+        
+        public static readonly int END_MONTH = 8;
         public static readonly int END_DAY = 15;
 
         private TableInfo groupInfo;

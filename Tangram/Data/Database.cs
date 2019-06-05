@@ -12,9 +12,7 @@ namespace Tangram.Data
 {
     class Database
     {
-        static private MySqlConnection connection = new MySqlConnection() {
-            ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["mysql_connection"].ToString()
-        };
+        static private MySqlConnection connection = new MySqlConnection();
         static private MySqlCommand command = new MySqlCommand()
         {
             Connection = connection
@@ -46,6 +44,10 @@ namespace Tangram.Data
         {
             try
             {
+                connection.ConnectionString = String.Format("Database = tangram; Data Source = {0}; UserID = {1}; Password = {2}",
+                Properties.Settings.Default["host"].ToString(),
+                Properties.Settings.Default["userName"].ToString(),
+                Properties.Settings.Default["password"].ToString());
                 connection.Open();
                 //TableInfoHolder.Init();
                 userRepository = new UserRepository(connection);

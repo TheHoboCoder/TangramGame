@@ -86,7 +86,7 @@
             this.figureView.Margin = new System.Windows.Forms.Padding(4);
             this.figureView.MultiSelect = false;
             this.figureView.Name = "figureView";
-            this.figureView.Size = new System.Drawing.Size(551, 331);
+            this.figureView.Size = new System.Drawing.Size(590, 367);
             this.figureView.TabIndex = 1;
             this.figureView.UseCompatibleStateImageBehavior = false;
             // 
@@ -103,7 +103,7 @@
             this.DeleteGroup});
             this.groupsControl.Location = new System.Drawing.Point(19, 12);
             this.groupsControl.Name = "groupsControl";
-            this.groupsControl.Size = new System.Drawing.Size(81, 25);
+            this.groupsControl.Size = new System.Drawing.Size(112, 25);
             this.groupsControl.TabIndex = 18;
             this.groupsControl.Text = "groupControlPanael";
             // 
@@ -114,7 +114,7 @@
             this.AddGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddGroup.Name = "AddGroup";
             this.AddGroup.Size = new System.Drawing.Size(23, 22);
-            this.AddGroup.Text = "Добавить";
+            this.AddGroup.Text = "Добавить группу";
             this.AddGroup.ToolTipText = "Добавить группу";
             this.AddGroup.Click += new System.EventHandler(this.AddGroup_Click);
             // 
@@ -222,7 +222,7 @@
             this.hint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.hint.AutoSize = true;
             this.hint.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.hint.Location = new System.Drawing.Point(16, 393);
+            this.hint.Location = new System.Drawing.Point(16, 429);
             this.hint.Name = "hint";
             this.hint.Size = new System.Drawing.Size(241, 14);
             this.hint.TabIndex = 23;
@@ -233,7 +233,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(806, 414);
+            this.ClientSize = new System.Drawing.Size(833, 450);
             this.Controls.Add(this.hint);
             this.Controls.Add(this.showAllBtn);
             this.Controls.Add(this.label1);
@@ -243,8 +243,11 @@
             this.Controls.Add(this.figureView);
             this.Controls.Add(this.GroupList);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FigureViewer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Просмотр фигур";

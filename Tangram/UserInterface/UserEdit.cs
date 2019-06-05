@@ -27,7 +27,7 @@ namespace Tangram.UserInterface
                OcthTB.Text == "" ||
                PhoneTB.Text == "")
             {
-                MessageBox.Show("Ошибка", "Заполните поля", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show( "Заполните поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                
             }
             else
@@ -36,7 +36,7 @@ namespace Tangram.UserInterface
                 {
                     if (PasswordTB.Text != RepassTB.Text)
                     {
-                        MessageBox.Show("Ошибка", "Пароли не совпадают", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show( "Пароли не совпадают", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                     else
                     {
@@ -63,7 +63,7 @@ namespace Tangram.UserInterface
                                                                     PhoneTB.Text.Trim(),
                                                                     User.getHash(PasswordTB.Text.Trim()))))
                         {
-                            MessageBox.Show("Ошибка", "Ошибка базы данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show( "Ошибка базы данных", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         else
                         {
@@ -96,7 +96,7 @@ namespace Tangram.UserInterface
                                                                 PhoneTB.Text.Trim(),
                                                                 current.Password)))
                     {
-                        MessageBox.Show("Ошибка", "Ошибка базы данных", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Ошибка базы данных", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {
@@ -110,7 +110,7 @@ namespace Tangram.UserInterface
         //обработчик нажатия на кнопку "Отмена"
         private void button1_Click(object sender, EventArgs e)
         {
-            DialogResult res = MessageBox.Show("Закрытие", "Закрыть? Изменения не будут сохранены", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult res = MessageBox.Show( "Закрыть? Изменения не будут сохранены", "Закрытие", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if(res == DialogResult.Yes)
             {
                 this.Close();

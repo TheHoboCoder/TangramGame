@@ -90,11 +90,50 @@ namespace Tangram.UserInterface
         //обработчик загрузки формы
         private void LoginForm_Load(object sender, EventArgs e)
         {
+            if (Convert.ToBoolean(Properties.Settings.Default["firstRun"]))
+            {
+                BDSettings settings = new BDSettings();
+                this.Hide();
+                if(DialogResult.OK == settings.ShowDialog())
+                {
+                    this.Show();
+                    Properties.Settings.Default["firstRun"] = false;
+                    Properties.Settings.Default.Save();
+                }
+                else
+                {
+                    this.Hide();
+                }
+
+                
+
+            }
+
             if (!reLog)
             {
-                if (!Database.Open())
+                bool opened = false;
+                BDSettings settings = new BDSettings();
+
+                do
                 {
-                    MessageBox.Show("Невозможно подключиться к базе данных.Приложение будет закрыто","Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    opened = Database.Open();
+                    if (!opened)
+                    {
+                        MessageBox.Show("Невозможно подключиться к базе данных.Проверьте настройки подключения к базе данных", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Hide();
+                        settings.ShowDialog();
+                        this.Show();
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+                while (settings.DialogResult != DialogResult.Cancel);
+
+                if (!opened)
+                {
                     this.Close();
                 }
             }

@@ -107,5 +107,11 @@ namespace Tangram.UserInterface
             UserTypesEdit groupTypes = new UserTypesEdit();
             groupTypes.ShowDialog();
         }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            BDSettings settings = new BDSettings();
+            settings.ShowDialog();
+        }
     }
 }
