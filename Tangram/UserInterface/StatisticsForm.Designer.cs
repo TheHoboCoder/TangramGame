@@ -67,6 +67,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.MetPanel = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.reportViewers = new System.Windows.Forms.Panel();
             this.resultsBtn = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
@@ -74,8 +76,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.endDate = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label12 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -489,7 +489,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(353, 52);
             this.button3.TabIndex = 19;
-            this.button3.Text = "Табель посещаемости";
+            this.button3.Text = "Табель посещаемости занятия";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -506,6 +506,23 @@
             this.MetPanel.Name = "MetPanel";
             this.MetPanel.Size = new System.Drawing.Size(317, 76);
             this.MetPanel.TabIndex = 20;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(223, 38);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(63, 26);
+            this.textBox1.TabIndex = 20;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(193, 41);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(24, 18);
+            this.label12.TabIndex = 19;
+            this.label12.Text = "—";
             // 
             // reportViewers
             // 
@@ -577,23 +594,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(574, 124);
             this.panel1.TabIndex = 46;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(193, 41);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(24, 18);
-            this.label12.TabIndex = 19;
-            this.label12.Text = "—";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(223, 38);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(63, 26);
-            this.textBox1.TabIndex = 20;
             // 
             // StatisticsForm
             // 

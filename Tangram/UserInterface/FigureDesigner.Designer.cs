@@ -43,10 +43,10 @@
             this.PickColor = new System.Windows.Forms.ToolStripButton();
             this.InfoButton = new System.Windows.Forms.ToolStripButton();
             this.canvasPanel = new System.Windows.Forms.Panel();
+            this.designerCanvas = new Tangram.GraphicsElements.DesignerCanvas();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.SelectMode = new System.Windows.Forms.ToolStripButton();
             this.PanMode = new System.Windows.Forms.ToolStripButton();
-            this.designerCanvas = new Tangram.GraphicsElements.DesignerCanvas();
             this.figureToolBox1 = new Tangram.GraphicsElements.FigureToolBox();
             this.panel2.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -57,8 +57,8 @@
             this.Designer.SuspendLayout();
             this.MainToolBox.SuspendLayout();
             this.canvasPanel.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).BeginInit();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -228,6 +228,21 @@
             this.canvasPanel.Size = new System.Drawing.Size(587, 386);
             this.canvasPanel.TabIndex = 1;
             // 
+            // designerCanvas
+            // 
+            this.designerCanvas.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.designerCanvas.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.SELECT;
+            this.designerCanvas.FigureColors = System.Drawing.Color.Orange;
+            this.designerCanvas.GridEnabled = false;
+            this.designerCanvas.GridSnapEnabled = true;
+            this.designerCanvas.Location = new System.Drawing.Point(46, 26);
+            this.designerCanvas.Name = "designerCanvas";
+            this.designerCanvas.Size = new System.Drawing.Size(465, 292);
+            this.designerCanvas.SnapAngle = 45F;
+            this.designerCanvas.SnapDistance = 10F;
+            this.designerCanvas.TabIndex = 0;
+            this.designerCanvas.TabStop = false;
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -260,21 +275,6 @@
             this.PanMode.Size = new System.Drawing.Size(36, 20);
             this.PanMode.Text = "Перемещение";
             this.PanMode.Click += new System.EventHandler(this.PanMode_Click);
-            // 
-            // designerCanvas
-            // 
-            this.designerCanvas.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.designerCanvas.CurrentMode = Tangram.GraphicsElements.DesignerCanvas.Mode.SELECT;
-            this.designerCanvas.FigureColors = System.Drawing.Color.Orange;
-            this.designerCanvas.GridEnabled = false;
-            this.designerCanvas.GridSnapEnabled = false;
-            this.designerCanvas.Location = new System.Drawing.Point(46, 26);
-            this.designerCanvas.Name = "designerCanvas";
-            this.designerCanvas.Size = new System.Drawing.Size(465, 292);
-            this.designerCanvas.SnapAngle = 45F;
-            this.designerCanvas.SnapDistance = 10F;
-            this.designerCanvas.TabIndex = 0;
-            this.designerCanvas.TabStop = false;
             // 
             // figureToolBox1
             // 
@@ -315,9 +315,9 @@
             this.MainToolBox.ResumeLayout(false);
             this.MainToolBox.PerformLayout();
             this.canvasPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.designerCanvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

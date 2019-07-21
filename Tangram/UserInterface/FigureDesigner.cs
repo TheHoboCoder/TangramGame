@@ -181,7 +181,7 @@ namespace Tangram.UserInterface
         private void FigureDesigner_Load(object sender, EventArgs e)
         {
             designerCanvas.GridEnabled = true;
-            designerCanvas.GridSnapEnabled = false;
+            designerCanvas.GridSnapEnabled = true;
         }
 
 

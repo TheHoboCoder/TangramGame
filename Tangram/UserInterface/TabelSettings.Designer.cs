@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.MetPanel = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.MonthCombo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -37,8 +39,6 @@
             this.yearPicker = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.MetPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.yearPicker)).BeginInit();
             this.SuspendLayout();
@@ -58,6 +58,23 @@
             this.MetPanel.Name = "MetPanel";
             this.MetPanel.Size = new System.Drawing.Size(319, 123);
             this.MetPanel.TabIndex = 21;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(256, 43);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(60, 26);
+            this.textBox1.TabIndex = 22;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(226, 46);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(24, 18);
+            this.label12.TabIndex = 21;
+            this.label12.Text = "—";
             // 
             // MonthCombo
             // 
@@ -168,23 +185,6 @@
             this.button3.Text = "Отмена";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(256, 43);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(60, 26);
-            this.textBox1.TabIndex = 22;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(226, 46);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(24, 18);
-            this.label12.TabIndex = 21;
-            this.label12.Text = "—";
             // 
             // TabelSettings
             // 

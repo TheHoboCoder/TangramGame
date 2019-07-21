@@ -72,7 +72,7 @@ namespace Tangram.UserInterface
 
             Excel.Range caption = workSheet.Range["B2", "I2"].Cells;
             caption.Merge();
-            workSheet.Cells[2, 2] = "Табель посещаемости";
+            workSheet.Cells[2, 2] = "Табель посещаемости занятия";
 
             Excel.Range groupName = workSheet.Range["B3", "I3"].Cells;
             groupName.Merge();

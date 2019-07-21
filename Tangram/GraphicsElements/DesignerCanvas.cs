@@ -37,6 +37,42 @@ namespace Tangram.GraphicsElements
         }
 
 
+        
+
+        private const float BRIGHTNESS_SHIFT = 0.2F;
+        private const float HUE_SHIFT = 2.0F;
+
+        List<Figure> figures = new List<Figure>();
+        List<Figure> selectedFigures = new List<Figure>();
+        List<Figure> notSelected = new List<Figure>();
+        Figure previewSelection,currentSelection;
+        private bool selected = false;
+
+        private const float rotatePointsHalfSize = 6;
+        private const float rotationRadious = 60;
+        List<RectangleF> rotatePoints = new List<RectangleF>();
+        private RectangleF previewPoint = new RectangleF();
+        private PointF currentRotatePoint = new PointF();
+        private double angle = 0;
+
+        bool operating = false;
+        bool readyToMove = false;
+        bool readyToRotate = false;
+        PointF deltaMove = new PointF();
+        PointF selectedPoint = new PointF();
+
+        bool rotationBegun = false;
+        bool rubberSelectionStarted = false;
+        RectangleF rubberBandSelection = new RectangleF();
+
+        private Point panPoint = new Point();
+
+        public enum Mode
+        {
+            SELECT,
+            PAN
+        }
+
         private void UpdateGrid()
         {
             //this.Image = null;
@@ -90,38 +126,6 @@ namespace Tangram.GraphicsElements
             this.Image = grid;
         }
 
-        private const float BRIGHTNESS_SHIFT = 0.2F;
-        private const float HUE_SHIFT = 2.0F;
-
-        List<Figure> figures = new List<Figure>();
-        List<Figure> selectedFigures = new List<Figure>();
-        List<Figure> notSelected = new List<Figure>();
-        Figure previewSelection,currentSelection;
-        private bool selected = false;
-
-        private const float rotatePointsHalfSize = 6;
-        private const float rotationRadious = 60;
-        List<RectangleF> rotatePoints = new List<RectangleF>();
-        private RectangleF previewPoint = new RectangleF();
-        private PointF currentRotatePoint = new PointF();
-        private double angle = 0;
-
-        bool operating = false;
-        bool readyToMove = false;
-        bool readyToRotate = false;
-        PointF selectedPoint = new PointF();
-
-        bool rotationBegun = false;
-        bool rubberSelectionStarted = false;
-        RectangleF rubberBandSelection = new RectangleF();
-
-        private Point panPoint = new Point();
-
-        public enum Mode
-        {
-            SELECT,
-            PAN
-        }
 
         private bool gridEnabled = false;
 
@@ -329,7 +333,9 @@ namespace Tangram.GraphicsElements
                         f.pivot = currentRotatePoint;
                     }
                 }
-                selectedPoint = e.Location;
+
+                initDeltaMove(e.Location);
+
                 readyToRotate = readyToMove = false;
                 notSelected = figures.Except(selectedFigures).ToList();
                 return;
@@ -346,8 +352,10 @@ namespace Tangram.GraphicsElements
             {
                 rotatePoints.Clear();
                 selectedFigures.Add(previewSelection);
+                currentSelection = previewSelection;
+                
                 initRotatePoints(previewSelection);
-                selectedPoint = e.Location;
+                initDeltaMove(e.Location);
                 operating = true;
                 previewSelection = null;
                 notSelected = figures.Except(selectedFigures).ToList();
@@ -358,6 +366,38 @@ namespace Tangram.GraphicsElements
             Refresh();
 
           
+        }
+
+        private void initDeltaMove(PointF mouseLocaction)
+        {
+            if (GridSnapEnabled)
+            {
+                selectedPoint = getNearestPathPoint(currentSelection.Path, mouseLocaction);
+            }
+            else
+            {
+                selectedPoint = currentSelection.Path.PathPoints[0];
+            }
+            deltaMove.X = selectedPoint.X - mouseLocaction.X;
+            deltaMove.Y = selectedPoint.Y - mouseLocaction.Y;
+        }
+
+        private PointF getNearestPathPoint(GraphicsPath path, PointF checkPoint)
+        {
+            PointF nearest = path.PathPoints[0];
+            float nearestDist = GeometryTools.GetDistance(checkPoint, nearest);
+
+            for(int i = 1, count = path.PathPoints.Count(); i<count; i++)
+            {
+                float dist = GeometryTools.GetDistance(checkPoint, path.PathPoints[i]);
+                if (dist < nearestDist)
+                {
+                    nearestDist = dist;
+                    nearest = path.PathPoints[i];
+                }
+            }
+
+            return nearest;
         }
         //Находит все фигуры, которые пересекаются с рамкой выделения,  выделяет их.
         private void UpdateRubberBand()
@@ -376,101 +416,89 @@ namespace Tangram.GraphicsElements
             rubberBandSelection.Height = Math.Abs(mouseLocation.Y - selectedPoint.Y);
         }
 
+        
 
+        private bool MoveFigures(PointF mouseLocation, IEnumerable<Figure> figures)
+        {
+            PointF location = new PointF(mouseLocation.X + deltaMove.X, mouseLocation.Y + deltaMove.Y);
+
+            if (GridSnapEnabled)
+            {
+                location.X = (float)Math.Round(location.X / GridCellSize) * GridCellSize;
+                location.Y = (float)Math.Round(location.Y / GridCellSize) * GridCellSize;
+            }
+
+            location.X = location.X - selectedPoint.X;
+            location.Y = location.Y - selectedPoint.Y;
+
+            foreach (Figure f in figures)
+            {
+                f.Translate(location.X, location.Y);
+            }
+
+            selectedPoint.X += location.X;
+            selectedPoint.Y += location.Y;
+
+            for (int i = 0, count = rotatePoints.Count(); i < count; i++)
+            {
+                var point = rotatePoints[i];
+                point.X += location.X;
+                point.Y += location.Y;
+                rotatePoints[i] = point;
+            }
+
+            Refresh();
+            return true;
+        }
         //Перемещает фигуры figures, на dx пикселей по оси X и на dy пикселей по оси Y
         private bool MoveFigures(float dx, float dy, IEnumerable<Figure> figures)
         {
 
-            //if (GridSnapEnabled)
-            //{
-            //    //float new_dx = (float)Math.Round((float)(dx + figures.First().Location.X) / GridCellSize) * GridCellSize - figures.First().Location.X;
-            //    //float new_dy = (float)Math.Round((float)(dy + figures.First().Location.Y) / GridCellSize) * GridCellSize - figures.First().Location.Y;
-            //    Figure first = figures.First();
-
-            //    float new_dx = 0, new_dy = 0;
-            //    bool fisrtTime = true;
-            //    foreach (PointF point in first.Path.PathPoints)
-            //    {
-            //        float dx_dx = (float)Math.Round((float)(dx + point.X) / GridCellSize) * GridCellSize - point.X;
-            //        float dy_dy = (float)Math.Round((float)(dy + point.Y) / GridCellSize) * GridCellSize - point.Y;
-
-            //        if (fisrtTime)
-            //        {
-            //            new_dx = dx_dx;
-            //            new_dy = dy_dy;
-            //            fisrtTime = false;
-            //        }
-            //        else
-            //        {
-            //            if (dx_dx < new_dx && dx_dx != 0)
-            //            {
-            //                new_dx = dx_dx;
-            //            }
-
-            //            if (dy_dy < new_dy && dy_dy != 0)
-            //            {
-            //                new_dy = dy_dy;
-            //            }
-            //        }
-
-
-            //    }
-
-            //    if (new_dx != 0 || new_dy != 0)
-            //    {
-            //        selectedPoint.X += dx;
-            //        selectedPoint.Y += dy;
-            //        //Cursor.Position = this.PointToScreen(Point.Ceiling(selectedPoint));
-
-            //    }
-            //    dx = new_dx;
-            //    dy = new_dy;
-
-               
-
-            //}
-
-
+           
             foreach (Figure f in figures)
             {
                 f.Translate(dx, dy);
+                //if (GridSnapEnabled)
+                //{
+                //    PerformGridSnap(f);
+                //}
                 //try
                 //{
-                    //foreach (Figure fig in notSelected)
-                    //{
-                    //    GeometryTools.IntersectionResult res = GeometryTools.SAT_intersects( f.Path.PathPoints, fig.Path.PathPoints, SnapDistance);
+                //foreach (Figure fig in notSelected)
+                //{
+                //    GeometryTools.IntersectionResult res = GeometryTools.SAT_intersects( f.Path.PathPoints, fig.Path.PathPoints, SnapDistance);
 
-                    //    if (res.intersects)
-                    //    {
-                    //        f.Translate(res.translateVector.X, res.translateVector.Y);
-                    //        this.translateVector = res.translateVector;
-                    //        return false;
-                    //    }
-                    //    else
-                    //    {
-                    //        if (res.snapped)
-                    //        {
-                    //            if (!snapped)
-                    //            {
-                    //                snapped = true;
-                    //                distance = res.distance;
-                    //                snapPoint = res.snapPoint;
-                    //                translateVector = res.translateVector;
-                    //            }
+                //    if (res.intersects)
+                //    {
+                //        f.Translate(res.translateVector.X, res.translateVector.Y);
+                //        this.translateVector = res.translateVector;
+                //        return false;
+                //    }
+                //    else
+                //    {
+                //        if (res.snapped)
+                //        {
+                //            if (!snapped)
+                //            {
+                //                snapped = true;
+                //                distance = res.distance;
+                //                snapPoint = res.snapPoint;
+                //                translateVector = res.translateVector;
+                //            }
 
-                    //            if (snapped && res.distance < distance)
-                    //            {
-                    //                distance = res.distance;
-                    //                snapPoint = res.snapPoint;
-                    //                translateVector = res.translateVector;
-                    //            }
-                    //        }
-                    //    else
-                    //    {
-                    //        snapped = false;
-                    //    }
-                    //    }
-                    //}
+                //            if (snapped && res.distance < distance)
+                //            {
+                //                distance = res.distance;
+                //                snapPoint = res.snapPoint;
+                //                translateVector = res.translateVector;
+                //            }
+                //        }
+                //    else
+                //    {
+                //        snapped = false;
+                //    }
+                //    }
+                //}
 
                 //}
                 //catch (Exception ex)
@@ -590,41 +618,41 @@ namespace Tangram.GraphicsElements
                 {
                     if (!rotationBegun)
                     {
-                        float curX = 0, curY = 0;
-                        curX = e.Location.X - selectedPoint.X;
-                        curY = e.Location.Y - selectedPoint.Y;
+                        //float curX = 0, curY = 0;
+                        //curX = e.Location.X - selectedPoint.X;
+                        //curY = e.Location.Y - selectedPoint.Y;
+                        MoveFigures(e.Location, selectedFigures);
 
+                        //if (!MoveFigures(curX, curY, selectedFigures))
+                        //{
+                        //    PointF cursorPosition = new PointF(e.Location.X + translateVector.X,
+                        //                                       e.Location.Y + translateVector.Y);
+                        //    Cursor.Position = this.PointToScreen(Point.Ceiling(cursorPosition));
 
-                        if (!MoveFigures(curX, curY, selectedFigures))
-                        {
-                            PointF cursorPosition = new PointF(e.Location.X + translateVector.X,
-                                                               e.Location.Y + translateVector.Y);
-                            Cursor.Position = this.PointToScreen(Point.Ceiling(cursorPosition));
+                        //    selectedPoint.X = e.Location.X + translateVector.X;
+                        //    selectedPoint.Y = e.Location.Y + translateVector.Y;
+                        //    //snapped = false;
+                        //    //distance = float.MaxValue;
+                        //    //operating = false;
 
-                            selectedPoint.X = e.Location.X + translateVector.X;
-                            selectedPoint.Y = e.Location.Y + translateVector.Y;
-                            //snapped = false;
-                            //distance = float.MaxValue;
-                            //operating = false;
+                        //    //readyToMove = readyToRotate = false;
+                        //    //rubberSelectionStarted = false;
+                        //    //rotationBegun = false;
+                        //    //angle = 0;
+                        //    //Refresh();
+                        //    //return;
 
-                            //readyToMove = readyToRotate = false;
-                            //rubberSelectionStarted = false;
-                            //rotationBegun = false;
-                            //angle = 0;
-                            //Refresh();
-                            //return;
+                        //}
+                        //else
+                        //{
+                        //    if (!GridSnapEnabled)
+                        //    {
+                        //        selectedPoint.X = e.Location.X;
+                        //        selectedPoint.Y = e.Location.Y;
+                        //    }
 
-                        }
-                        else
-                        {
-                            if (!GridSnapEnabled)
-                            {
-                                selectedPoint.X = e.Location.X;
-                                selectedPoint.Y = e.Location.Y;
-                            }
-                          
-                        }
-                        
+                        //}
+
                     }
                     else
                     {
