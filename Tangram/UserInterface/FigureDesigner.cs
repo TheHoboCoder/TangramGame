@@ -313,12 +313,16 @@ namespace Tangram.UserInterface
         {
             designerCanvas.CurrentMode = DesignerCanvas.Mode.PAN;
             designerCanvas.Cursor = Cursors.Hand;
+            SelectMode.Checked = false;
+            PanMode.Checked = true;
         }
 
         private void SelectMode_Click(object sender, EventArgs e)
         {
             designerCanvas.CurrentMode = DesignerCanvas.Mode.SELECT;
             designerCanvas.Cursor = Cursors.Default;
+            SelectMode.Checked = true;
+            PanMode.Checked = false;
         }
 
         private void FigureDesigner_KeyDown(object sender, KeyEventArgs e)
@@ -348,6 +352,14 @@ namespace Tangram.UserInterface
         {
             DesignerHelp help = new DesignerHelp();
             help.Show();
+        }
+
+        private void gridSnapBtn_Click(object sender, EventArgs e)
+        {
+            designerCanvas.GridSnapEnabled = !designerCanvas.GridSnapEnabled;
+            gridSnapBtn.Checked = designerCanvas.GridSnapEnabled;
+            gridSnapBtn.Text = designerCanvas.GridSnapEnabled ? "Отключить " : "Включить ";
+            gridSnapBtn.Text += " привязку к сетке.";
         }
     }
 }
