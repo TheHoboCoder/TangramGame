@@ -48,6 +48,9 @@ namespace Tangram.GraphicsElements
         Figure previewSelection,currentSelection;
         private bool selected = false;
 
+        private List<RectangleF> cachedStaticPolygons = new List<RectangleF>();
+        private List<RectangleF> cachedMovePolygons = new List<RectangleF>();
+
         private const float rotatePointsHalfSize = 6;
         private const float rotationRadious = 60;
         List<RectangleF> rotatePoints = new List<RectangleF>();
@@ -338,6 +341,10 @@ namespace Tangram.GraphicsElements
 
                 readyToRotate = readyToMove = false;
                 notSelected = figures.Except(selectedFigures).ToList();
+
+                cachedMovePolygons = selectedFigures.Select(fig => fig.Path.GetBounds()).ToList();
+                cachedStaticPolygons = notSelected.Select(fig => fig.Path.GetBounds()).ToList();
+
                 return;
             }
 
@@ -361,12 +368,76 @@ namespace Tangram.GraphicsElements
                 notSelected = figures.Except(selectedFigures).ToList();
             }
 
-            
+            cachedMovePolygons = selectedFigures.Select(fig => fig.Path.GetBounds()).ToList();
+            cachedStaticPolygons = notSelected.Select(fig => fig.Path.GetBounds()).ToList();
+
 
             Refresh();
 
           
         }
+
+        //для каждой из перемещаемых фигур находит фигуры, которые находятся рядом с ней
+        private List<RectangleF>[] getNearbyPolygons()
+        {
+            List<RectangleF>[] intersection = new List<RectangleF>[cachedMovePolygons.Count];
+
+            for(int i=0, move_count = cachedMovePolygons.Count; i<move_count; i++)
+            {
+                for (int j = 0, static_count = cachedStaticPolygons.Count; j < static_count; j++)
+                {
+                    RectangleF bigger = cachedStaticPolygons[j];
+                    bigger.Inflate(SnapDistance, SnapDistance);
+                    RectangleF smaller = cachedStaticPolygons[j];
+                    smaller.Inflate(-SnapDistance, -SnapDistance);
+                    if (cachedMovePolygons[i].IntersectsWith(bigger) && !cachedMovePolygons[i].IntersectsWith(smaller))
+                    {
+                        if(intersection[i] == null)
+                        {
+                            intersection[i] = new List<RectangleF>();
+                        }
+                        intersection[i].Add(cachedStaticPolygons[j]);
+                    }
+                }
+            }
+
+            return intersection;
+
+        }
+
+
+
+        private void GetSnapPoint()
+        {
+            if (cachedStaticPolygons.Count == 0) return;
+
+            float distance = float.MaxValue;
+            List<RectangleF>[] intersections = getNearbyPolygons();
+            this.snapped = false;
+            for(int i = 0; i<intersections.Count(); ++i)
+            {
+                if (intersections[i] == null) continue;
+                for (int j =0; j<intersections[i].Count; j++)
+                {
+
+                    GeometryTools.SnapResult res = GeometryTools.GetSnapPoint(selectedFigures[i].Path.PathPoints, 
+                                                           notSelected[j].Path.PathPoints, 
+                                                           SnapDistance);
+                    if (!res.snapped) continue;
+
+                    if (res.distance < distance)
+                    {
+                        distance = res.distance;
+                        this.snapPoint = res.snapPoint;
+                        this.translateVector = res.translateVector;
+                        this.snapped = true;
+                    }
+
+                }
+                
+            }
+        }
+
 
         private void initDeltaMove(PointF mouseLocaction)
         {
@@ -441,12 +512,12 @@ namespace Tangram.GraphicsElements
 
             for (int i = 0, count = rotatePoints.Count(); i < count; i++)
             {
-                var point = rotatePoints[i];
+                RectangleF point = rotatePoints[i];
                 point.X += location.X;
                 point.Y += location.Y;
                 rotatePoints[i] = point;
             }
-
+            GetSnapPoint();
             Refresh();
             return true;
         }
@@ -871,6 +942,9 @@ namespace Tangram.GraphicsElements
 
             readyToMove = readyToRotate = false;
             rubberSelectionStarted = false;
+            cachedMovePolygons.Clear();
+            cachedStaticPolygons.Clear();
+
             rotationBegun = false;
             angle = 0;
 

@@ -190,10 +190,9 @@ namespace Tangram.GraphicsElements
 
         }
 
-
-        public struct IntersectionResult
+        public struct SnapResult
         {
-            public bool intersects;
+            //public bool intersects;
             public bool snapped;
             public PointF snapPoint;
             public PointF translateVector;
@@ -201,337 +200,386 @@ namespace Tangram.GraphicsElements
 
         }
 
-        static public IntersectionResult SAT_intersects(PointF[] testPolygon, PointF[] staticPolygon,float snapDistance)
+        static public SnapResult GetSnapPoint(PointF[] movePoly, PointF[] staticPoly, float snapDistance)
         {
-            IntersectionResult result = new IntersectionResult();
-            result.intersects = false;
-            result.snapped = false;
-            result.snapPoint = new PointF();
-            result.translateVector = new PointF();
-            result.distance = float.MaxValue;
+            SnapResult res = new SnapResult();
 
-            bool firstTime = true;
+            res.distance = float.MaxValue;
+            res.snapPoint = new Point();
+            res.translateVector = new PointF();
+            res.snapped = false;
 
-            for (int i = 0, count = testPolygon.Count(); i<count; i++)
+            if (!staticPoly[staticPoly.Count() - 1].Equals(staticPoly[0]))
             {
-                LineEquation eq = new LineEquation();
+                Array.Resize(ref staticPoly, staticPoly.Count() + 1);
+                staticPoly[staticPoly.Count() - 1] = staticPoly[0];
+            }
 
-                if (i == count - 1)
+            for (int i = 0; i< staticPoly.Count()-1; i++)
+            {
+                LineEquation line = GetLineEquation(staticPoly[i], staticPoly[i + 1]);
+               
+                for (int j = 0; j < movePoly.Count(); j++)
                 {
-                    eq = GetLineEquation(testPolygon[i], testPolygon[0]);
+                    LineEquation normal = GetNormal(line, movePoly[j]);
+                    PointF intersection = Intersection(line, normal);
+                    if ((intersection.X >= Math.Min(staticPoly[i].X, staticPoly[i + 1].X) &&
+                        intersection.X <= Math.Max(staticPoly[i].X, staticPoly[i + 1].X))&&
+                        (intersection.Y >= Math.Min(staticPoly[i].Y, staticPoly[i + 1].Y) &&
+                        intersection.Y <= Math.Max(staticPoly[i].Y, staticPoly[i + 1].Y)))
+                    {
+                        float distance = GetDistance(intersection, movePoly[j]);
+                        if(distance<res.distance && distance != 0 && distance <= snapDistance)
+                        {
+                            res.distance = distance;
+                            res.snapPoint = intersection;
+                            res.translateVector.X = intersection.X - movePoly[j].X;
+                            res.translateVector.Y = intersection.Y - movePoly[j].Y;
+                            res.snapped = true;
+                        }
+                    }
                 }
-                else
-                {
-                    eq = GetLineEquation(testPolygon[i], testPolygon[i + 1]);
-                }
+
+            }
+
+            return res;
+        }
+
+
+
+        
+
+        //static public IntersectionResult SAT_intersects(PointF[] testPolygon, PointF[] staticPolygon,float snapDistance)
+        //{
+        //    IntersectionResult result = new IntersectionResult();
+        //    result.intersects = false;
+        //    result.snapped = false;
+        //    result.snapPoint = new PointF();
+        //    result.translateVector = new PointF();
+        //    result.distance = float.MaxValue;
+
+        //    bool firstTime = true;
+
+        //    for (int i = 0, count = testPolygon.Count(); i<count; i++)
+        //    {
+        //        LineEquation eq = new LineEquation();
+
+        //        if (i == count - 1)
+        //        {
+        //            eq = GetLineEquation(testPolygon[i], testPolygon[0]);
+        //        }
+        //        else
+        //        {
+        //            eq = GetLineEquation(testPolygon[i], testPolygon[i + 1]);
+        //        }
                 
-                LineEquation normal = GetNormal(eq, testPolygon[i]);
+        //        LineEquation normal = GetNormal(eq, testPolygon[i]);
 
-                PolygonProjection testProjection = GetProjection(testPolygon, normal, i);
-                PolygonProjection staticProjection = GetProjection(staticPolygon, normal);
+        //        PolygonProjection testProjection = GetProjection(testPolygon, normal, i);
+        //        PolygonProjection staticProjection = GetProjection(staticPolygon, normal);
 
-                IntersectionResult res = new IntersectionResult();
+        //        IntersectionResult res = new IntersectionResult();
 
-                if (normal.By == 0)
-                {
-                    if (testProjection.startPoint.Y <= staticProjection.startPoint.Y)
-                    {
-                        res = PolygonIntersection(staticProjection.startPoint,
-                                                                    testProjection.endPoint,
-                                                                    true,
-                                                                    testProjection.endPoints,
-                                                                    staticProjection.startPoints,
-                                                                    snapDistance);
+        //        if (normal.By == 0)
+        //        {
+        //            if (testProjection.startPoint.Y <= staticProjection.startPoint.Y)
+        //            {
+        //                res = PolygonIntersection(staticProjection.startPoint,
+        //                                                            testProjection.endPoint,
+        //                                                            true,
+        //                                                            testProjection.endPoints,
+        //                                                            staticProjection.startPoints,
+        //                                                            snapDistance);
 
-                    }
-                    else
-                    {
-                        res = PolygonIntersection(testProjection.startPoint,
-                                                                 staticProjection.endPoint,
-                                                                 true,
-                                                                 staticProjection.endPoints,
-                                                                 testProjection.startPoints,
-                                                                 snapDistance);
-                    }
-                }
-                else
-                {
-                    if (testProjection.startPoint.X <= staticProjection.startPoint.X)
-                    {
-                         res = PolygonIntersection(staticProjection.startPoint,
-                                                                     testProjection.endPoint,
-                                                                     false,
-                                                                     testProjection.endPoints,
-                                                                     staticProjection.startPoints,
-                                                                     snapDistance);
+        //            }
+        //            else
+        //            {
+        //                res = PolygonIntersection(testProjection.startPoint,
+        //                                                         staticProjection.endPoint,
+        //                                                         true,
+        //                                                         staticProjection.endPoints,
+        //                                                         testProjection.startPoints,
+        //                                                         snapDistance);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (testProjection.startPoint.X <= staticProjection.startPoint.X)
+        //            {
+        //                 res = PolygonIntersection(staticProjection.startPoint,
+        //                                                             testProjection.endPoint,
+        //                                                             false,
+        //                                                             testProjection.endPoints,
+        //                                                             staticProjection.startPoints,
+        //                                                             snapDistance);
 
-                    }
-                    else
-                    {
-                         res = PolygonIntersection(testProjection.startPoint,
-                                                                  staticProjection.endPoint,
-                                                                  false,
-                                                                  staticProjection.endPoints,
-                                                                  testProjection.startPoints,
-                                                                  snapDistance);
-                    }
-                }
+        //            }
+        //            else
+        //            {
+        //                 res = PolygonIntersection(testProjection.startPoint,
+        //                                                          staticProjection.endPoint,
+        //                                                          false,
+        //                                                          staticProjection.endPoints,
+        //                                                          testProjection.startPoints,
+        //                                                          snapDistance);
+        //            }
+        //        }
 
-                if (firstTime)
-                {
-                    result = res;
-                    firstTime = false;
-                    continue;
-                }
+        //        if (firstTime)
+        //        {
+        //            result = res;
+        //            firstTime = false;
+        //            continue;
+        //        }
 
-                //TODO
-                if(!res.intersects && result.intersects)
-                {
-                    result = res;
-                }
-                else
-                {
-                    if (res.snapped && !result.snapped ||
-                        res.intersects == result.intersects && res.distance < result.distance && res.distance != 0)
-                    {
-                        result = res;
-                    }
+        //        //TODO
+        //        if(!res.intersects && result.intersects)
+        //        {
+        //            result = res;
+        //        }
+        //        else
+        //        {
+        //            if (res.snapped && !result.snapped ||
+        //                res.intersects == result.intersects && res.distance < result.distance && res.distance != 0)
+        //            {
+        //                result = res;
+        //            }
 
                     
 
-                    //if(res.snapped && result.snapped && res.distance < result.distance)
-                    //{
-                    //    result = res;
-                    //}
-                }
+        //            //if(res.snapped && result.snapped && res.distance < result.distance)
+        //            //{
+        //            //    result = res;
+        //            //}
+        //        }
                 
-            }
+        //    }
 
-            //firstTime = true;
+        //    //firstTime = true;
 
-            for (int i = 0, count = staticPolygon.Count(); i < count; i++)
-            {
-                LineEquation eq = new LineEquation();
+        //    for (int i = 0, count = staticPolygon.Count(); i < count; i++)
+        //    {
+        //        LineEquation eq = new LineEquation();
 
-                if (i == count - 1)
-                {
-                    eq = GetLineEquation(staticPolygon[i], staticPolygon[0]);
-                }
-                else
-                {
-                    eq = GetLineEquation(staticPolygon[i], staticPolygon[i + 1]);
-                }
+        //        if (i == count - 1)
+        //        {
+        //            eq = GetLineEquation(staticPolygon[i], staticPolygon[0]);
+        //        }
+        //        else
+        //        {
+        //            eq = GetLineEquation(staticPolygon[i], staticPolygon[i + 1]);
+        //        }
 
-                LineEquation normal = GetNormal(eq, staticPolygon[i]);
+        //        LineEquation normal = GetNormal(eq, staticPolygon[i]);
 
-                PolygonProjection testProjection = GetProjection(testPolygon, normal);
-                PolygonProjection staticProjection = GetProjection(staticPolygon, normal,i);
+        //        PolygonProjection testProjection = GetProjection(testPolygon, normal);
+        //        PolygonProjection staticProjection = GetProjection(staticPolygon, normal,i);
 
-                IntersectionResult res = new IntersectionResult();
+        //        IntersectionResult res = new IntersectionResult();
 
-                if (normal.By == 0)
-                {
-                    if (testProjection.startPoint.Y <= staticProjection.startPoint.Y)
-                    {
-                        res = PolygonIntersection(staticProjection.startPoint,
-                                                                    testProjection.endPoint,
-                                                                    true,
-                                                                    testProjection.endPoints,
-                                                                    staticProjection.startPoints,
-                                                                    snapDistance);
+        //        if (normal.By == 0)
+        //        {
+        //            if (testProjection.startPoint.Y <= staticProjection.startPoint.Y)
+        //            {
+        //                res = PolygonIntersection(staticProjection.startPoint,
+        //                                                            testProjection.endPoint,
+        //                                                            true,
+        //                                                            testProjection.endPoints,
+        //                                                            staticProjection.startPoints,
+        //                                                            snapDistance);
 
-                    }
-                    else
-                    {
-                        res = PolygonIntersection(testProjection.startPoint,
-                                                                 staticProjection.endPoint,
-                                                                 true,
-                                                                 testProjection.startPoints,
-                                                                 staticProjection.endPoints,
-                                                                 snapDistance);
-                       // staticProjection.endPoints,
-                       //testProjection.startPoints,
-                    }
-                }
-                else
-                {
-                    if (testProjection.startPoint.X <= staticProjection.startPoint.X)
-                    {
-                        res = PolygonIntersection(staticProjection.startPoint,
-                                                                    testProjection.endPoint,
-                                                                    false,
-                                                                    testProjection.endPoints,
-                                                                    staticProjection.startPoints,
-                                                                    snapDistance);
+        //            }
+        //            else
+        //            {
+        //                res = PolygonIntersection(testProjection.startPoint,
+        //                                                         staticProjection.endPoint,
+        //                                                         true,
+        //                                                         testProjection.startPoints,
+        //                                                         staticProjection.endPoints,
+        //                                                         snapDistance);
+        //               // staticProjection.endPoints,
+        //               //testProjection.startPoints,
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (testProjection.startPoint.X <= staticProjection.startPoint.X)
+        //            {
+        //                res = PolygonIntersection(staticProjection.startPoint,
+        //                                                            testProjection.endPoint,
+        //                                                            false,
+        //                                                            testProjection.endPoints,
+        //                                                            staticProjection.startPoints,
+        //                                                            snapDistance);
 
-                    }
-                    else
-                    {
-                        res = PolygonIntersection(testProjection.startPoint,
-                                                                 staticProjection.endPoint,
-                                                                 false,
-                                                                 testProjection.startPoints,
-                                                                 staticProjection.endPoints,
-                                                                 snapDistance);
-                        //staticProjection.endPoints,
-                        // testProjection.startPoints,
-                    }
-                }
+        //            }
+        //            else
+        //            {
+        //                res = PolygonIntersection(testProjection.startPoint,
+        //                                                         staticProjection.endPoint,
+        //                                                         false,
+        //                                                         testProjection.startPoints,
+        //                                                         staticProjection.endPoints,
+        //                                                         snapDistance);
+        //                //staticProjection.endPoints,
+        //                // testProjection.startPoints,
+        //            }
+        //        }
 
-                //if (firstTime)
-                //{
-                //    result = res;
-                //    firstTime = false;
-                //    continue;
-                //}
+        //        //if (firstTime)
+        //        //{
+        //        //    result = res;
+        //        //    firstTime = false;
+        //        //    continue;
+        //        //}
 
-                if (!res.intersects && result.intersects)
-                {
-                    result = res;
-                }
-                else
-                {
-                    if (res.snapped && !result.snapped ||
-                        res.intersects == result.intersects && res.distance < result.distance && res.distance!=0)
-                    {
-                        result = res;
-                    }
-                    //if (res.snapped && !result.snapped)
-                    //{
-                    //    result = res;
-                    //}
+        //        if (!res.intersects && result.intersects)
+        //        {
+        //            result = res;
+        //        }
+        //        else
+        //        {
+        //            if (res.snapped && !result.snapped ||
+        //                res.intersects == result.intersects && res.distance < result.distance && res.distance!=0)
+        //            {
+        //                result = res;
+        //            }
+        //            //if (res.snapped && !result.snapped)
+        //            //{
+        //            //    result = res;
+        //            //}
 
-                    //if (res.snapped && result.snapped && res.distance < result.distance)
-                    //{
-                    //    result = res;
-                    //}
-                }
+        //            //if (res.snapped && result.snapped && res.distance < result.distance)
+        //            //{
+        //            //    result = res;
+        //            //}
+        //        }
 
-            }
-
-
-            return result;
-        }
-
-        static public IntersectionResult PolygonIntersection(PointF startPoint, PointF endPoint, bool vertical, List<PointF> testPolygonPoints, List<PointF> staticPolygonPoints, float snapDistance)
-        {
-            IntersectionResult intersection = new IntersectionResult();
-
-            intersection.intersects = false;
-            intersection.snapped = false;
-            intersection.snapPoint = new PointF();
-            intersection.translateVector = new PointF();
-            intersection.distance = float.MaxValue;
+        //    }
 
 
-            intersection.distance = GetDistance(startPoint, endPoint);
+        //    return result;
+        //}
 
-            if (vertical)
-            {
-                if (startPoint.Y < endPoint.Y)
-                {
-                    intersection.intersects = true;
-                    intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
-                    //intersection.translateVector = new PointF( startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
-                    return intersection;
-                }
-            }
-            else
-            {
-                if (startPoint.X < endPoint.X)
-                {
-                    intersection.intersects = true;
-                    intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
-                    //intersection.translateVector = new PointF(startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
-                    return intersection;
-                }
-            }
+        //static public IntersectionResult PolygonIntersection(PointF startPoint, PointF endPoint, bool vertical, List<PointF> testPolygonPoints, List<PointF> staticPolygonPoints, float snapDistance)
+        //{
+        //    IntersectionResult intersection = new IntersectionResult();
 
-            if ( snapDistance>=intersection.distance)
-            {
-                if (staticPolygonPoints.Count() == 1)
-                {
-                    if (testPolygonPoints.Count() == 1)
-                    {
-                        float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[0]);
-                        if (distance <= snapDistance)
-                        {
-                            intersection.snapped = true;
-                            intersection.snapPoint = staticPolygonPoints[0];
-                            intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[0].X,
-                                                                      staticPolygonPoints[0].Y - testPolygonPoints[0].Y);
-                        }
-                    }
-                    else
-                    {
-                        LineEquation eq = GetLineEquation(testPolygonPoints[0], testPolygonPoints[1]);
-                        LineEquation normal = GetNormal(eq, staticPolygonPoints[0]);
-                        PointF point = Intersection(eq, normal);
+        //    intersection.intersects = false;
+        //    intersection.snapped = false;
+        //    intersection.snapPoint = new PointF();
+        //    intersection.translateVector = new PointF();
+        //    intersection.distance = float.MaxValue;
 
-                        if (point.X >= Math.Min(testPolygonPoints[0].X, testPolygonPoints[1].X) &&
-                           point.X <= Math.Max(testPolygonPoints[0].X, testPolygonPoints[1].X) &&
-                           point.Y >= Math.Min(testPolygonPoints[0].Y, testPolygonPoints[1].Y) &&
-                           point.Y <= Math.Max(testPolygonPoints[0].Y, testPolygonPoints[1].Y))
-                        {
-                            intersection.snapped = true;
-                            //intersection.snapPoint = point;
-                            intersection.snapPoint = staticPolygonPoints[0];
-                            intersection.translateVector = new PointF(staticPolygonPoints[0].X - point.X,
-                                                                      staticPolygonPoints[0].Y - point.Y);
-                        }
-                        else
-                        {
-                            for (int i = 0, count = testPolygonPoints.Count(); i < count; i++)
-                            {
-                                float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[i]);
-                                if (distance <= snapDistance)
-                                {
-                                    intersection.snapped = true;
-                                    intersection.snapPoint = staticPolygonPoints[0];
-                                    intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[i].X,
-                                                                              staticPolygonPoints[0].Y - testPolygonPoints[i].Y);
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    LineEquation eq = GetLineEquation(staticPolygonPoints[0], staticPolygonPoints[1]);
-                    for (int i = 0, count = testPolygonPoints.Count(); i < count; i++)
-                    {
+
+        //    intersection.distance = GetDistance(startPoint, endPoint);
+
+        //    if (vertical)
+        //    {
+        //        if (startPoint.Y < endPoint.Y)
+        //        {
+        //            intersection.intersects = true;
+        //            intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+        //            //intersection.translateVector = new PointF( startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
+        //            return intersection;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (startPoint.X < endPoint.X)
+        //        {
+        //            intersection.intersects = true;
+        //            intersection.translateVector = new PointF(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+        //            //intersection.translateVector = new PointF(startPoint.X - endPoint.X, startPoint.Y - endPoint.Y);
+        //            return intersection;
+        //        }
+        //    }
+
+        //    if ( snapDistance>=intersection.distance)
+        //    {
+        //        if (staticPolygonPoints.Count() == 1)
+        //        {
+        //            if (testPolygonPoints.Count() == 1)
+        //            {
+        //                float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[0]);
+        //                if (distance <= snapDistance)
+        //                {
+        //                    intersection.snapped = true;
+        //                    intersection.snapPoint = staticPolygonPoints[0];
+        //                    intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[0].X,
+        //                                                              staticPolygonPoints[0].Y - testPolygonPoints[0].Y);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                LineEquation eq = GetLineEquation(testPolygonPoints[0], testPolygonPoints[1]);
+        //                LineEquation normal = GetNormal(eq, staticPolygonPoints[0]);
+        //                PointF point = Intersection(eq, normal);
+
+        //                if (point.X >= Math.Min(testPolygonPoints[0].X, testPolygonPoints[1].X) &&
+        //                   point.X <= Math.Max(testPolygonPoints[0].X, testPolygonPoints[1].X) &&
+        //                   point.Y >= Math.Min(testPolygonPoints[0].Y, testPolygonPoints[1].Y) &&
+        //                   point.Y <= Math.Max(testPolygonPoints[0].Y, testPolygonPoints[1].Y))
+        //                {
+        //                    intersection.snapped = true;
+        //                    //intersection.snapPoint = point;
+        //                    intersection.snapPoint = staticPolygonPoints[0];
+        //                    intersection.translateVector = new PointF(staticPolygonPoints[0].X - point.X,
+        //                                                              staticPolygonPoints[0].Y - point.Y);
+        //                }
+        //                else
+        //                {
+        //                    for (int i = 0, count = testPolygonPoints.Count(); i < count; i++)
+        //                    {
+        //                        float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[i]);
+        //                        if (distance <= snapDistance)
+        //                        {
+        //                            intersection.snapped = true;
+        //                            intersection.snapPoint = staticPolygonPoints[0];
+        //                            intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[i].X,
+        //                                                                      staticPolygonPoints[0].Y - testPolygonPoints[i].Y);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            LineEquation eq = GetLineEquation(staticPolygonPoints[0], staticPolygonPoints[1]);
+        //            for (int i = 0, count = testPolygonPoints.Count(); i < count; i++)
+        //            {
                        
-                        LineEquation normal = GetNormal(eq, testPolygonPoints[i]);
-                        PointF point = Intersection(eq, normal);
+        //                LineEquation normal = GetNormal(eq, testPolygonPoints[i]);
+        //                PointF point = Intersection(eq, normal);
 
-                        if (point.X >= Math.Min(staticPolygonPoints[0].X, staticPolygonPoints[1].X) &&
-                           point.X <= Math.Max(staticPolygonPoints[0].X, staticPolygonPoints[1].X) &&
-                           point.Y >= Math.Min(staticPolygonPoints[0].Y, staticPolygonPoints[1].Y) &&
-                           point.Y <= Math.Max(staticPolygonPoints[0].Y, staticPolygonPoints[1].Y))
-                        {
-                            intersection.snapped = true;
-                            intersection.snapPoint = point;
-                            intersection.translateVector = new PointF( point.X-testPolygonPoints[i].X,
-                                                                      point.Y -staticPolygonPoints[i].Y);
-                        }
-                        else
-                        {
-                            float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[i]);
-                            if (distance <= snapDistance)
-                            {
-                                intersection.snapped = true;
-                                intersection.snapPoint = staticPolygonPoints[0];
-                                intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[i].X,
-                                                                          staticPolygonPoints[0].Y - testPolygonPoints[i].Y);
-                            }
-                        }
-                    }
-                }
-            }
+        //                if (point.X >= Math.Min(staticPolygonPoints[0].X, staticPolygonPoints[1].X) &&
+        //                   point.X <= Math.Max(staticPolygonPoints[0].X, staticPolygonPoints[1].X) &&
+        //                   point.Y >= Math.Min(staticPolygonPoints[0].Y, staticPolygonPoints[1].Y) &&
+        //                   point.Y <= Math.Max(staticPolygonPoints[0].Y, staticPolygonPoints[1].Y))
+        //                {
+        //                    intersection.snapped = true;
+        //                    intersection.snapPoint = point;
+        //                    intersection.translateVector = new PointF( point.X-testPolygonPoints[i].X,
+        //                                                              point.Y -staticPolygonPoints[i].Y);
+        //                }
+        //                else
+        //                {
+        //                    float distance = GetDistance(staticPolygonPoints[0], testPolygonPoints[i]);
+        //                    if (distance <= snapDistance)
+        //                    {
+        //                        intersection.snapped = true;
+        //                        intersection.snapPoint = staticPolygonPoints[0];
+        //                        intersection.translateVector = new PointF(staticPolygonPoints[0].X - testPolygonPoints[i].X,
+        //                                                                  staticPolygonPoints[0].Y - testPolygonPoints[i].Y);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
 
 
-            return intersection;
-        }
+        //    return intersection;
+        //}
 
 
 
@@ -1060,107 +1108,107 @@ namespace Tangram.GraphicsElements
         //};
 
 
-        public struct PolygonProjection
-        {
-            public PointF startPoint;
-            public PointF endPoint;
-            public List<PointF> startPoints;
-            public List<PointF> endPoints;
-        }
+        //public struct PolygonProjection
+        //{
+        //    public PointF startPoint;
+        //    public PointF endPoint;
+        //    public List<PointF> startPoints;
+        //    public List<PointF> endPoints;
+        //}
 
-        static public PolygonProjection GetProjection(PointF[] polygon, LineEquation axis, int index = -1)
-        {
-            PolygonProjection result = new PolygonProjection();
+        //static public PolygonProjection GetProjection(PointF[] polygon, LineEquation axis, int index = -1)
+        //{
+        //    PolygonProjection result = new PolygonProjection();
 
-            result.startPoint = new PointF();
-            result.endPoint = new PointF();
+        //    result.startPoint = new PointF();
+        //    result.endPoint = new PointF();
 
-            PointF preview = new PointF();
-            preview = Intersection(GetNormal(axis, polygon[0]), axis);
+        //    PointF preview = new PointF();
+        //    preview = Intersection(GetNormal(axis, polygon[0]), axis);
 
-            //if (index == -1)
-            //{
-            //    preview = Intersection(GetNormal(axis, polygon[0]), axis);
-            //}
-            //else
-            //{
-            //    preview = polygon[index];
+        //    //if (index == -1)
+        //    //{
+        //    //    preview = Intersection(GetNormal(axis, polygon[0]), axis);
+        //    //}
+        //    //else
+        //    //{
+        //    //    preview = polygon[index];
                
                 
-            //}
+        //    //}
 
-            result.startPoint.X = preview.X;
-            result.startPoint.Y = preview.Y;
-            result.endPoint.X = preview.X;
-            result.endPoint.Y = preview.Y;
+        //    result.startPoint.X = preview.X;
+        //    result.startPoint.Y = preview.Y;
+        //    result.endPoint.X = preview.X;
+        //    result.endPoint.Y = preview.Y;
 
-            result.startPoints = new List<PointF>();
-            result.endPoints = new List<PointF>();
+        //    result.startPoints = new List<PointF>();
+        //    result.endPoints = new List<PointF>();
 
-            bool vertical = axis.By == 0;
+        //    bool vertical = axis.By == 0;
 
-            for(int i =0, polygonCount = polygon.Count(); i<polygonCount; i++)
-            {
-                PointF projection = new PointF();
+        //    for(int i =0, polygonCount = polygon.Count(); i<polygonCount; i++)
+        //    {
+        //        PointF projection = new PointF();
 
-                //if (index != -1 && i == index || i == index + 1)
-                //{
-                //    projection.X = preview.X;
-                //    projection.Y = preview.Y;
-                //}
-                //else
-                //{
-                    projection = Intersection(GetNormal(axis, polygon[i]), axis);
-                //}
+        //        //if (index != -1 && i == index || i == index + 1)
+        //        //{
+        //        //    projection.X = preview.X;
+        //        //    projection.Y = preview.Y;
+        //        //}
+        //        //else
+        //        //{
+        //            projection = Intersection(GetNormal(axis, polygon[i]), axis);
+        //        //}
 
                
 
-                if (result.endPoint.X == projection.X &&
-                    result.endPoint.Y == projection.Y)
-                {
-                    result.endPoints.Add(polygon[i]);
-                }
+        //        if (result.endPoint.X == projection.X &&
+        //            result.endPoint.Y == projection.Y)
+        //        {
+        //            result.endPoints.Add(polygon[i]);
+        //        }
 
-                if (result.startPoint.X == projection.X &&
-                   result.startPoint.Y == projection.Y)
-                {
-                    result.startPoints.Add(polygon[i]);
-                }
+        //        if (result.startPoint.X == projection.X &&
+        //           result.startPoint.Y == projection.Y)
+        //        {
+        //            result.startPoints.Add(polygon[i]);
+        //        }
 
-                if (vertical)
-                {
-                    if (projection.Y < result.startPoint.Y)
-                    {
-                        result.startPoint = projection;
-                        result.startPoints.Clear();
-                        result.startPoints.Add(polygon[i]);
-                    }
-                    if(projection.Y > result.endPoint.Y)
-                    {
-                        result.endPoint = projection;
-                        result.endPoints.Clear();
-                        result.endPoints.Add(polygon[i]);
-                    }
-                }
-                else
-                {
-                    if (projection.X < result.startPoint.X)
-                    {
-                        result.startPoint = projection;
-                        result.startPoints.Clear();
-                        result.startPoints.Add(polygon[i]);
-                    }
-                    if (projection.X > result.endPoint.X)
-                    {
-                        result.endPoint = projection;
-                        result.endPoints.Clear();
-                        result.endPoints.Add(polygon[i]);
-                    }
-                }
-            }
+        //        if (vertical)
+        //        {
+        //            if (projection.Y < result.startPoint.Y)
+        //            {
+        //                result.startPoint = projection;
+        //                result.startPoints.Clear();
+        //                result.startPoints.Add(polygon[i]);
+        //            }
+        //            if(projection.Y > result.endPoint.Y)
+        //            {
+        //                result.endPoint = projection;
+        //                result.endPoints.Clear();
+        //                result.endPoints.Add(polygon[i]);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (projection.X < result.startPoint.X)
+        //            {
+        //                result.startPoint = projection;
+        //                result.startPoints.Clear();
+        //                result.startPoints.Add(polygon[i]);
+        //            }
+        //            if (projection.X > result.endPoint.X)
+        //            {
+        //                result.endPoint = projection;
+        //                result.endPoints.Clear();
+        //                result.endPoints.Add(polygon[i]);
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         //static private PolygonProjection getPolygonProjection(PointF[] polygon, int index, LineEquation normal, bool vertical, bool decending,  PointF point)
         //{
