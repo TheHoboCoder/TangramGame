@@ -48,9 +48,6 @@ namespace Tangram.GraphicsElements
         Figure previewSelection,currentSelection;
         private bool selected = false;
 
-        private List<RectangleF> cachedStaticPolygons = new List<RectangleF>();
-        private List<RectangleF> cachedMovePolygons = new List<RectangleF>();
-
         private const float rotatePointsHalfSize = 6;
         private const float rotationRadious = 60;
         List<RectangleF> rotatePoints = new List<RectangleF>();
@@ -70,10 +67,79 @@ namespace Tangram.GraphicsElements
 
         private Point panPoint = new Point();
 
+        public bool GridSnapEnabled { get; set; }
+        private const int GridCellSize = 15;
+
+        public float SnapDistance { get; set; }
+        private PointF snapPoint = new PointF(0, 0);
+        private bool snapped = false;
+        private PointF translateVector = new PointF(0, 0);
+        private float distance = float.MaxValue;
+
+        private Bitmap grid;
+
         public enum Mode
         {
             SELECT,
             PAN
+        }
+
+        private bool gridEnabled = false;
+
+        public bool GridEnabled
+        {
+            get
+            {
+                return gridEnabled;
+            }
+            set
+            {
+                if (!value)
+                {
+                    this.Image = null;
+                }
+                else
+                {
+                    if (value != gridEnabled)
+                    {
+                        UpdateGrid();
+                    }
+
+                    //this.Image = grid;
+
+                }
+                gridEnabled = value;
+            }
+        }
+
+
+
+        private float snapAngle = 45;
+        public float SnapAngle
+        {
+            get
+            {
+                return snapAngle;
+            }
+            set
+            {
+                snapAngle = value;
+            }
+        }
+
+
+        private Mode _currentMode;
+        public Mode CurrentMode
+        {
+            get
+            {
+                return _currentMode;
+            }
+            set
+            {
+                _currentMode = value;
+                Refresh();
+            }
         }
 
         private void UpdateGrid()
@@ -130,84 +196,7 @@ namespace Tangram.GraphicsElements
         }
 
 
-        private bool gridEnabled = false;
-
-        public bool GridEnabled
-        {
-            get
-            {
-                return gridEnabled;
-            }
-            set
-            {
-                if (!value)
-                {
-                    this.Image = null;
-                }
-                else
-                {
-                    if(value!= gridEnabled)
-                    {
-                        UpdateGrid();
-                    }
-                    
-                    //this.Image = grid;
-                   
-                }
-                gridEnabled = value;
-            }
-        }
-
-        public bool GridSnapEnabled { get; set; }
-        private const int GridCellSize = 15;
-
-        public float SnapDistance { get; set; }
-        private PointF snapPoint = new PointF(0, 0);
-        private bool snapped = false;
-        private PointF translateVector = new PointF(0, 0);
-        private float distance = float.MaxValue;
-
-        private Bitmap grid;
-
-        private float snapAngle = 45;
-        public float SnapAngle
-        {
-            get
-            {
-                return snapAngle;
-            }
-            set
-            {
-                snapAngle = value;
-            }
-        }
-
-
-        private Mode _currentMode;
-        public Mode CurrentMode
-        {
-            get
-            {
-                return _currentMode;
-            }
-            set
-            {
-                _currentMode = value;
-
-                //switch (_currentMode)
-                //{
-                //    case Mode.PAN:
-                //        MouseMove -= DesignerCanvas_MouseMove;
-                //        break;
-                //    case Mode.SELECT:
-                //        MouseMove+= DesignerCanvas_MouseMove;
-                //        break;
-                //}    
-
-                
-                Refresh();    
-            }
-        }
+       
 
 
 
@@ -232,80 +221,10 @@ namespace Tangram.GraphicsElements
         }
 
         //Добавлят фигуру на рабочую область. 
-        //Если данная фигура пересекается с другими фигурами, она сдвигается влево, чтобы избежать пересечений
         public void AddFigure(Figure f)
         {
-            int count = 0;
-            bool sizeChanged = false;
-            Rectangle figureBounds = Rectangle.Ceiling(f.Path.GetBounds());
-            do
-            {
-                
-                var intersections = figures.Where(fig => fig.Path.GetBounds().IntersectsWith(figureBounds));
-                count = intersections.Count();
-
-                
-                if (count != 0)
-                {
-                    intersections.OrderBy(fig => fig.Path.GetBounds().X);
-                    f.Location = new PointF(intersections.Last().Path.GetBounds().X + intersections.Last().Path.GetBounds().Width, f.Location.Y);
-                    figureBounds = Rectangle.Ceiling(f.Path.GetBounds());
-                }
-                else
-                {
-                    break;
-                }
-
-                
-
-            }
-            while (count != 0);
-            
             figures.Add(f);
-
-            figureBounds = Rectangle.Ceiling(f.Path.GetBounds());
-
-            Point translateVector = new Point(0, 0);
-            if (figureBounds.X < 0)
-            {
-                this.Width -= figureBounds.X;
-                sizeChanged = true;
-                translateVector.X = -figureBounds.X;
-            }
-            if (figureBounds.Y < 0)
-            {
-                this.Height -= figureBounds.Y;
-                sizeChanged = true;
-                //this.Top += topLeft.Y;
-                translateVector.Y = -figureBounds.Y;
-            }
-
-            if (translateVector.X != 0 ||
-               translateVector.Y != 0)
-            {
-                MoveFigures(translateVector.X, translateVector.Y, figures);
-            }
-
-            float deltaW = this.Width - figureBounds.X - figureBounds.Width;
-            if (deltaW < 0)
-            {
-                sizeChanged = true;
-                this.Width += (int)Math.Round(-deltaW);
-            }
-
-            float deltaH = this.Height - figureBounds.Y - figureBounds.Height;
-            if (deltaH < 0)
-            {
-                sizeChanged = true;
-                this.Height += (int)Math.Round(-deltaW);
-            }
-
-            figures.OrderBy(cur => cur.Path.GetBounds().Y);
-
-            if (sizeChanged)
-            {
-                if (GridEnabled) UpdateGrid();
-            }
+            checkOverflowFigures(new List<Figure> { f});
             Refresh();
         }
 
@@ -342,9 +261,6 @@ namespace Tangram.GraphicsElements
                 readyToRotate = readyToMove = false;
                 notSelected = figures.Except(selectedFigures).ToList();
 
-                cachedMovePolygons = selectedFigures.Select(fig => fig.Path.GetBounds()).ToList();
-                cachedStaticPolygons = notSelected.Select(fig => fig.Path.GetBounds()).ToList();
-
                 return;
             }
 
@@ -368,61 +284,25 @@ namespace Tangram.GraphicsElements
                 notSelected = figures.Except(selectedFigures).ToList();
             }
 
-            cachedMovePolygons = selectedFigures.Select(fig => fig.Path.GetBounds()).ToList();
-            cachedStaticPolygons = notSelected.Select(fig => fig.Path.GetBounds()).ToList();
-
 
             Refresh();
 
           
         }
 
-        //для каждой из перемещаемых фигур находит статичные фигуры, которые находятся рядом с ней
-        private List<Figure>[] getNearbyPolygons()
-        {
-            List<Figure>[] intersection = new List<Figure>[cachedMovePolygons.Count];
-
-            for(int i=0, move_count = cachedMovePolygons.Count; i<move_count; i++)
-            {
-                for (int j = 0, static_count = cachedStaticPolygons.Count; j < static_count; j++)
-                {
-                    RectangleF bigger = cachedStaticPolygons[j];
-                    bigger.Inflate(SnapDistance, SnapDistance);
-                    RectangleF smaller = cachedStaticPolygons[j];
-                    smaller.Inflate(-SnapDistance, -SnapDistance);
-                    if (cachedMovePolygons[i].IntersectsWith(bigger) && 
-                        !cachedMovePolygons[i].IntersectsWith(smaller))
-                    {
-                        if(intersection[i] == null)
-                        {
-                            intersection[i] = new List<Figure>();
-                        }
-                        intersection[i].Add(notSelected[j]);
-                    }
-                }
-            }
-
-            return intersection;
-
-        }
-
-
-
         private void GetSnapPoint()
         {
-            if (cachedStaticPolygons.Count == 0) return;
+            if (notSelected.Count == 0) return;
 
             float distance = float.MaxValue;
-            List<Figure>[] intersections = getNearbyPolygons();
             this.snapped = false;
-            for(int i = 0; i<intersections.Count(); ++i)
+            foreach(Figure movedFigure in selectedFigures)
             {
-                if (intersections[i] == null) continue;
-                for (int j =0; j<intersections[i].Count; j++)
+                foreach (Figure staticFigure in notSelected)
                 {
 
-                    GeometryTools.SnapResult res = GeometryTools.GetSnapPoint(selectedFigures[i].Path.PathPoints, 
-                                                           intersections[i][j].Path.PathPoints, 
+                    GeometryTools.SnapResult res = GeometryTools.GetSnapPoint(movedFigure.Path.PathPoints,
+                                                           staticFigure.Path.PathPoints, 
                                                            SnapDistance);
                     if (!res.snapped) continue;
 
@@ -503,19 +383,10 @@ namespace Tangram.GraphicsElements
             location.X = location.X - selectedPoint.X;
             location.Y = location.Y - selectedPoint.Y;
 
-            for (int i = 0, count = figures.Count(); i < count; i++)
+            foreach (Figure f in figures)
             {
-                figures.ElementAt(i).Translate(location.X, location.Y);
-                RectangleF rect = cachedMovePolygons[i];
-                rect.X += location.X;
-                rect.Y += location.Y;
-                cachedMovePolygons[i]= rect;
-
+                f.Translate(location.X, location.Y);
             }
-            //foreach (Figure f in figures)
-            //{
-            //    f.Translate(location.X, location.Y);
-            //}
 
             selectedPoint.X += location.X;
             selectedPoint.Y += location.Y;
@@ -527,65 +398,18 @@ namespace Tangram.GraphicsElements
                 point.Y += location.Y;
                 rotatePoints[i] = point;
             }
+
             GetSnapPoint();
             Refresh();
             return true;
         }
+
         //Перемещает фигуры figures, на dx пикселей по оси X и на dy пикселей по оси Y
         private bool MoveFigures(float dx, float dy, IEnumerable<Figure> figures)
         {
-
-           
             foreach (Figure f in figures)
             {
                 f.Translate(dx, dy);
-                //if (GridSnapEnabled)
-                //{
-                //    PerformGridSnap(f);
-                //}
-                //try
-                //{
-                //foreach (Figure fig in notSelected)
-                //{
-                //    GeometryTools.IntersectionResult res = GeometryTools.SAT_intersects( f.Path.PathPoints, fig.Path.PathPoints, SnapDistance);
-
-                //    if (res.intersects)
-                //    {
-                //        f.Translate(res.translateVector.X, res.translateVector.Y);
-                //        this.translateVector = res.translateVector;
-                //        return false;
-                //    }
-                //    else
-                //    {
-                //        if (res.snapped)
-                //        {
-                //            if (!snapped)
-                //            {
-                //                snapped = true;
-                //                distance = res.distance;
-                //                snapPoint = res.snapPoint;
-                //                translateVector = res.translateVector;
-                //            }
-
-                //            if (snapped && res.distance < distance)
-                //            {
-                //                distance = res.distance;
-                //                snapPoint = res.snapPoint;
-                //                translateVector = res.translateVector;
-                //            }
-                //        }
-                //    else
-                //    {
-                //        snapped = false;
-                //    }
-                //    }
-                //}
-
-                //}
-                //catch (Exception ex)
-                //{
-                //    MessageBox.Show("fuck you " + ex.ToString());
-                //}
             }
             for(int i = 0, count = rotatePoints.Count();i<count;i++)
             {
@@ -699,132 +523,116 @@ namespace Tangram.GraphicsElements
                 {
                     if (!rotationBegun)
                     {
-                        //float curX = 0, curY = 0;
-                        //curX = e.Location.X - selectedPoint.X;
-                        //curY = e.Location.Y - selectedPoint.Y;
+
                         MoveFigures(e.Location, selectedFigures);
-
-                        //if (!MoveFigures(curX, curY, selectedFigures))
-                        //{
-                        //    PointF cursorPosition = new PointF(e.Location.X + translateVector.X,
-                        //                                       e.Location.Y + translateVector.Y);
-                        //    Cursor.Position = this.PointToScreen(Point.Ceiling(cursorPosition));
-
-                        //    selectedPoint.X = e.Location.X + translateVector.X;
-                        //    selectedPoint.Y = e.Location.Y + translateVector.Y;
-                        //    //snapped = false;
-                        //    //distance = float.MaxValue;
-                        //    //operating = false;
-
-                        //    //readyToMove = readyToRotate = false;
-                        //    //rubberSelectionStarted = false;
-                        //    //rotationBegun = false;
-                        //    //angle = 0;
-                        //    //Refresh();
-                        //    //return;
-
-                        //}
-                        //else
-                        //{
-                        //    if (!GridSnapEnabled)
-                        //    {
-                        //        selectedPoint.X = e.Location.X;
-                        //        selectedPoint.Y = e.Location.Y;
-                        //    }
-
-                        //}
-
                     }
                     else
                     {
                         RotateFigures(e.Location);
                     }
-                    //switch (CurrentMode)
-                    //{
-                         
-                    //    case Mode.MOVE:
-                    //        MoveFigures(e.Location);
-                    //        break;
-                    //    case Mode.ROTATE:
-                    //        RotateFigures(e.Location);
-                    //        break;
-                    //}
                 }
             }
             else
             {
                 if (CurrentMode == Mode.PAN) return;
-                
-                var rotate = rotatePoints.Where(p => p.Contains(e.Location));
 
-                if (rotate.Count() != 0 && rotatePoints.Count()!=0)
+                if (isHoverOnRotatePoints(e.Location))
                 {
-                    this.Cursor = Cursors.Cross;
-                    readyToRotate = true;
-                    previewPoint = rotate.First();
-                    currentRotatePoint = new PointF(previewPoint.X + rotatePointsHalfSize, previewPoint.Y + rotatePointsHalfSize);
                     Refresh();
                     return;
-                }
-                else
-                {
-                    this.Cursor = Cursors.Default;
-                    readyToRotate = false;
                 }
 
                 if (previewSelection!=null && previewSelection.Path.IsVisible(e.Location) ||
-                     this.selected && /*currentSelection != null &&*/ currentSelection.Path.IsVisible(e.Location))
+                     this.selected &&  currentSelection.Path.IsVisible(e.Location))
                 {
                     Cursor = Cursors.SizeAll;
-                    if (this.selected) { readyToMove = true; }
+                    if (this.selected)
+                    {
+                        readyToMove = true;
+                    }
                     return;
                 }
 
-                var preview = figures.Except(selectedFigures).Where(f => f.Path.IsVisible(e.Location));
-                
-                if (preview.Count() != 0)
+                if (isHoverOnNotSelected(e.Location))
                 {
-                    Cursor = Cursors.SizeAll;
-                    previewSelection = preview.First();
-
                     Refresh();
-                    preview = null;
                     return;
                 }
-                else
-                {
-                    this.Cursor = Cursors.Default;
-                    previewSelection = null;
-                }
+                isHoverOnSelected(e.Location);
+                Refresh();
 
-                var selected = selectedFigures.Where(f => f.Path.IsVisible(e.Location));
 
-                
-                if (selected.Count() != 0)
-                {
-                    this.Cursor = Cursors.SizeAll;
-                    currentSelection = selected.First();
-                    rotatePoints.Clear();
-                    initRotatePoints(currentSelection);
-                    readyToMove = true;
-                    this.selected = true;
-                }
-                else
-                {
-                    this.Cursor = Cursors.Default;
-                    //currentSelection = null;
-                    this.selected = false;
-                    readyToMove = false;
-                }
+            }
+        }
 
-               Refresh();
+
+        private bool isHoverOnRotatePoints(Point location)
+        {
+            var rotate = rotatePoints.Where(p => p.Contains(location));
+
+            if (rotate.Count() != 0 && rotatePoints.Count() != 0)
+            {
+                this.Cursor = Cursors.Cross;
+                readyToRotate = true;
+                previewPoint = rotate.First();
+                currentRotatePoint = new PointF(previewPoint.X + rotatePointsHalfSize, previewPoint.Y + rotatePointsHalfSize);
+                return true;
+            }
+            else
+            {
+                this.Cursor = Cursors.Default;
+                readyToRotate = false;
+                return false;
+            }
+        }
+
+        private bool isHoverOnNotSelected(Point location)
+        {
+            var preview = figures.Except(selectedFigures).Where(f => f.Path.IsVisible(location));
+
+            if (preview.Count() != 0)
+            {
+                Cursor = Cursors.SizeAll;
+                previewSelection = preview.First();
+
+                preview = null;
+                return true;
+            }
+            else
+            {
+                this.Cursor = Cursors.Default;
+                previewSelection = null;
+                return false;
+            }
+        }
+
+        private bool isHoverOnSelected(Point location)
+        {
+            var selected = selectedFigures.Where(f => f.Path.IsVisible(location));
+
+            if (selected.Count() != 0)
+            {
+                this.Cursor = Cursors.SizeAll;
+                currentSelection = selected.First();
+                rotatePoints.Clear();
+                initRotatePoints(currentSelection);
+                readyToMove = true;
+                this.selected = true;
+                return true;
+            }
+            else
+            {
+                this.Cursor = Cursors.Default;
+                //currentSelection = null;
+                this.selected = false;
+                readyToMove = false;
+                return false;
             }
         }
 
         
         private RectangleF getBoundingBox(List<Figure> figures)
         {
-            
             if (figures.Count() == 1)
             {
                 return figures[0].Path.GetBounds();
@@ -838,7 +646,6 @@ namespace Tangram.GraphicsElements
                 }
                 return bounds;
             }
-           
         }
 
         public List<Figure> packFigures(out Size size)
@@ -863,108 +670,94 @@ namespace Tangram.GraphicsElements
             return packedFigures;
         }
 
-        private void DesignerCanvas_MouseUp(object sender, MouseEventArgs e)
+        private void checkOverflowFigures(List<Figure> figures)
         {
             bool sizeChanged = false;
-            if (operating || rotationBegun)
+            RectangleF boundingBox = getBoundingBox(figures);
+            Rectangle bounds = Rectangle.Ceiling(boundingBox);
+
+            Point translateVector = new Point(0, 0);
+            if (bounds.X < 0)
             {
-                if (snapped)
-                {
-                    foreach(Figure f in selectedFigures)
-                    {
-                        f.Translate(this.translateVector.X, this.translateVector.Y);
-                    }
-                    snapped = false;
-                    distance = float.MaxValue;
-                }
-                //if (rotationBegun)
-                //{
-                //    initRotatePoints(currentSelection);
-                //}
-                RectangleF boundingBox = getBoundingBox(selectedFigures);
-                Rectangle bounds = Rectangle.Ceiling(boundingBox);
-                //var selectionBox = selectedFigures.OrderBy(f => f.Path.GetBounds().X).ThenBy(f => f.Path.GetBounds().Y);
-                //RectangleF bounds = selectedFigures.First().Path.GetBounds();
-                //Point topLeft = Point.Ceiling(bounds.Location);
-                //if (selectionBox.Count()>=2)
-                //{
-                //    RectangleF secondBounds = selectionBox.ElementAt(1).Path.GetBounds();
-                //    if (secondBounds.Y < bounds.Y)
-                //    {
-                //        topLeft.Y = (int)Math.Round(secondBounds.Y);
-                //    }
-                //}
-                
-                Point translateVector = new Point(0, 0);
-                if (bounds.X < 0)
-                {
-                    this.Width -= bounds.X;
-                    sizeChanged = true;
-                    translateVector.X = -bounds.X;
-                }
-                if (bounds.Y < 0)
-                {
-                    this.Height -= bounds.Y;
-                    sizeChanged = true;
-                    //this.Top += topLeft.Y;
-                    translateVector.Y = -bounds.Y;
-                }
-
-                notSelected.Clear();
-
-                if(translateVector.X !=0 ||
-                   translateVector.Y !=0 )
-                {
-                    MoveFigures(translateVector.X, translateVector.Y, figures);
-                }
-                
-
-                //if (selectionBox.Count() >= 2)
-                //{
-                //    bounds = selectedFigures.Last().Path.GetBounds();
-                //    RectangleF secondBounds = selectionBox.ElementAt(selectionBox.Count() -2).Path.GetBounds();
-                //    if (secondBounds.Y > bounds.Y)
-                //    {
-                //        bounds.Y = (int)Math.Round(secondBounds.Y);
-                //    }
-                //}
-
-                Point rightBottom = new Point(bounds.X + bounds.Width, bounds.Y + bounds.Height);
-               
-                if (rightBottom.X > this.Width)
-                {
-                    this.Width = rightBottom.X;
-                    sizeChanged = true;
-                }
-                if (rightBottom.Y > this.Height)
-                {
-                    this.Height = rightBottom.Y;
-                    sizeChanged = true;
-                }
-
-                if (currentSelection != null)
-                {
-                    this.initRotatePoints(currentSelection);
-                }
+                this.Width -= bounds.X;
+                sizeChanged = true;
+                translateVector.X = -bounds.X;
             }
 
-            operating = false;
+            if (bounds.Y < 0)
+            {
+                this.Height -= bounds.Y;
+                sizeChanged = true;
+                translateVector.Y = -bounds.Y;
+            }
 
-            readyToMove = readyToRotate = false;
-            rubberSelectionStarted = false;
-            cachedMovePolygons.Clear();
-            cachedStaticPolygons.Clear();
+            if (translateVector.X != 0 ||
+               translateVector.Y != 0)
+            {
+                MoveFigures(translateVector.X, translateVector.Y, this.figures);
+            }
 
-            rotationBegun = false;
-            angle = 0;
+            Point rightBottom = new Point(bounds.X + bounds.Width, bounds.Y + bounds.Height);
+
+            if (rightBottom.X > this.Width)
+            {
+                this.Width = rightBottom.X;
+                sizeChanged = true;
+            }
+            if (rightBottom.Y > this.Height)
+            {
+                this.Height = rightBottom.Y;
+                sizeChanged = true;
+            }
 
             if (sizeChanged)
             {
                 if (GridEnabled) UpdateGrid();
                 Refresh();
             }
-           
         }
+
+        private void DesignerCanvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (snapped)
+            {
+                foreach (Figure f in selectedFigures)
+                {
+                    f.Translate(this.translateVector.X, this.translateVector.Y);
+                }
+
+                for(int i=0; i<rotatePoints.Count();i++)
+                {
+                    RectangleF point = rotatePoints[i];
+                    point.X += this.translateVector.X;
+                    point.Y += this.translateVector.Y;
+                    rotatePoints[i] = point;
+                }
+
+                snapped = false;
+                distance = float.MaxValue;
+            }
+
+            if (operating || rotationBegun)
+            {
+                checkOverflowFigures(selectedFigures);
+                notSelected.Clear();
+                if (currentSelection != null)
+                {
+                    this.initRotatePoints(currentSelection);
+                }
+            }
+            operating = false;
+
+            readyToMove = readyToRotate = false;
+            rubberSelectionStarted = false;
+
+            rotationBegun = false;
+            angle = 0;
+
+        }
+
+       
 
 
         public void DeleteSelected()

@@ -223,21 +223,33 @@ namespace Tangram.GraphicsElements
                 {
                     LineEquation normal = GetNormal(line, movePoly[j]);
                     PointF intersection = Intersection(line, normal);
+                   
                     if ((intersection.X >= Math.Min(staticPoly[i].X, staticPoly[i + 1].X) &&
                         intersection.X <= Math.Max(staticPoly[i].X, staticPoly[i + 1].X))&&
                         (intersection.Y >= Math.Min(staticPoly[i].Y, staticPoly[i + 1].Y) &&
                         intersection.Y <= Math.Max(staticPoly[i].Y, staticPoly[i + 1].Y)))
                     {
-                        float distance = GetDistance(intersection, movePoly[j]);
-                        if(distance<res.distance && distance != 0 && distance <= snapDistance)
+                        float curDist = GetDistance(intersection, movePoly[j]);
+                        if (curDist < res.distance && curDist != 0 && curDist <= snapDistance)
                         {
-                            res.distance = distance;
+                            res.distance = curDist;
                             res.snapPoint = intersection;
                             res.translateVector.X = intersection.X - movePoly[j].X;
                             res.translateVector.Y = intersection.Y - movePoly[j].Y;
                             res.snapped = true;
                         }
                     }
+
+                    float pointDist = GetDistance(staticPoly[i], movePoly[j]);
+                    if(pointDist < res.distance && pointDist != 0 && pointDist <= snapDistance)
+                    {
+                        res.distance = pointDist;
+                        res.snapPoint = staticPoly[i];
+                        res.translateVector.X = staticPoly[i].X - movePoly[j].X;
+                        res.translateVector.Y = staticPoly[i].Y - movePoly[j].Y;
+                        res.snapped = true;
+                    }
+                    
                 }
 
             }
