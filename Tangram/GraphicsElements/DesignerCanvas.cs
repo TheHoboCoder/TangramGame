@@ -377,10 +377,10 @@ namespace Tangram.GraphicsElements
           
         }
 
-        //для каждой из перемещаемых фигур находит фигуры, которые находятся рядом с ней
-        private List<RectangleF>[] getNearbyPolygons()
+        //для каждой из перемещаемых фигур находит статичные фигуры, которые находятся рядом с ней
+        private List<Figure>[] getNearbyPolygons()
         {
-            List<RectangleF>[] intersection = new List<RectangleF>[cachedMovePolygons.Count];
+            List<Figure>[] intersection = new List<Figure>[cachedMovePolygons.Count];
 
             for(int i=0, move_count = cachedMovePolygons.Count; i<move_count; i++)
             {
@@ -390,13 +390,14 @@ namespace Tangram.GraphicsElements
                     bigger.Inflate(SnapDistance, SnapDistance);
                     RectangleF smaller = cachedStaticPolygons[j];
                     smaller.Inflate(-SnapDistance, -SnapDistance);
-                    if (cachedMovePolygons[i].IntersectsWith(bigger) && !cachedMovePolygons[i].IntersectsWith(smaller))
+                    if (cachedMovePolygons[i].IntersectsWith(bigger) && 
+                        !cachedMovePolygons[i].IntersectsWith(smaller))
                     {
                         if(intersection[i] == null)
                         {
-                            intersection[i] = new List<RectangleF>();
+                            intersection[i] = new List<Figure>();
                         }
-                        intersection[i].Add(cachedStaticPolygons[j]);
+                        intersection[i].Add(notSelected[j]);
                     }
                 }
             }
@@ -412,7 +413,7 @@ namespace Tangram.GraphicsElements
             if (cachedStaticPolygons.Count == 0) return;
 
             float distance = float.MaxValue;
-            List<RectangleF>[] intersections = getNearbyPolygons();
+            List<Figure>[] intersections = getNearbyPolygons();
             this.snapped = false;
             for(int i = 0; i<intersections.Count(); ++i)
             {
@@ -421,7 +422,7 @@ namespace Tangram.GraphicsElements
                 {
 
                     GeometryTools.SnapResult res = GeometryTools.GetSnapPoint(selectedFigures[i].Path.PathPoints, 
-                                                           notSelected[j].Path.PathPoints, 
+                                                           intersections[i][j].Path.PathPoints, 
                                                            SnapDistance);
                     if (!res.snapped) continue;
 
@@ -502,10 +503,19 @@ namespace Tangram.GraphicsElements
             location.X = location.X - selectedPoint.X;
             location.Y = location.Y - selectedPoint.Y;
 
-            foreach (Figure f in figures)
+            for (int i = 0, count = figures.Count(); i < count; i++)
             {
-                f.Translate(location.X, location.Y);
+                figures.ElementAt(i).Translate(location.X, location.Y);
+                RectangleF rect = cachedMovePolygons[i];
+                rect.X += location.X;
+                rect.Y += location.Y;
+                cachedMovePolygons[i]= rect;
+
             }
+            //foreach (Figure f in figures)
+            //{
+            //    f.Translate(location.X, location.Y);
+            //}
 
             selectedPoint.X += location.X;
             selectedPoint.Y += location.Y;

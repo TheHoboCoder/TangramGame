@@ -74,6 +74,16 @@ namespace UnitTests
             Assert.IsTrue(res.snapped && res.distance == 1);
         }
 
+        [TestMethod]
+        public void InflateTest()
+        {
+            RectangleF rect = new RectangleF(50, 50, 50, 50);
+            rect.Inflate(5, 5);
+            RectangleF rect2 = new RectangleF(50, 50, 50, 50);
+            rect2.Inflate(-5, -5);
+            //Assert.IsTrue(rect.X == 55 && rect.Width == 60 && rect.Y == 45 && rect.Height == 60);
+        }
+
         //[TestMethod]
         //public void PolygonProjectionTest(){
 
